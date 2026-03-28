@@ -27,6 +27,16 @@ export default defineConfig([
     },
     rules: {
       'react/react-in-jsx-scope': 'off',
+      'import/extensions': [
+        'error',
+        'never',
+        {
+          ts: 'never',
+          tsx: 'never',
+          js: 'never',
+          jsx: 'never',
+        },
+      ],
     },
   },
 ])
