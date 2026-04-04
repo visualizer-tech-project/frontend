@@ -39,13 +39,17 @@ export const routes = [
         element: <Forbidden />,
       },
       {
+        path: '/register',
+        element: <AuthPage isLogin={false} />,
+      },
+      {
+        path: '/login',
+        element: <AuthPage isLogin />,
+      },
+      {
         path: '*',
         element: <PageNotFound />,
       },
     ],
-  },
-  {
-    path: '/auth',
-    element: <AuthPage />,
   },
 ]
