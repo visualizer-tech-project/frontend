@@ -1,10 +1,14 @@
 import 'normalize.css'
+import { AppRouter, ThemeProvider } from './providers'
 import './styles/index.css'
 import './styles/variables.css'
-import { AppRouter } from './providers/router'
 
 function App() {
-  return <AppRouter />
+  return (
+    <ThemeProvider>
+      <AppRouter />
+    </ThemeProvider>
+  )
 }
 
 export default App

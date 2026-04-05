@@ -8,10 +8,6 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid transparent;
-  background-color: var(--bg-container);
-  color: var(--text-primary);
-  border-color: var(--border);
 }
 
 .button:hover {
@@ -27,24 +23,9 @@
   cursor: not-allowed;
 }
 
-.primary {
-  background-color: var(--color-purple);
-  color: var(--color-white);
-  border-color: var(--color-purple);
-}
-
-.primary:hover {
-  background-color: var(--color-purple-hover) !important;
-  border-color: var(--color-purple-hover) !important;
-  color: var(--color-white) !important;
-  opacity: 1 !important;
+.button:hover {
+  opacity: 1;
   transform: scale(1.005);
-}
-
-.primary:active {
-  background-color: var(--color-purple-active) !important;
-  border-color: var(--color-purple-active) !important;
-  opacity: 1 !important;
 }
 
 .button[size='small'] {
@@ -57,30 +38,4 @@
   padding: 10px 20px;
   font-size: 16px;
   border-radius: 8px;
-}
-
-.secondary {
-  background-color: transparent;
-  color: var(--color-purple);
-  border-color: var(--color-purple);
-}
-
-.secondary:hover {
-  background-color: var(--color-purple-light) !important;
-}
-
-.danger {
-  background-color: var(--error);
-  color: var(--color-white);
-  border-color: var(--error);
-}
-
-.danger:hover {
-  background-color: var(--color-error);
-}
-
-.success {
-  background-color: var(--success);
-  color: var(--color-white);
-  border-color: var(--success);
 }

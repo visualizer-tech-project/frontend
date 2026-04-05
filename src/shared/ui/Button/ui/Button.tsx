@@ -5,12 +5,11 @@ import styles from './Button.module.css'
 
 interface IButton extends ButtonProps {
   children: ReactNode
-  isPrimary?: boolean
 }
 
-export const Button = ({ children, className, isPrimary, size, onClick }: IButton) => {
+export const Button = ({ children, className, ...props }: IButton) => {
   return (
-    <AntdButton className={clsx(className, styles.button, isPrimary && styles.primary)} size={size} onClick={onClick}>
+    <AntdButton className={clsx(className, styles.button)} {...props}>
       {children}
     </AntdButton>
   )

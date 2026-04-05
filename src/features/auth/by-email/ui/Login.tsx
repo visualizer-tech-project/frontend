@@ -58,7 +58,14 @@ export const Login = () => {
             </Link>
           </div>
 
-          <Button className={styles.button} size='large' isPrimary={true} onClick={handleSubmit(onSubmit)}>
+          <Button
+            className={styles.button}
+            onClick={handleSubmit(onSubmit)}
+            size='large'
+            type='primary'
+            variant='filled'
+            htmlType='submit'
+          >
             Войти
           </Button>
         </div>

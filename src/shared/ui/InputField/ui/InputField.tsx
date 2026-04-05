@@ -14,11 +14,10 @@ interface IInputField<T extends FieldValues> extends InputProps {
 export const InputField = <T extends FieldValues>({
   control,
   name,
-  type,
-  placeholder,
   title,
-  className,
   isPassword,
+  className,
+  ...props
 }: IInputField<T>) => {
   const Component = isPassword ? Input.Password : Input
 
@@ -32,14 +31,8 @@ export const InputField = <T extends FieldValues>({
 
           <Component
             {...field}
-            type={type}
-            placeholder={placeholder}
-            className={clsx(
-              className,
-              styles.input,
-              error && styles.inputError,
-              isDirty && !error && styles.inputSuccess,
-            )}
+            {...props}
+            className={clsx(styles.input, error && styles.inputError, isDirty && !error && styles.inputSuccess)}
           />
           {error && <Text className={styles.error}>{error.message}</Text>}
         </div>
