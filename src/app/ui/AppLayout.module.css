@@ -1,10 +1,8 @@
 .layout {
   min-height: 100vh;
+  background: var(--color-bg-page);
 }
 
 .main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: max-content;
+  min-height: 100vh;
 }

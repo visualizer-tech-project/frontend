@@ -1,0 +1,64 @@
+.custom-node {
+  position: relative;
+
+  min-width: 180px;
+  border: 2px solid;
+  border-radius: 12px;
+
+  font-family: sans-serif;
+  color: white;
+
+  background: #1c1a1c;
+}
+
+/* HEADER */
+.node-header {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* BODY */
+.node-body {
+  padding: 10px;
+}
+
+.node-item {
+  margin-top: 6px;
+  padding: 6px;
+  border-radius: 6px;
+
+  text-align: center;
+
+  background: #262526;
+}
+
+/* PORTS */
+.port {
+  position: absolute;
+}
+
+.port.left {
+  top: 50%;
+  left: -6px;
+  transform: translateY(-50%);
+}
+
+.port.right {
+  top: 50%;
+  right: -6px;
+  transform: translateY(-50%);
+}
+
+.port.top {
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.port.bottom {
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
