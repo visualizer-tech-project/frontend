@@ -8,6 +8,4 @@ export const ROUTES = {
   SETTINGS: '/settings',
   PROGRAMS: '/programs',
   ADD_PROGRAM: '/add-program',
-  MAIN: '/main',
-  STUDENT: '/student',
 } as const

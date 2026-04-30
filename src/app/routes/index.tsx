@@ -2,10 +2,7 @@ import { Roles } from '@/entities/user'
 import { LoginPage, RegisterPage } from '@/pages/auth'
 import { Forbidden, PageNotFound } from '@/pages/error'
 import { HomePage } from '@/pages/home'
-import { MainPage } from '@/pages/main'
-import { ProfilePage } from '@/pages/profile'
 import { AddProgramPage, ProgramPage } from '@/pages/program'
-import { StudentPage } from '@/pages/student'
 import { ROUTES } from '@/shared/config'
 import { RequireRole } from '../providers/router/RequireRole'
 import { AppLayout } from '../ui/AppLayout'
@@ -31,14 +28,6 @@ export const routes = [
         element: <ProgramPage />,
       },
       {
-        path: ROUTES.MAIN,
-        element: <MainPage />,
-      },
-      {
-        path: ROUTES.STUDENT,
-        element: <StudentPage />,
-      },
-      {
         path: ROUTES.ADD_PROGRAM,
         element: (
           <RequireRole roles={[Roles.ADMIN, Roles.TEACHER]}>
@@ -49,10 +38,6 @@ export const routes = [
       {
         path: ROUTES.FORBIDDEN,
         element: <Forbidden />,
-      },
-      {
-        path: ROUTES.PROFILE,
-        element: <ProfilePage />,
       },
       {
         path: ROUTES.REGISTER,

@@ -1,13 +1,12 @@
 import js from '@eslint/js'
 import react from 'eslint-plugin-react'
-import importPlugin from 'eslint-plugin-import'
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
   {
-    ignores: ['dist', 'node_modules', 'build', 'src/shared/api/generated'],
+    ignores: ['dist', 'node_modules', 'build'],
   },
 
   js.configs.recommended,
@@ -18,9 +17,6 @@ export default defineConfig([
 
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
-    plugins: {
-      import: importPlugin,
-    },
     languageOptions: {
       globals: globals.browser,
     },
@@ -39,11 +35,6 @@ export default defineConfig([
           tsx: 'never',
           js: 'never',
           jsx: 'never',
-          json: 'always',
-          svg: 'always',
-          jpg: 'always',
-          jpeg: 'always',
-          png: 'always',
         },
       ],
     },
