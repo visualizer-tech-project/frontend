@@ -1,0 +1,102 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  min-height: 240px;
+  padding: 22px;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 26px;
+
+  color: #f5f7fb;
+
+  background: rgb(25 30 36 / 74%);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 14px 40px rgb(0 0 0 / 22%);
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(245 247 251 / 80%);
+
+  background: rgb(255 255 255 / 8%);
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.05;
+}
+
+.description {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgb(245 247 251 / 74%);
+}
+
+.action {
+  cursor: pointer;
+
+  min-height: 46px;
+  margin-top: auto;
+  border: none;
+  border-radius: 999px;
+
+  font-weight: 700;
+  color: #07111c;
+
+  background: #4aa3ff;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.action:hover {
+  transform: translateY(-2px);
+  background: #63b1ff;
+}
+
+.emptyState {
+  padding: 28px;
+  border: 1px dashed rgb(255 255 255 / 18%);
+  border-radius: 24px;
+
+  color: #f5f7fb;
+
+  background: rgb(20 25 30 / 65%);
+}
+
+.emptyState h3,
+.emptyState p {
+  margin: 0;
+}
+
+.emptyState p {
+  margin-top: 10px;
+  line-height: 1.5;
+  color: rgb(245 247 251 / 70%);
+}

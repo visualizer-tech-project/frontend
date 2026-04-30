@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+.page {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+
+  font-family: Montserrat, sans-serif;
+  color: #b0b0aa;
+
+  background: #201f21;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  align-items: center;
+
+  padding: 18px clamp(18px, 4vw, 80px);
+  border-bottom: 1px solid rgb(176 176 170 / 20%);
+
+  background: rgb(32 31 33 / 92%);
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  margin-right: auto;
+}
+
+.brandMark {
+  display: inline-grid;
+  place-items: center;
+
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+
+  font-size: 18px;
+  font-weight: 800;
+  color: #07111d;
+
+  background: linear-gradient(135deg, #4aa3ff, #7f8cff);
+}
+
+.brandText {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f5f7fb;
+}
+
+.navGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+
+  font-weight: 700;
+  color: #b0b0aa;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.navLink:hover {
+  transform: translateY(-2px);
+  color: #fff;
+  background: rgb(255 255 255 / 6%);
+}
+
+.navLinkAccent {
+  color: #fff;
+  background: rgb(255 255 255 / 8%);
+}
+
+.body {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+
+.heading {
+  pointer-events: none;
+
+  position: absolute;
+  z-index: 2;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: min(700px, calc(100vw - 40px));
+
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(255 255 255 / 48%);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(30px, 5vw, 46px);
+  color: #f5f7fb;
+}
+
+.subtitle {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgb(245 247 251 / 65%);
+}
+
+.aside {
+  touch-action: none;
+  cursor: grab;
+
+  position: fixed;
+  z-index: 5;
+
+  width: min(370px, calc(100vw - 32px));
+  padding: 26px;
+  border: 1px solid #272527;
+  border-radius: 18px;
+
+  background: rgb(24 23 24 / 96%);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 34%);
+
+  transition:
+    left 0.25s ease,
+    top 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.asideDragging {
+  cursor: grabbing;
+}
+
+.asideHidden {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.asideTop {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  height: 48px;
+}
+
+.asideSearch {
+  flex: 1;
+
+  min-width: 0;
+  padding: 0 16px;
+  border: none;
+  border-radius: 12px;
+
+  color: #fff;
+
+  background: #262526;
+}
+
+.asideIconButton {
+  cursor: pointer;
+
+  width: 48px;
+  border: none;
+  border-radius: 12px;
+
+  color: #fff;
+
+  background: #262526;
+}
+
+.asideProgram {
+  position: relative;
+
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 22px;
+  padding-top: 22px;
+}
+
+.asideProgram::before {
+  content: '';
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  height: 1px;
+
+  background: rgb(227 227 227 / 26%);
+}
+
+.asideProgramText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.programTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.programSubtitle {
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 64%);
+}
+
+.asideProgramButton {
+  cursor: pointer;
+
+  min-height: 42px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 12px;
+
+  font-weight: 700;
+  color: #fff;
+
+  background: #000;
+}
+
+.returnArrow {
+  cursor: pointer;
+
+  position: fixed;
+  z-index: 6;
+  transform: translateY(-50%);
+
+  width: 42px;
+  height: 54px;
+  border: none;
+  border-radius: 14px;
+
+  font-size: 24px;
+  color: #fff;
+
+  background: #333;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 32%);
+}
+
+.returnArrowLeft {
+  left: 16px;
+}
+
+.returnArrowRight {
+  right: 16px;
+}
+
+@media (width <= 900px) {
+  .nav {
+    padding-inline: 16px;
+  }
+
+  .heading {
+    top: 18px;
+  }
+}
+
+@media (width <= 640px) {
+  .nav {
+    gap: 14px;
+  }
+
+  .brand {
+    margin-right: 0;
+  }
+
+  .navGroup {
+    width: 100%;
+  }
+
+  .navLink {
+    flex: 1 1 auto;
+  }
+
+  .aside {
+    padding: 18px;
+  }
+
+  .asideProgram {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .asideProgramButton {
+    width: 100%;
+  }
+}
