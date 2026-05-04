@@ -41,7 +41,7 @@ export const ProgramsGrid = ({
           <p className={styles.description}>{program.description}</p>
 
           {onAction ? (
-            <button className={styles.action} type='button' onClick={() => onAction(program)}>
+            <button className={styles.action} type="button" onClick={() => onAction(program)}>
               {actionLabel}
             </button>
           ) : null}

@@ -3,19 +3,33 @@ import { type MutableRefObject, type RefObject, useCallback } from 'react'
 
 type TransitionState = 'idle' | 'opening' | 'open' | 'closing'
 
-export const useAnimations = (
-  containerRef: RefObject<HTMLDivElement | null>,
-  backgroundRef: RefObject<HTMLDivElement | null>,
-  buttonsRef: RefObject<HTMLDivElement | null>,
-  textRef: RefObject<HTMLDivElement | null>,
-  blackCircleRef: RefObject<HTMLDivElement | null>,
-  blackCircleFillRef: RefObject<HTMLDivElement | null>,
-  studentContentRef: RefObject<HTMLDivElement | null>,
-  transitionStateRef: MutableRefObject<TransitionState>,
-  setShowBackground: (value: boolean) => void,
-  setShowButtons: (value: boolean) => void,
-  setSelectedRole: (role: 'student' | 'teacher' | null) => void,
-) => {
+interface UseAnimationsParams {
+  containerRef: RefObject<HTMLDivElement | null>
+  backgroundRef: RefObject<HTMLDivElement | null>
+  buttonsRef: RefObject<HTMLDivElement | null>
+  textRef: RefObject<HTMLDivElement | null>
+  blackCircleRef: RefObject<HTMLDivElement | null>
+  blackCircleFillRef: RefObject<HTMLDivElement | null>
+  studentContentRef: RefObject<HTMLDivElement | null>
+  transitionStateRef: MutableRefObject<TransitionState>
+  setShowBackground: (value: boolean) => void
+  setShowButtons: (value: boolean) => void
+  setSelectedRole: (role: 'student' | 'teacher' | null) => void
+}
+
+export const useAnimations = ({
+  containerRef,
+  backgroundRef,
+  buttonsRef,
+  textRef,
+  blackCircleRef,
+  blackCircleFillRef,
+  studentContentRef,
+  transitionStateRef,
+  setShowBackground,
+  setShowButtons,
+  setSelectedRole,
+}: UseAnimationsParams) => {
   const animateTextRise = useCallback(() => {
     if (!containerRef.current) {
       return

@@ -9,11 +9,11 @@ interface AnimatedTextProps {
 
 const AnimatedText = ({ showWelcome, isRaised, onTypingComplete }: AnimatedTextProps) => {
   return (
-    <div className='animated-text'>
+    <div className="animated-text">
       {showWelcome && !isRaised ? (
-        <TypewriterText fullText='Здравствуй, Пользователь' onComplete={onTypingComplete} />
+        <TypewriterText fullText="Здравствуй, Пользователь" onComplete={onTypingComplete} />
       ) : (
-        <div className='static-text'>Здравствуй, Пользователь</div>
+        <div className="static-text">Здравствуй, Пользователь</div>
       )}
     </div>
   )

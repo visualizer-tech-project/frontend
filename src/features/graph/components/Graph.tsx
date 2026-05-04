@@ -86,8 +86,8 @@ export const Graph = () => {
   }, [courseNode, engine, lessonNode])
 
   return (
-    <div className='graph-shell'>
-      <CanvasWidget className='graph-canvas' engine={engine} />
+    <div className="graph-shell">
+      <CanvasWidget className="graph-canvas" engine={engine} />
     </div>
   )
 }

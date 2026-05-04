@@ -32,7 +32,11 @@ export const InputField = <T extends FieldValues>({
           <Component
             {...field}
             {...props}
-            className={clsx(styles.input, error && styles.inputError, isDirty && !error && styles.inputSuccess)}
+            className={clsx(
+              styles.input,
+              error && styles.inputError,
+              isDirty && !error && styles.inputSuccess,
+            )}
           />
           {error && <Text className={styles.error}>{error.message}</Text>}
         </div>

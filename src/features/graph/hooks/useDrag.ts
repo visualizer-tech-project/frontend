@@ -20,15 +20,6 @@ export const useDrag = () => {
   const dragStateRef = useRef<DragState | null>(null)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
-  const [isHidden, setIsHidden] = useState(false)
-  const [hiddenSide, setHiddenSide] = useState<'left' | 'right' | null>(null)
-  const [hiddenCenterY, setHiddenCenterY] = useState(0)
-
-  const restoreAtPosition = useCallback((x: number, y: number) => {
-    setPosition({ x, y })
-    setIsHidden(false)
-    setHiddenSide(null)
-  }, [])
 
   const handlePointerDown = useCallback(
     (event: ReactPointerEvent<HTMLElement>) => {
@@ -64,50 +55,18 @@ export const useDrag = () => {
     [position.x, position.y],
   )
 
-  const handlePointerMove = useCallback(
-    (event: ReactPointerEvent<HTMLElement>) => {
-      if (!dragStateRef.current || dragStateRef.current.pointerId !== event.pointerId) {
-        return
-      }
+  const handlePointerMove = useCallback((event: ReactPointerEvent<HTMLElement>) => {
+    if (!dragStateRef.current || dragStateRef.current.pointerId !== event.pointerId) {
+      return
+    }
 
-      const nextX = dragStateRef.current.originX + event.clientX - dragStateRef.current.startX
-      const nextY = dragStateRef.current.originY + event.clientY - dragStateRef.current.startY
-      const clampedY = Math.min(dragStateRef.current.maxY, Math.max(dragStateRef.current.minY, nextY))
-      const { height } = dragStateRef.current
+    const nextX = dragStateRef.current.originX + event.clientX - dragStateRef.current.startX
+    const nextY = dragStateRef.current.originY + event.clientY - dragStateRef.current.startY
 
-      const leftThreshold = -350
-      const rightThreshold = window.innerWidth - 250
+    const clampedY = Math.min(dragStateRef.current.maxY, Math.max(dragStateRef.current.minY, nextY))
 
-      if (!isHidden) {
-        if (nextX < leftThreshold) {
-          setIsHidden(true)
-          setHiddenSide('left')
-          setHiddenCenterY(clampedY + height / 2 + 155)
-          setPosition({ x: -window.innerWidth, y: clampedY })
-          dragStateRef.current = null
-          setIsDragging(false)
-          return
-        }
-
-        if (nextX > rightThreshold) {
-          setIsHidden(true)
-          setHiddenSide('right')
-          setHiddenCenterY(clampedY + height / 2 + 155)
-          setPosition({ x: window.innerWidth, y: clampedY })
-          dragStateRef.current = null
-          setIsDragging(false)
-          return
-        }
-      }
-
-      if (isHidden) {
-        return
-      }
-
-      setPosition({ x: nextX, y: clampedY })
-    },
-    [isHidden],
-  )
+    setPosition({ x: nextX, y: clampedY })
+  }, [])
 
   const handlePointerUp = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (!dragStateRef.current || dragStateRef.current.pointerId !== event.pointerId) {
@@ -126,10 +85,6 @@ export const useDrag = () => {
     ref,
     position,
     isDragging,
-    isHidden,
-    hiddenSide,
-    hiddenCenterY,
-    restoreAtPosition,
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,

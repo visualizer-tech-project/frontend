@@ -52,7 +52,11 @@ export const routes = [
       },
       {
         path: ROUTES.PROFILE,
-        element: <ProfilePage />,
+        element: (
+          <RequireRole roles={[Roles.USER, Roles.ADMIN, Roles.TEACHER]}>
+            <ProfilePage />
+          </RequireRole>
+        ),
       },
       {
         path: ROUTES.REGISTER,

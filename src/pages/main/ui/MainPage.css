@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+.main-page button {
+  all: unset;
+  cursor: pointer;
+}
+
 .main-page {
   display: flex;
   flex-direction: column;
@@ -10,11 +15,6 @@
   color: #696869;
 
   background-color: #201f21;
-}
-
-.main-page button {
-  all: unset;
-  cursor: pointer;
 }
 
 .main-nav {
@@ -126,6 +126,23 @@
   background-color: #181718;
 }
 
+.aside-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #333;
+  color: white;
+  border-radius: 4px;
+}
+
 .aside.dragging {
   cursor: grabbing;
 }
@@ -209,7 +226,7 @@
   background-color: #000;
 }
 
-@media (width <= 900px) {
+@media (width <=900px) {
   .aside {
     margin: 20px 16px;
   }

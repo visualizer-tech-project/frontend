@@ -40,7 +40,9 @@ export const ProgramWorkspace = ({ heading, subtitle }: ProgramWorkspaceProps) =
     const panelWidth = ref.current?.getBoundingClientRect().width ?? 370
     const navigationHeight =
       document.querySelector('[data-program-nav="true"]') instanceof HTMLElement
-        ? (document.querySelector('[data-program-nav="true"]') as HTMLElement).getBoundingClientRect().height
+        ? (
+            document.querySelector('[data-program-nav="true"]') as HTMLElement
+          ).getBoundingClientRect().height
         : 0
     const minY = navigationHeight + 16
     const maxY = Math.max(minY, window.innerHeight - panelHeight - 16)
@@ -52,7 +54,7 @@ export const ProgramWorkspace = ({ heading, subtitle }: ProgramWorkspaceProps) =
 
   return (
     <section className={styles.page}>
-      <nav className={styles.nav} data-program-nav='true'>
+      <nav className={styles.nav} data-program-nav="true">
         <Link className={styles.brand} to={ROUTES.HOME}>
           <span className={styles.brandMark}>EM</span>
           <span className={styles.brandText}>Edu Map</span>
@@ -91,7 +93,11 @@ export const ProgramWorkspace = ({ heading, subtitle }: ProgramWorkspaceProps) =
 
         <aside
           ref={ref}
-          className={clsx(styles.aside, isDragging && styles.asideDragging, isHidden && styles.asideHidden)}
+          className={clsx(
+            styles.aside,
+            isDragging && styles.asideDragging,
+            isHidden && styles.asideHidden,
+          )}
           style={{
             left: `${position.x}px`,
             top: `${position.y}px`,
@@ -104,14 +110,18 @@ export const ProgramWorkspace = ({ heading, subtitle }: ProgramWorkspaceProps) =
           <div className={styles.asideTop}>
             <input
               className={styles.asideSearch}
-              name='q'
-              placeholder='Поиск курса'
-              type='search'
+              name="q"
+              placeholder="Поиск курса"
+              type="search"
               value={searchValue}
               onChange={(event) => setSearchValue(event.target.value)}
             />
 
-            <button className={styles.asideIconButton} type='button' aria-label='Открыть каталог программ'>
+            <button
+              className={styles.asideIconButton}
+              type="button"
+              aria-label="Открыть каталог программ"
+            >
               ≡
             </button>
           </div>
@@ -122,7 +132,11 @@ export const ProgramWorkspace = ({ heading, subtitle }: ProgramWorkspaceProps) =
               <span className={styles.programSubtitle}>{activeProgram.description}</span>
             </div>
 
-            <button className={styles.asideProgramButton} type='button' onClick={() => navigate(ROUTES.PROGRAMS)}>
+            <button
+              className={styles.asideProgramButton}
+              type="button"
+              onClick={() => navigate(ROUTES.PROGRAMS)}
+            >
               Перейти
             </button>
           </div>
@@ -135,7 +149,7 @@ export const ProgramWorkspace = ({ heading, subtitle }: ProgramWorkspaceProps) =
               hiddenSide === 'left' ? styles.returnArrowLeft : styles.returnArrowRight,
             )}
             style={{ top: `${hiddenCenterY}px` }}
-            type='button'
+            type="button"
             onClick={handleRestorePanel}
           >
             {hiddenSide === 'left' ? '←' : '→'}

@@ -30,7 +30,7 @@ const TypewriterText = ({ fullText, typingSpeed = 80, onComplete }: TypewriterTe
     return () => window.clearInterval(intervalId)
   }, [fullText, onComplete, typingSpeed])
 
-  return <div className='typewriter-text'>{displayedText}</div>
+  return <div className="typewriter-text">{displayedText}</div>
 }
 
 export default TypewriterText

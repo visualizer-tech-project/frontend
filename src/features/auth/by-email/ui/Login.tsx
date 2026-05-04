@@ -22,24 +22,24 @@ export const Login = () => {
   }
 
   return (
-    <AuthWrapper title='Вход'>
+    <AuthWrapper title="Вход">
       <form className={styles.form}>
         <InputField
           control={control}
           className={styles.input}
-          name='email'
-          type='email'
-          placeholder='test@gmail.com'
-          title='Ваша почта:'
+          name="email"
+          type="email"
+          placeholder="test@gmail.com"
+          title="Ваша почта:"
         />
 
         <InputField
           control={control}
           className={styles.input}
-          name='password'
-          type='password'
-          placeholder='Ваш пароль'
-          title='Ваш пароль:'
+          name="password"
+          type="password"
+          placeholder="Ваш пароль"
+          title="Ваш пароль:"
           isPassword
         />
 
@@ -48,12 +48,12 @@ export const Login = () => {
             <div className={styles.switch}>
               <span>Нет аккаунта?</span>
 
-              <Link to='/register' className={styles.link}>
+              <Link to="/register" className={styles.link}>
                 Создать
               </Link>
             </div>
 
-            <Link to='/forgot-password' className={styles.link}>
+            <Link to="/forgot-password" className={styles.link}>
               Забыли пароль?
             </Link>
           </div>
@@ -61,10 +61,10 @@ export const Login = () => {
           <Button
             className={styles.button}
             onClick={handleSubmit(onSubmit)}
-            size='large'
-            type='primary'
-            variant='filled'
-            htmlType='submit'
+            size="large"
+            type="primary"
+            variant="filled"
+            htmlType="submit"
           >
             Войти
           </Button>

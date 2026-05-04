@@ -14,11 +14,11 @@ export const RequireRole = ({ children, roles }: IRequireRole) => {
   }
 
   if (!user.isAuth) {
-    return <Navigate to='/auth' replace />
+    return <Navigate to="/auth" replace />
   }
 
   if (roles && !roles.includes(user.role)) {
-    return <Navigate to='/forbidden' replace />
+    return <Navigate to="/forbidden" replace />
   }
 
   return children

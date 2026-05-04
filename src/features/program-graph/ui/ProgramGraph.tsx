@@ -167,19 +167,20 @@ export const ProgramGraph = () => {
     }
   }, [])
 
-  const handleNodePointerDown = (nodeId: GraphNode['id']) => (event: ReactPointerEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect()
+  const handleNodePointerDown =
+    (nodeId: GraphNode['id']) => (event: ReactPointerEvent<HTMLDivElement>) => {
+      const rect = event.currentTarget.getBoundingClientRect()
 
-    dragStateRef.current = {
-      id: nodeId,
-      offsetX: event.clientX - rect.left,
-      offsetY: event.clientY - rect.top,
+      dragStateRef.current = {
+        id: nodeId,
+        offsetX: event.clientX - rect.left,
+        offsetY: event.clientY - rect.top,
+      }
+
+      hasDraggedRef.current = true
+      setActiveNodeId(nodeId)
+      document.body.style.userSelect = 'none'
     }
-
-    hasDraggedRef.current = true
-    setActiveNodeId(nodeId)
-    document.body.style.userSelect = 'none'
-  }
 
   const [courseNode, lessonNode] = nodes
   const isCourseOnLeft = courseNode.x <= lessonNode.x
@@ -193,15 +194,25 @@ export const ProgramGraph = () => {
     <div ref={containerRef} className={styles.shell}>
       <div className={styles.canvas}>
         <svg className={styles.edgeLayer}>
-          <path className={styles.edgeGlow} d={linkPath} pathLength={1} vectorEffect='non-scaling-stroke' />
-          <path className={styles.edge} d={linkPath} pathLength={1} vectorEffect='non-scaling-stroke' />
+          <path
+            className={styles.edgeGlow}
+            d={linkPath}
+            pathLength={1}
+            vectorEffect="non-scaling-stroke"
+          />
+          <path
+            className={styles.edge}
+            d={linkPath}
+            pathLength={1}
+            vectorEffect="non-scaling-stroke"
+          />
         </svg>
 
         {nodes.map((node) => (
           <div
             key={node.id}
             className={clsx(styles.node, activeNodeId === node.id && styles.nodeDragging)}
-            role='presentation'
+            role="presentation"
             style={{
               transform: `translate(${node.x}px, ${node.y}px)`,
               borderColor: node.color,

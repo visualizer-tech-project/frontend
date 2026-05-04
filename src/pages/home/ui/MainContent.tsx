@@ -34,7 +34,7 @@ export const MainContent = ({ showWelcome }: MainContentProps) => {
   const studentContentRef = useRef<HTMLDivElement>(null)
   const transitionStateRef = useRef<TransitionState>('idle')
 
-  const { animateTextRise, animateBackground, animateButtons, collapseBackground } = useAnimations(
+  const { animateTextRise, animateBackground, animateButtons, collapseBackground } = useAnimations({
     containerRef,
     backgroundRef,
     buttonsRef,
@@ -46,7 +46,7 @@ export const MainContent = ({ showWelcome }: MainContentProps) => {
     setShowBackground,
     setShowButtons,
     setSelectedRole,
-  )
+  })
 
   useEffect(() => {
     if (showWelcome && buttonsRef.current) {
@@ -60,7 +60,7 @@ export const MainContent = ({ showWelcome }: MainContentProps) => {
     if (savedRole === 'student' && !showWelcome) {
       setSelectedRole('student')
 
-      requestAnimationFrame(() => {
+      const rafId: number | null = requestAnimationFrame(() => {
         transitionStateRef.current = 'open'
 
         if (containerRef.current) {
@@ -68,11 +68,21 @@ export const MainContent = ({ showWelcome }: MainContentProps) => {
         }
 
         if (buttonsRef.current) {
-          gsap.set(buttonsRef.current, { opacity: 0, scale: 0, pointerEvents: 'none', userSelect: 'none' })
+          gsap.set(buttonsRef.current, {
+            opacity: 0,
+            scale: 0,
+            pointerEvents: 'none',
+            userSelect: 'none',
+          })
         }
 
         if (textRef.current) {
-          gsap.set(textRef.current, { opacity: 0, scale: 0, pointerEvents: 'none', userSelect: 'none' })
+          gsap.set(textRef.current, {
+            opacity: 0,
+            scale: 0,
+            pointerEvents: 'none',
+            userSelect: 'none',
+          })
         }
 
         if (backgroundRef.current) {
@@ -100,8 +110,14 @@ export const MainContent = ({ showWelcome }: MainContentProps) => {
           })
         }
       })
+
+      return () => {
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId)
+        }
+      }
     }
-  }, [showWelcome, animateTextRise])
+  }, [showWelcome])
 
   useEffect(() => {
     const savedRole = window.localStorage.getItem('selectedRole')
@@ -285,20 +301,20 @@ export const MainContent = ({ showWelcome }: MainContentProps) => {
   }
 
   return (
-    <div ref={containerRef} className='main-content'>
-      <div ref={backgroundRef} className='main-content-background'>
-        <div ref={blackCircleRef} className='black-circle'>
-          <div ref={blackCircleFillRef} className='black-circle-fill' />
+    <div ref={containerRef} className="main-content">
+      <div ref={backgroundRef} className="main-content-background">
+        <div ref={blackCircleRef} className="black-circle">
+          <div ref={blackCircleFillRef} className="black-circle-fill" />
           <div
             ref={studentContentRef}
             className={`student-content ${selectedRole === 'student' ? 'active' : ''}`}
             aria-hidden={selectedRole !== 'student'}
           >
-            <div className='student-choice'>
-              <button onClick={handleBackClick} className='back-button' type='button'>
+            <div className="student-choice">
+              <button onClick={handleBackClick} className="back-button" type="button">
                 Back
               </button>
-              <input type='search' className='search' id='site-search' name='q' />
+              <input type="search" className="search" id="site-search" name="q" />
             </div>
             {programsData.length > 0 && <ProgramsGrid programs={programsData} />}
           </div>
@@ -310,10 +326,14 @@ export const MainContent = ({ showWelcome }: MainContentProps) => {
         className={`text-container ${selectedRole ? 'hidden' : ''}`}
         style={{ display: 'inline-block' }}
       >
-        <AnimatedText showWelcome={showWelcome} isRaised={isRaised} onTypingComplete={handleTypingComplete} />
+        <AnimatedText
+          showWelcome={showWelcome}
+          isRaised={isRaised}
+          onTypingComplete={handleTypingComplete}
+        />
       </div>
 
-      <div ref={buttonsRef} className='buttons-block'>
+      <div ref={buttonsRef} className="buttons-block">
         <ButtonsBlock onStudentClick={handleStudentClick} onTeacherClick={handleTeacherClick} />
       </div>
     </div>

@@ -12,12 +12,12 @@ interface ProgramsGridProps {
 
 const ProgramsGrid = ({ programs }: ProgramsGridProps) => {
   return (
-    <div className='programs-grid'>
+    <div className="programs-grid">
       {programs.map((program) => (
-        <div key={program.id} className='program-card'>
-          <h3 className='program-title'>{program.title}</h3>
-          <p className='program-description'>{program.description}</p>
-          <button className='program-button' type='button'>
+        <div key={program.id} className="program-card">
+          <h3 className="program-title">{program.title}</h3>
+          <p className="program-description">{program.description}</p>
+          <button className="program-button" type="button">
             Подробнее
           </button>
         </div>

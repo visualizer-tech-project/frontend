@@ -12,8 +12,8 @@ export const ProfilePage = () => {
         <p className={styles.eyebrow}>Профиль</p>
         <h1 className={styles.title}>Страница студента</h1>
         <p className={styles.description}>
-          Экран из my-app - Copy встроен в текущий frontend и теперь работает внутри общего роутинга. Активная роль:{' '}
-          <span className={styles.role}>{roleLabel}</span>.
+          Экран из my-app - Copy встроен в текущий frontend и теперь работает внутри общего
+          роутинга. Активная роль: <span className={styles.role}>{roleLabel}</span>.
         </p>
 
         <div className={styles.actions}>

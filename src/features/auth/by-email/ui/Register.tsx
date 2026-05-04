@@ -23,34 +23,34 @@ export const Register = () => {
   }
 
   return (
-    <AuthWrapper title='Регистрация'>
+    <AuthWrapper title="Регистрация">
       <form className={styles.form}>
         <InputField
           control={control}
           className={styles.input}
-          name='email'
-          type='email'
-          placeholder='test@gmail.com'
-          title='Ваша почта:'
+          name="email"
+          type="email"
+          placeholder="test@gmail.com"
+          title="Ваша почта:"
         />
 
         <InputField
           control={control}
           className={styles.input}
-          name='password'
-          type='password'
-          placeholder='Ваш пароль'
-          title='Ваш пароль:'
+          name="password"
+          type="password"
+          placeholder="Ваш пароль"
+          title="Ваш пароль:"
           isPassword
         />
 
         <InputField
           control={control}
           className={styles.input}
-          name='confirmPassword'
-          type='password'
-          placeholder='Повторите пароль'
-          title='Ваш повторный пароль:'
+          name="confirmPassword"
+          type="password"
+          placeholder="Повторите пароль"
+          title="Ваш повторный пароль:"
           isPassword
         />
 
@@ -59,7 +59,7 @@ export const Register = () => {
             <div className={styles.switch} style={{ justifyContent: 'center' }}>
               <span>Есть аккаунт?</span>
 
-              <Link to='/login' className={styles.link}>
+              <Link to="/login" className={styles.link}>
                 Войти
               </Link>
             </div>
@@ -68,10 +68,10 @@ export const Register = () => {
           <Button
             className={styles.button}
             onClick={handleSubmit(onSubmit)}
-            size='large'
-            type='primary'
-            variant='filled'
-            htmlType='submit'
+            size="large"
+            type="primary"
+            variant="filled"
+            htmlType="submit"
           >
             Зарегистрироваться
           </Button>

@@ -27,8 +27,8 @@ export const ProgramPage = () => {
           </div>
 
           <p className={styles.description}>
-            Контент из my-app - Copy встроен в слой pages/program: каталог программ теперь живёт рядом с конструктором и
-            общей навигацией текущего frontend.
+            Контент из my-app - Copy встроен в слой pages/program: каталог программ теперь живёт
+            рядом с конструктором и общей навигацией текущего frontend.
           </p>
 
           <div className={styles.actions}>
@@ -44,8 +44,8 @@ export const ProgramPage = () => {
         <div className={styles.toolbar}>
           <input
             className={styles.search}
-            placeholder='Поиск программы'
-            type='search'
+            placeholder="Поиск программы"
+            type="search"
             value={searchValue}
             onChange={(event) => setSearchValue(event.target.value)}
           />
@@ -53,7 +53,7 @@ export const ProgramPage = () => {
         </div>
 
         <ProgramsGrid
-          actionLabel='Открыть конструктор'
+          actionLabel="Открыть конструктор"
           className={styles.grid}
           onAction={() => navigate(ROUTES.ADD_PROGRAM)}
           programs={filteredPrograms}
