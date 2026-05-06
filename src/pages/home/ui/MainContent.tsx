@@ -13,7 +13,7 @@ export const MainContent = () => {
   const navigate = useNavigate()
   const { user } = useUserStore(useShallow(useUserState))
   const { setUser } = useUserStore(useShallow(useUserActions))
-  const [view, setView] = useState<MainContentView>('programs')
+  const [view, setView] = useState<MainContentView>('welcome')
   const isProgramsView = view === 'programs' && user?.role === Roles.STUDENT
 
   const setUserRole = useCallback(

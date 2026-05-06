@@ -1,0 +1,29 @@
+:root {
+  --color-text: #2d2d2d; /* Основной текст */
+  --color-text-half-shade: #969696; /* Второстепенный текст */
+  --color-text-light: #c4c4c4; /* Светлый текст (плейсхолдеры) */
+  --color-white: #ffffff; /* Белый */
+
+  --color-bg-page: #f8f8f8; /* Фон страницы */
+  --color-bg-container: #ffffff; /* Фон карточек/модалок */
+
+  --color-purple: #7188d4; /* Основной фиолетовый */
+  --color-purple-hover: #8da2e8; /* При наведении */
+  --color-purple-active: #5a6fb8; /* При клике */
+  --color-purple-light: #e8edff; /* Светлый фон для фиолетового */
+
+  --color-success: #52c41a; /* Зеленый - успех */
+  --color-success-bg: #f6ffed; /* Фон успеха */
+
+  --color-error: #ff4d4f; /* Красный - ошибка */
+  --color-error-bg: #fff2f0; /* Фон ошибки */
+
+  --color-warning: #faad14; /* Оранжевый - предупреждение */
+  --color-warning-bg: #fffbe6; /* Фон предупреждения */
+
+  --color-border: #e8e8e8; /* Основной цвет границ */
+  --color-border-dark: #d9d9d9; /* Темные границы */
+
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+}

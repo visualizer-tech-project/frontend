@@ -3,9 +3,9 @@ import { Select } from 'antd'
 import Search from 'antd/es/input/Search'
 import type { DefaultOptionType } from 'antd/es/select'
 import clsx from 'clsx'
-import { FC } from 'react'
+import type { FC } from 'react'
 import { useShallow } from 'zustand/shallow'
-import { AdmissionYearFilter, StudyModeFilter } from '../../model/types'
+import type { AdmissionYearFilter, StudyModeFilter } from '../../model/types'
 import {
   useProgramsActions,
   useProgramsState,

@@ -1,6 +1,6 @@
 import { ProgramCard, type Program } from '@/entities/program'
 import clsx from 'clsx'
-import { FC } from 'react'
+import type { FC } from 'react'
 import styles from './ProgramsList.module.css'
 
 interface IProgramsList {

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import { AdmissionYearFilter, StudyModeFilter } from './types'
+import type { AdmissionYearFilter, StudyModeFilter } from './types'
 
 export interface IProgramsState {
   searchValue: string
