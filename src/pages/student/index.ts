@@ -1,1 +1,0 @@
-export { StudentPage } from './ui/StudentPage'

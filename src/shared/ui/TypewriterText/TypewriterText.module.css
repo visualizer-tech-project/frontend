@@ -1,8 +1,28 @@
 .text {
-  overflow-x: auto;
-
+  display: inline-flex;
+  align-items: baseline;
   font-size: inherit;
   line-height: inherit;
-  word-break: keep-all;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.cursor {
+  display: inline-block;
+  flex: 0 0 auto;
+
+  width: 0.08em;
+  height: 0.86em;
+  margin-left: 0.1em;
+  border-radius: 999px;
+
+  background: currentColor;
+
+  animation: blink 0.9s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }

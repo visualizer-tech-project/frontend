@@ -1,0 +1,118 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button:not(:disabled):hover {
+  opacity: 1;
+  transform: scale(1.005);
+}
+
+.button[size='small'] {
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.button[size='large'] {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.button:global(.ant-btn-color-default.ant-btn-variant-text) {
+  justify-content: center;
+
+  height: auto;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(247 251 255 / 78%);
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: none;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.button:global(.ant-btn-color-default.ant-btn-variant-text):hover,
+.button:global(.ant-btn-color-default.ant-btn-variant-text):focus-visible {
+  color: #fff !important;
+  background: rgb(255 255 255 / 8%) !important;
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.button:global(.ant-btn-color-default.ant-btn-variant-text)[aria-current='page'] {
+  background: rgb(255 255 255 / 8%) !important;
+}
+
+.button:global(.ant-btn-color-default.ant-btn-variant-solid) {
+  height: auto;
+  padding: 10px 16px;
+  border: 1px solid rgb(13 18 22 / 10%);
+  border-radius: 14px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0d1216;
+  white-space: nowrap;
+
+  background: #f4f8fb !important;
+  box-shadow: 0 1px 2px rgb(13 18 22 / 8%);
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.button:global(.ant-btn-color-default.ant-btn-variant-solid):hover,
+.button:global(.ant-btn-color-default.ant-btn-variant-solid):focus-visible,
+.button:global(.ant-btn-color-default.ant-btn-variant-solid)[aria-current='page'] {
+  border-color: rgb(13 18 22 / 16%);
+  color: #0d1216 !important;
+  background: #fff !important;
+  transform: translateY(-2px);
+  opacity: 1;
+  box-shadow: 0 10px 24px rgb(13 18 22 / 14%);
+}
+
+.button:global(.ant-btn-color-default.ant-btn-variant-solid):active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgb(13 18 22 / 12%);
+}
+
+.button:global(.ant-btn-color-default.ant-btn-variant-solid):disabled {
+  transform: none;
+  opacity: 0.56;
+  box-shadow: none;
+}

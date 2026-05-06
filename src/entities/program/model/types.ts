@@ -1,7 +1,1 @@
-export interface Program {
-  id: number
-  title: string
-  description: string
-  duration: string
-  level: string
-}
+export type { Program, ProgramStudyMode } from '@/shared/api/generated'

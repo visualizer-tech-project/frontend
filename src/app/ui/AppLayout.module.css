@@ -1,8 +1,16 @@
 .layout {
   min-height: 100vh;
   background: var(--color-bg-page);
+  display: flex;
+  flex-direction: column;
 }
 
 .main {
-  min-height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 80px;
+  background:
+    radial-gradient(circle at top, rgb(74 163 255 / 22%), transparent 40%),
+    linear-gradient(180deg, #0d1216 0%, #171b22 100%);
 }

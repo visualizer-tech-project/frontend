@@ -1,12 +1,11 @@
 import { Roles } from '@/entities/user'
 import { LoginPage, RegisterPage } from '@/pages/auth'
-import { Forbidden, PageNotFound } from '@/pages/error'
+import { Forbidden, NotFound } from '@/pages/error'
 import { HomePage } from '@/pages/home'
-import { MainPage } from '@/pages/main'
 import { ProfilePage } from '@/pages/profile'
-import { AddProgramPage, ProgramPage } from '@/pages/program'
-import { StudentPage } from '@/pages/student'
+import { AddProgramPage, ProgramDetailsPage, ProgramsPage } from '@/pages/programs'
 import { ROUTES } from '@/shared/config'
+import { Navigate } from 'react-router-dom'
 import { RequireRole } from '../providers/router/RequireRole'
 import { AppLayout } from '../ui/AppLayout'
 
@@ -28,15 +27,11 @@ export const routes = [
       },
       {
         path: ROUTES.PROGRAMS,
-        element: <ProgramPage />,
+        element: <ProgramsPage />,
       },
       {
-        path: ROUTES.MAIN,
-        element: <MainPage />,
-      },
-      {
-        path: ROUTES.STUDENT,
-        element: <StudentPage />,
+        path: `${ROUTES.PROGRAMS}/:programId`,
+        element: <ProgramDetailsPage />,
       },
       {
         path: ROUTES.ADD_PROGRAM,
@@ -51,9 +46,13 @@ export const routes = [
         element: <Forbidden />,
       },
       {
+        path: ROUTES.NOT_FOUND,
+        element: <NotFound />,
+      },
+      {
         path: ROUTES.PROFILE,
         element: (
-          <RequireRole roles={[Roles.USER, Roles.ADMIN, Roles.TEACHER]}>
+          <RequireRole roles={[Roles.STUDENT, Roles.ADMIN, Roles.TEACHER]}>
             <ProfilePage />
           </RequireRole>
         ),
@@ -68,7 +67,7 @@ export const routes = [
       },
       {
         path: '*',
-        element: <PageNotFound />,
+        element: <Navigate to={ROUTES.NOT_FOUND} replace />,
       },
     ],
   },

@@ -1,4 +1,4 @@
 import { Forbidden } from './Forbidden'
-import { PageNotFound } from './PageNotFound'
+import { NotFound } from './NotFound'
 
-export { Forbidden, PageNotFound }
+export { Forbidden, NotFound }

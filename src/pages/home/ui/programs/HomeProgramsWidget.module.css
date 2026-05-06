@@ -1,0 +1,16 @@
+.root {
+  width: 100%;
+  animation: programsEnter 0.28s ease-out both;
+}
+
+@keyframes programsEnter {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

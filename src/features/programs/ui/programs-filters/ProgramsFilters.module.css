@@ -1,0 +1,217 @@
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 170px 150px auto;
+  gap: 14px;
+  align-items: center;
+
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 22px;
+
+  background: rgb(15 19 24 / 62%);
+  backdrop-filter: blur(12px);
+}
+
+.toolbarWithBack {
+  grid-template-columns: auto minmax(240px, 1fr) 170px 150px auto;
+}
+
+.toolbarTransparent {
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.backAction {
+  padding-inline: 20px;
+  border-color: rgb(255 255 255 / 10%) !important;
+  border-radius: 16px;
+  background: rgb(17 22 28 / 84%) !important;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 18%);
+  transform: initial !important;
+}
+
+.backAction:hover {
+  transform: initial !important;
+}
+
+.search {
+  align-self: stretch;
+  min-width: 0;
+}
+
+.search :global(.ant-input-group) {
+  display: flex;
+}
+
+.search :global(.ant-input-affix-wrapper) {
+  border-color: rgb(255 255 255 / 10%);
+  border-radius: 14px 0 0 14px;
+  color: #fff;
+  background: rgb(17 22 28 / 84%);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 18%);
+}
+
+.search :global(.ant-input-affix-wrapper:hover),
+.search :global(.ant-input-affix-wrapper-focused) {
+  border-color: rgb(255 255 255 / 24%);
+  box-shadow:
+    0 10px 30px rgb(0 0 0 / 18%),
+    0 0 0 3px rgb(255 255 255 / 6%);
+}
+
+.search :global(.ant-input) {
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: transparent;
+}
+
+.search :global(.ant-input::placeholder) {
+  color: rgb(245 247 251 / 48%);
+}
+
+.search :global(.ant-input-clear-icon) {
+  color: rgb(245 247 251 / 52%);
+}
+
+.search :global(.ant-input-clear-icon:hover) {
+  color: #fff;
+}
+
+.search :global(.ant-input-group-addon) {
+  background: transparent;
+}
+
+.search :global(.ant-input-search-btn),
+.search :global(.ant-input-search-button) {
+  height: 100%;
+  padding: 8px 18px;
+  border-color: rgb(13 18 22 / 10%);
+  border-radius: 0 14px 14px 0 !important;
+
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0d1216;
+
+  background: #f4f8fb;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 14%);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.search :global(.ant-input-search-btn:hover),
+.search :global(.ant-input-search-btn:focus-visible),
+.search :global(.ant-input-search-button:hover),
+.search :global(.ant-input-search-button:focus-visible) {
+  border-color: rgb(13 18 22 / 16%);
+  color: #0d1216 !important;
+  background: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 34px rgb(0 0 0 / 18%);
+  transform: initial !important;
+}
+
+.filterSelect {
+  align-self: stretch;
+  width: 100%;
+  border-color: rgb(71 85 105 / 45%);
+  border-radius: 14px;
+  color: #f8fafc;
+  background: rgb(17 22 28 / 84%);
+
+  box-shadow: 0 10px 30px rgb(0 0 0 / 24%);
+}
+
+.filterSelect :global(.ant-select-selector) {
+  height: auto !important;
+  padding: 7px 14px !important;
+  border-color: rgb(71 85 105 / 45%) !important;
+  border-radius: 14px !important;
+
+  font-family: Montserrat, sans-serif;
+
+  background: rgb(15 23 42 / 92%) !important;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 24%) !important;
+}
+
+.filterSelect:hover :global(.ant-select-selector),
+.filterSelect:global(.ant-select-focused) :global(.ant-select-selector) {
+  border-color: rgb(148 163 184 / 55%) !important;
+  color: #fff !important;
+  box-shadow:
+    0 10px 30px rgb(0 0 0 / 24%),
+    0 0 0 3px rgb(148 163 184 / 14%) !important;
+}
+
+.filterSelect :global(.ant-select-selection-item) {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.filterSelect :global(.ant-select-content) {
+  color: #f8fafc !important;
+}
+
+.filterSelect :global(.ant-select-suffix) {
+  color: #f8fafc;
+}
+
+.filterDropdown {
+  padding: 6px;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 14px;
+  background: rgb(17 22 28 / 98%);
+  box-shadow: 0 18px 42px rgb(0 0 0 / 34%);
+}
+
+.filterDropdown :global(.ant-select-item) {
+  font-family: Montserrat, sans-serif;
+  color: rgb(245 247 251 / 76%);
+}
+
+.filterDropdown :global(.ant-select-item-option-active:not(.ant-select-item-option-disabled)),
+.filterDropdown :global(.ant-select-item-option-selected:not(.ant-select-item-option-disabled)) {
+  color: #fff;
+  background: rgb(255 255 255 / 9%);
+}
+
+.counter {
+  justify-self: end;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(245 247 251 / 65%);
+  white-space: nowrap;
+}
+
+@media (width <= 720px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .backAction,
+  .search,
+  .filterSelect,
+  .counter {
+    width: 100%;
+  }
+
+  .search :global(.ant-input-group) {
+    width: 100%;
+  }
+
+  .search :global(.ant-input-search-btn),
+  .search :global(.ant-input-search-button) {
+    min-width: 72px;
+  }
+}

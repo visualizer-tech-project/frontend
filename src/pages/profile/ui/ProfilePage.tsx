@@ -1,16 +1,24 @@
+import { useUserState, useUserStore } from '@/entities/user'
 import { ROUTES } from '@/shared/config'
 import { Link } from 'react-router-dom'
+import { useShallow } from 'zustand/shallow'
 import styles from './ProfilePage.module.css'
 
+const roleLabels = {
+  admin: 'Администратор',
+  student: 'Студент',
+  teacher: 'Преподаватель',
+} as const
+
 export const ProfilePage = () => {
-  const selectedRole = window.localStorage.getItem('selectedRole')
-  const roleLabel = selectedRole === 'student' ? 'Студент' : 'Преподаватель'
+  const { user } = useUserStore(useShallow(useUserState))
+  const roleLabel = user ? roleLabels[user.role] : 'Гость'
 
   return (
     <section className={styles.page}>
       <div className={styles.card}>
         <p className={styles.eyebrow}>Профиль</p>
-        <h1 className={styles.title}>Страница студента</h1>
+        <h1 className={styles.title}>Профиль пользователя</h1>
         <p className={styles.description}>
           Экран из my-app - Copy встроен в текущий frontend и теперь работает внутри общего
           роутинга. Активная роль: <span className={styles.role}>{roleLabel}</span>.

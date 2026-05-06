@@ -1,0 +1,174 @@
+.root {
+  position: relative;
+  isolation: isolate;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  overflow: hidden;
+
+  padding: clamp(64px, 12vh, 130px) clamp(28px, 5vw, 60px);
+  border-radius: 30px;
+}
+
+.background {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+
+  border-radius: inherit;
+
+  background-color: rgb(236 243 245 / 98%);
+  box-shadow: 0 0 20px 8px #354e61;
+
+  transition:
+    background-color 1.1s ease,
+    box-shadow 1.1s ease;
+}
+
+.blackLayer {
+  pointer-events: none;
+
+  position: absolute;
+  z-index: 1;
+  inset: -8px;
+  transform: scale(1);
+
+  border-radius: 38px;
+
+  opacity: 0;
+  background: rgb(27 27 27);
+  clip-path: circle(0% at 50% 30%);
+
+  transition:
+    clip-path 1.15s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0s linear 0.08s,
+    transform 1.15s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.rootLeaving .background {
+  background-color: transparent;
+  box-shadow: 0 0 20px 8px #181e23;
+}
+
+.rootLeaving .blackLayer {
+  transform: scale(1.04);
+  opacity: 1;
+  clip-path: circle(170% at 50% 30%);
+
+  transition:
+    clip-path 1.15s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0s,
+    transform 1.15s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.rootLeaving .content {
+  pointer-events: none;
+  transform: scale(0.86);
+  opacity: 0;
+}
+
+.buttonsBlock {
+  width: min(100%, 440px);
+  margin: 0 auto;
+  opacity: 1;
+
+  transition:
+    opacity 0.28s ease,
+    scale 0.28s ease;
+}
+
+.buttonsBlockHidden {
+  pointer-events: none;
+  user-select: none;
+
+  scale: 0.96;
+  opacity: 0;
+}
+
+.modalGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.animatedText {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+  width: min(100%, 820px);
+  margin-bottom: 24px;
+  padding: 0 clamp(16px, 4vw, 40px);
+  color: #0d1216;
+}
+
+.title {
+  max-width: 100%;
+  margin: 0;
+
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.12;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.roleTitle {
+  margin: 0 0 10px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.roleActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.modalGroup .roleButton {
+  width: 100%;
+}
+
+@media (width <= 760px) {
+  .root {
+    padding: 72px 24px;
+    border-radius: 24px;
+  }
+
+  .roleTitle {
+    font-size: 18px;
+  }
+
+  .roleActions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .animatedText {
+    padding: 0;
+  }
+
+  .title {
+    font-size: clamp(30px, 10vw, 44px);
+  }
+}

@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui/Button'
+import { Button } from '@/shared/ui/Button/Button'
 import { InputField } from '@/shared/ui/InputField'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'

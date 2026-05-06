@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react'
 import { ActiveLinkFactory } from './ActiveLinkFactory'
 import { CustomNodeFactory } from './CustomNodeFactory'
 import { CustomNodeModel } from './CustomNodeModel'
-import './Graph.css'
+import styles from './Graph.module.css'
 
 export const Graph = () => {
   const { engine, courseNode, lessonNode } = useMemo(() => {
@@ -86,8 +86,8 @@ export const Graph = () => {
   }, [courseNode, engine, lessonNode])
 
   return (
-    <div className="graph-shell">
-      <CanvasWidget className="graph-canvas" engine={engine} />
+    <div className={styles.shell}>
+      <CanvasWidget className={styles.canvas} engine={engine} />
     </div>
   )
 }

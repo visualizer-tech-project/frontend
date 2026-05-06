@@ -1,7 +1,7 @@
 import type { DiagramEngine } from '@projectstorm/react-diagrams'
 import { PortWidget } from '@projectstorm/react-diagrams'
 import { CustomNodeModel } from './CustomNodeModel'
-import './CustomNodeWidget.css'
+import styles from './CustomNodeWidget.module.css'
 
 interface Props {
   node: CustomNodeModel
@@ -11,32 +11,32 @@ interface Props {
 export const CustomNodeWidget = ({ node, engine }: Props) => {
   return (
     <div
-      className="custom-node"
+      className={styles.node}
       style={{
         borderColor: node.color,
       }}
     >
-      <div className="port left">
+      <div className={`${styles.port} ${styles.portLeft}`}>
         <PortWidget engine={engine} port={node.getPort('left')!} />
       </div>
 
-      <div className="port right">
+      <div className={`${styles.port} ${styles.portRight}`}>
         <PortWidget engine={engine} port={node.getPort('right')!} />
       </div>
 
-      <div className="port top">
+      <div className={`${styles.port} ${styles.portTop}`}>
         <PortWidget engine={engine} port={node.getPort('top')!} />
       </div>
 
-      <div className="port bottom">
+      <div className={`${styles.port} ${styles.portBottom}`}>
         <PortWidget engine={engine} port={node.getPort('bottom')!} />
       </div>
 
-      <div className="node-header">{node.name}</div>
+      <div className={styles.nodeHeader}>{node.name}</div>
 
-      <div className="node-body">
-        <div className="node-item">Название курса</div>
-        <div className="node-item">Описание</div>
+      <div className={styles.nodeBody}>
+        <div className={styles.nodeItem}>Название курса</div>
+        <div className={styles.nodeItem}>Описание</div>
       </div>
     </div>
   )
