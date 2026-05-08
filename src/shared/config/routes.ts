@@ -8,5 +8,6 @@ export const ROUTES = {
   PROFILE: '/profile',
   SETTINGS: '/settings',
   PROGRAMS: '/programs',
+  TRACKS: '/tracks',
   ADD_PROGRAM: '/add-program',
 } as const

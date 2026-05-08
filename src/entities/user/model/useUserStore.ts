@@ -1,39 +1,46 @@
-import type { Token, User } from '@/shared/api/generated'
+import type { TokenResponse, UserPublic } from '@/shared/api/generated'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
 export interface IUserState {
-  user: User | null
-  accessToken: Token['access_token'] | null
-  tokenType: Token['token_type'] | null
+  user: UserPublic | null
+  accessToken: TokenResponse['access_token'] | null
+  tokenType: TokenResponse['token_type'] | null
 }
 
 export interface IUserActions {
   setAuth: (payload: {
-    user: User
-    accessToken: Token['access_token']
-    tokenType: Token['token_type']
+    user: UserPublic
+    accessToken: TokenResponse['access_token']
+    tokenType: TokenResponse['token_type']
   }) => void
-  setUser: (user: User | null) => void
-  setAccessToken: (accessToken: Token['access_token'] | null) => void
-  setTokenType: (tokenType: Token['token_type'] | null) => void
+  setUser: (user: UserPublic | null) => void
+  setAccessToken: (accessToken: TokenResponse['access_token'] | null) => void
+  setTokenType: (tokenType: TokenResponse['token_type'] | null) => void
   logout: () => void
 }
 
 type UserStore = IUserState & IUserActions
 
 const initialState: IUserState = {
-  user: {
-    id: 1,
-    email: 'student@example.com',
-    first_name: 'Иван',
-    last_name: 'Петров',
-    role: 'student',
-    created_at: '2026-01-01T00:00:00.000Z',
-  },
-  accessToken: 'mock-access-token',
-  tokenType: 'bearer',
+  user: null,
+  accessToken: null,
+  tokenType: null,
 }
+// const initialState: IUserState = {
+//   user: {
+//     id: 1,
+//     email: 'student@example.com',
+//     first_name: 'Иван',
+//     last_name: 'Петров',
+//     role: 'admin',
+//     status: 'confirmed',
+//     created_at: '2026-01-01T00:00:00.000Z',
+//     updated_at: '2026-01-01T00:00:00.000Z',
+//   },
+//   accessToken: 'mock-access-token',
+//   tokenType: 'bearer',
+// }
 
 export const useUserStore = create<UserStore>()(
   devtools(

@@ -1,27 +1,27 @@
 import { ROUTES } from '@/shared/config'
 import { Link } from 'react-router-dom'
-import { studyModeLabels } from '../model/constants'
-import { mockPrograms } from '../model/mockPrograms'
+import { programLabel } from '../model/constants'
 import type { Program } from '../model/types'
 import styles from './ProgramCard.module.css'
 
 interface ProgramCardProps {
-  programId: Program['id']
+  program: Program
   actionLabel?: string
+  to?: string
 }
 
-export const ProgramCard = ({ actionLabel = 'Открыть программу', programId }: ProgramCardProps) => {
-  const program = mockPrograms.find(({ id }) => id === programId)
-
-  if (!program) {
-    return null
-  }
-
+export const ProgramCard = ({
+  program,
+  actionLabel = 'Открыть программу',
+  to = `${ROUTES.PROGRAMS}/${program.id}`,
+}: ProgramCardProps) => {
   return (
-    <Link className={styles.card} to={`${ROUTES.PROGRAMS}/${programId}`}>
+    <Link className={styles.card} to={to}>
       <div className={styles.metaRow}>
-        <span className={styles.chip}>{studyModeLabels[program.study_mode]}</span>
-        <span className={styles.chip}>{program.admission_year} год набора</span>
+        <span className={styles.chip}>{programLabel}</span>
+        <span className={styles.chip}>
+          {program.user.first_name} {program.user.last_name}
+        </span>
       </div>
 
       <h3 className={styles.title}>{program.title}</h3>

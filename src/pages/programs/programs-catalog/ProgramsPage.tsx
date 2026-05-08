@@ -12,18 +12,19 @@ export const ProgramsPage = () => {
   const navigate = useNavigate()
   const { user } = useUserStore(useShallow(useUserState))
   const canAddProgram = user?.role === Roles.TEACHER || user?.role === Roles.ADMIN
-  const admissionYears = useMemo(
-    () =>
-      [...new Set(mockPrograms.map((program) => program.admission_year))].sort(
-        (currentYear, nextYear) => currentYear - nextYear,
-      ),
+  const authorsCount = useMemo(
+    () => new Set(mockPrograms.map((program) => program.user_id)).size,
     [],
   )
-  const yearsLabel =
-    admissionYears.length > 1
-      ? `${admissionYears.at(0)}-${admissionYears.at(-1)}`
-      : `${admissionYears.at(0) ?? '—'}`
-  const studyModesCount = new Set(mockPrograms.map((program) => program.study_mode)).size
+  const latestUpdate = useMemo(
+    () =>
+      mockPrograms
+        .map((program) => program.updated_at)
+        .sort()
+        .at(-1)
+        ?.slice(0, 10) ?? '—',
+    [],
+  )
 
   return (
     <section className={styles.page}>
@@ -33,8 +34,8 @@ export const ProgramsPage = () => {
             <p className={styles.eyebrow}>Каталог программ</p>
             <h1 className={styles.title}>Образовательные программы</h1>
             <p className={styles.description}>
-              Выбирайте направление, сравнивайте формат обучения и открывайте граф программы, чтобы
-              увидеть структуру дисциплин и связи между ними.
+              Выбирайте направление и открывайте граф программы, чтобы посмотреть структуру
+              дисциплин, связи между курсами и автора программы.
             </p>
           </div>
 
@@ -45,12 +46,12 @@ export const ProgramsPage = () => {
                 <dd>{mockPrograms.length}</dd>
               </div>
               <div className={styles.statItem}>
-                <dt>Годы набора</dt>
-                <dd>{yearsLabel}</dd>
+                <dt>Авторов</dt>
+                <dd>{authorsCount}</dd>
               </div>
               <div className={styles.statItem}>
-                <dt>Форматы</dt>
-                <dd>{studyModesCount}</dd>
+                <dt>Обновлено</dt>
+                <dd>{latestUpdate}</dd>
               </div>
             </dl>
 
@@ -77,10 +78,7 @@ export const ProgramsPage = () => {
                 Все программы
               </h2>
             </div>
-            <p>
-              Фильтры построены по полям спецификации программы: формат обучения и год набора. Поиск
-              также учитывает название, описание и метки карточек.
-            </p>
+            <p>Поиск учитывает название программы, описание и имя автора.</p>
           </div>
 
           <ProgramsGrid actionLabel="Открыть граф" programs={mockPrograms} />

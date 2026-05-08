@@ -152,7 +152,7 @@
   color: rgb(245 247 251 / 68%);
 }
 
-@media (width <= 720px) {
+@media (width <=720px) {
   .page {
     padding: 16px;
   }

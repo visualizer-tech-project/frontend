@@ -12,7 +12,7 @@ const roleLabels = {
 
 export const ProfilePage = () => {
   const { user } = useUserStore(useShallow(useUserState))
-  const roleLabel = user ? roleLabels[user.role] : 'Гость'
+  const roleLabel = user ? roleLabels[user.role as keyof typeof roleLabels] : 'Гость'
 
   return (
     <section className={styles.page}>
@@ -20,8 +20,8 @@ export const ProfilePage = () => {
         <p className={styles.eyebrow}>Профиль</p>
         <h1 className={styles.title}>Профиль пользователя</h1>
         <p className={styles.description}>
-          Экран из my-app - Copy встроен в текущий frontend и теперь работает внутри общего
-          роутинга. Активная роль: <span className={styles.role}>{roleLabel}</span>.
+          Экран профиля встроен в текущий frontend и работает внутри общего роутинга. Активная роль:{' '}
+          <span className={styles.role}>{roleLabel}</span>.
         </p>
 
         <div className={styles.actions}>

@@ -1,1 +1,1 @@
-export type { Program, ProgramStudyMode } from '@/shared/api/generated'
+export type { Program } from '@/shared/api/generated'

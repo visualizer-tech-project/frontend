@@ -1,4 +1,4 @@
 export { mockPrograms } from './model/mockPrograms'
-export { studyModeLabels } from './model/constants'
-export type { Program, ProgramStudyMode } from './model/types'
+export { programLabel } from './model/constants'
 export { ProgramCard } from './ui/ProgramCard'
+export type { Program } from './model/types'

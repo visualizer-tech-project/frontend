@@ -14,7 +14,7 @@ export const ProgramDetailsPage = () => {
     <ProgramWorkspace
       heading={program.title}
       program={program}
-      subtitle={`${program.description ?? 'Описание пока не добавлено.'} Год набора: ${program.admission_year}.`}
+      subtitle={`${program.description ?? 'Описание пока не добавлено.'} Автор: ${program.user.first_name} ${program.user.last_name}.`}
     />
   )
 }

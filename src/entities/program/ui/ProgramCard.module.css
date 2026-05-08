@@ -1,22 +1,17 @@
 .card {
   cursor: pointer;
-
   display: flex;
   flex-direction: column;
   gap: 14px;
-
-  min-height: 240px;
+  min-height: 320px;
   padding: 22px;
   border: 1px solid rgb(255 255 255 / 10%);
   border-radius: 26px;
-
   color: #f5f7fb;
   text-decoration: none;
-
   background: rgb(25 30 36 / 74%);
   backdrop-filter: blur(10px);
   box-shadow: 0 14px 40px rgb(0 0 0 / 22%);
-
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
@@ -47,15 +42,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   min-height: 28px;
   padding: 0 12px;
   border-radius: 999px;
-
   font-size: 13px;
   font-weight: 600;
   color: rgb(245 247 251 / 80%);
-
   background: rgb(255 255 255 / 8%);
 }
 
@@ -79,12 +71,9 @@
   min-height: 46px;
   margin-top: auto;
   border-radius: 999px;
-
   font-weight: 700;
   color: #07111c;
-
   background: #4aa3ff;
-
   transition:
     transform 0.2s ease,
     background-color 0.2s ease;
