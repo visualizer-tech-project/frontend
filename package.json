@@ -30,6 +30,7 @@
     "@xyflow/react": "^12.10.2",
     "antd": "^6.3.2",
     "clsx": "^2.1.1",
+    "dagre": "^0.8.5",
     "gsap": "^3.15.0",
     "lodash": "^4.18.1",
     "normalize.css": "^8.0.1",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.3",
     "@hey-api/openapi-ts": "^0.94.5",
+    "@types/dagre": "^0.7.54",
     "@types/node": "^24.12.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

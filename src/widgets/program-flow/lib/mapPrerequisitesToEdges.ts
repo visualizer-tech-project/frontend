@@ -5,7 +5,7 @@ import { COURSE_NODE_PREFIX } from '../model/types'
 
 export const mapPrerequisitesToEdges = (prerequisites: Prerequisite[]): Edge[] =>
   prerequisites.map((prerequisite) => ({
-    id: `${prerequisite}-${prerequisite.id}`,
+    id: `${COURSE_NODE_PREFIX}-${prerequisite.prerequisite_course_id}-${prerequisite.course_id}`,
     source: `${COURSE_NODE_PREFIX}-${prerequisite.prerequisite_course_id}`,
     target: `${COURSE_NODE_PREFIX}-${prerequisite.course_id}`,
     ...defaultEdgeOptions,

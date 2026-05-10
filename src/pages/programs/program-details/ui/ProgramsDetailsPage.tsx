@@ -11,7 +11,7 @@ import { useUserState, useUserStore } from '@/entities/user'
 import { CoursePicker } from '@/features/course-picker'
 import { ROUTES } from '@/shared/config'
 import { ProgramFlowCanvas } from '@/widgets/program-flow'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
 import { ProgramWorkspace } from './ProgramWorkspace/ProgramWorkspace'
@@ -37,7 +37,15 @@ export const ProgramDetailsPage = () => {
     )
   })
 
-  const [progress, setProgress] = useState<UserProgress[]>([])
+  const [progress, setProgress] = useState<UserProgress[]>(() => {
+    const courseIds = mockCourses
+      .filter((course) => course.program_id === Number(programId))
+      .map((course) => course.id)
+
+    return mockProgress.filter(
+      (item) => item.user_id === user?.id && courseIds.includes(item.course_id),
+    )
+  })
 
   const handleCourseRemove = useCallback((courseId: number) => {
     setCourses((currentCourses) => currentCourses.filter((course) => course.id !== courseId))
@@ -161,18 +169,6 @@ export const ProgramDetailsPage = () => {
         : [...current, payload.newProgress]
     })
   }, [])
-
-  useEffect(() => {
-    const courseIds = mockCourses
-      .filter((course) => course.program_id === Number(programId))
-      .map((course) => course.id)
-
-    setProgress(
-      mockProgress.filter(
-        (item) => item.user_id === user?.id && courseIds.includes(item.course_id),
-      ),
-    )
-  }, [programId, user])
 
   const numericProgramId = Number(programId)
   const program = mockPrograms.find(({ id }) => id === numericProgramId)

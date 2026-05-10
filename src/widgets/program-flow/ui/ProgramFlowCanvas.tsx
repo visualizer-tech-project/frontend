@@ -3,6 +3,7 @@ import type { Prerequisite, PrerequisiteCreate } from '@/entities/prerequisite'
 import type { UserProgress } from '@/entities/progress'
 import type { ProgressSelectChangePayload } from '@/entities/progress/model/types'
 import { useUserState, useUserStore } from '@/entities/user'
+import { getDagreLayoutedNodes } from '@/shared/lib/getDagreLayoutedNodes'
 import {
   Background,
   BackgroundVariant,
@@ -18,14 +19,13 @@ import {
   type NodeTypes,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useShallow } from 'zustand/shallow'
 import { canEditCourse } from '../lib/canEditCourse'
 import { createCourseNode, type ICourseFlowNodeData } from '../lib/createCourseNode'
 import { mapConnectionToPrerequisiteCreate } from '../lib/mapConnectionToPrerequisiteCreate'
 import { mapDeletedEdgesToPrerequisites } from '../lib/mapDeletedEdgesToPrerequisites'
 import { mapPrerequisitesToEdges } from '../lib/mapPrerequisitesToEdges'
-import { defaultEdgeOptions } from '../model/customFlowStyles'
 import { CourseFlowNode } from './CourseFlowNode'
 import styles from './ProgramFlowCanvas.module.css'
 
@@ -58,6 +58,8 @@ export const ProgramFlowCanvas = ({
 }: ProgramFlowCanvasProps) => {
   const { user } = useUserStore(useShallow(useUserState))
 
+  const isLayoutAppliedRef = useRef(false)
+
   const initialNodes = useMemo(
     () =>
       courses.map((course, index) =>
@@ -77,10 +79,29 @@ export const ProgramFlowCanvas = ({
     [courses, onCourseRemove, canEditFlow, onCourseUpdate, user, onProgressChange, progress],
   )
 
-  const initialEdges = useMemo(() => mapPrerequisitesToEdges(prerequisites), [prerequisites])
+  const initialEdges = useMemo(
+    () =>
+      mapPrerequisitesToEdges(prerequisites).map((edge) => ({
+        ...edge,
+        type: 'step',
+      })),
+    [prerequisites],
+  )
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<ICourseFlowNodeData>>(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
+
+  useEffect(() => {
+    if (isLayoutAppliedRef.current) return
+    if (!initialNodes.length) return
+
+    const layoutedNodes = getDagreLayoutedNodes(initialNodes, initialEdges, 'LR')
+
+    setNodes(layoutedNodes)
+    setEdges(initialEdges)
+
+    isLayoutAppliedRef.current = true
+  }, [initialNodes, initialEdges, setNodes, setEdges])
 
   useEffect(() => {
     setNodes((currentNodes) => {
@@ -99,6 +120,7 @@ export const ProgramFlowCanvas = ({
           canEditFlow: canEditFlow,
           canEditCourse: canEditCourse(user, course),
         })
+
         const currentNode = currentNodeById.get(nextNode.id)
 
         if (!currentNode) {
@@ -123,7 +145,12 @@ export const ProgramFlowCanvas = ({
   ])
 
   useEffect(() => {
-    setEdges(mapPrerequisitesToEdges(prerequisites))
+    setEdges(
+      mapPrerequisitesToEdges(prerequisites).map((edge) => ({
+        ...edge,
+        type: 'step',
+      })),
+    )
   }, [prerequisites, setEdges])
 
   const handleEdgesDelete = (deletedEdges: Edge[]) => {
@@ -148,8 +175,10 @@ export const ProgramFlowCanvas = ({
       <ReactFlowProvider>
         <ReactFlow
           fitView
+          zoomOnScroll={false}
+          panOnScroll
+          zoomOnPinch
           className={styles.flow}
-          defaultEdgeOptions={defaultEdgeOptions}
           edges={edges}
           nodes={nodes}
           nodeTypes={nodeTypes}
