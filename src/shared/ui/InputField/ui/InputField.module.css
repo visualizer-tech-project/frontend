@@ -1,24 +1,62 @@
 .input {
+  width: 100%;
+}
+
+.input:global(.ant-input) {
   padding: 8px 12px;
+
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 10px !important;
+
+  color: #f7fbff !important;
+  background: #262526 !important;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.input:global(.ant-input::placeholder) {
+  color: rgb(245 247 251 / 36%);
+}
+
+.input:global(.ant-input:hover) {
+  border-color: rgb(255 255 255 / 18%);
+}
+
+.input:global(.ant-input:focus),
+.input:global(.ant-input-focused) {
+  border-color: rgb(140 195 255 / 52%) !important;
+  box-shadow: 0 0 0 3px rgb(140 195 255 / 12%) !important;
 }
 
 .title {
-  color: var(--color-text);
+  display: block;
+  margin-bottom: 8px;
+
+  color: var(--color-text-light);
+
   font-size: 14px;
   font-weight: 500;
-  margin-bottom: 8px;
 }
 
 .error {
   display: block;
-  color: var(--color-error);
   margin-top: 5px;
+
+  color: var(--color-error);
+
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.inputError {
-  border-color: var(--color-error);
+.inputError:global(.ant-input) {
+  border-color: var(--color-error) !important;
+  box-shadow: 0 0 0 3px rgb(239 68 68 / 10%) !important;
 }
 
-.inputSuccess {
-  border-color: var(--color-success);
+.inputSuccess:global(.ant-input) {
+  border-color: var(--color-success) !important;
+  box-shadow: 0 0 0 3px rgb(16 185 129 / 10%) !important;
 }

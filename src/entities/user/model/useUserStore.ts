@@ -1,6 +1,6 @@
-import type { Token, User } from '@/shared/api/generated'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
+import type { TokenResponse as Token, UserPublic as User } from './types'
 
 export interface IUserState {
   user: User | null
@@ -25,11 +25,13 @@ type UserStore = IUserState & IUserActions
 const initialState: IUserState = {
   user: {
     id: 1,
-    email: 'student@example.com',
-    first_name: 'Иван',
-    last_name: 'Петров',
-    role: 'student',
-    created_at: '2026-01-01T00:00:00.000Z',
+    email: 'teacher@example.com',
+    first_name: 'Vlavla',
+    last_name: 'Kommers',
+    role: 'teacher',
+    status: 'confirmed',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
   accessToken: 'mock-access-token',
   tokenType: 'bearer',

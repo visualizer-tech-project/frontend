@@ -77,7 +77,6 @@
   align-items: center;
   justify-content: center;
   min-height: 46px;
-  margin-top: auto;
   border-radius: 999px;
 
   font-weight: 700;
@@ -93,4 +92,22 @@
 .action:hover {
   transform: translateY(-2px);
   background: #63b1ff;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.date {
+  margin: 0;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  white-space: nowrap;
 }

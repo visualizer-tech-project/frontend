@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/Button'
 import TypewriterText from '@/shared/ui/TypewriterText/TypewriterText'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './HomeWelcome.module.css'

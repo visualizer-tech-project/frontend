@@ -8,6 +8,6 @@ interface HomeProgramsWidgetProps {
 
 export const HomeProgramsWidget = ({ onBack }: HomeProgramsWidgetProps) => (
   <div className={styles.root}>
-    <ProgramsGrid backLabel="Назад" onBack={onBack} programs={mockPrograms} surface="transparent" />
+    <ProgramsGrid backLabel="Назад" onBack={onBack} programs={mockPrograms} />
   </div>
 )

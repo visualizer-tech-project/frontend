@@ -3,7 +3,7 @@ import { LoginPage, RegisterPage } from '@/pages/auth'
 import { Forbidden, NotFound } from '@/pages/error'
 import { HomePage } from '@/pages/home'
 import { ProfilePage } from '@/pages/profile'
-import { AddProgramPage, ProgramDetailsPage, ProgramsPage } from '@/pages/programs'
+import { ProgramDetailsPage, ProgramsPage } from '@/pages/programs'
 import { ROUTES } from '@/shared/config'
 import { Navigate } from 'react-router-dom'
 import { RequireRole } from '../providers/router/RequireRole'
@@ -32,14 +32,6 @@ export const routes = [
       {
         path: `${ROUTES.PROGRAMS}/:programId`,
         element: <ProgramDetailsPage />,
-      },
-      {
-        path: ROUTES.ADD_PROGRAM,
-        element: (
-          <RequireRole roles={[Roles.ADMIN, Roles.TEACHER]}>
-            <AddProgramPage />
-          </RequireRole>
-        ),
       },
       {
         path: ROUTES.FORBIDDEN,

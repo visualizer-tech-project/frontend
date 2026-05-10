@@ -60,6 +60,11 @@
   min-width: 0;
 }
 
+.auth {
+  color: #0d1216 !important;
+  background-color: #fff !important;
+}
+
 @media (width <= 680px) {
   .header {
     padding: 14px 16px;

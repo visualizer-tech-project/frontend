@@ -11,39 +11,32 @@ export type Error = {
     detail: string;
 };
 
-export type PageInfo = {
+export type PaginationInfo = {
+    page: number;
+    pages_num: number;
     total: number;
-    skip: number;
-    limit: number;
 };
 
 export type UserRole = 'student' | 'teacher' | 'admin';
 
-export type User = {
+export type AccountStatus = 'created' | 'confirmed' | 'blocked';
+
+export type UserPublic = {
     id: number;
     email: string;
     first_name: string;
     last_name: string;
     role: UserRole;
+    status: AccountStatus;
     created_at: string;
+    updated_at: string;
 };
 
-export type UserCreate = {
+export type RegisterRequest = {
     email: string;
     password: string;
     first_name: string;
     last_name: string;
-};
-
-export type UserUpdate = {
-    first_name?: string;
-    last_name?: string;
-};
-
-export type Token = {
-    access_token: string;
-    token_type: string;
-    scope?: string;
 };
 
 export type LoginRequest = {
@@ -51,38 +44,97 @@ export type LoginRequest = {
     password: string;
 };
 
-/**
- * full-time - очная, part-time - заочная
- */
-export type ProgramStudyMode = 'full-time' | 'part-time';
+export type TokenResponse = {
+    access_token: string;
+    refresh_token: string;
+    token_type: string;
+};
+
+export type RefreshResponse = {
+    access_token: string;
+    refresh_token: string;
+    token_type: string;
+};
+
+export type LogoutResponse = {
+    success: boolean;
+};
+
+export type MeResponse = {
+    id: number;
+    email: string;
+    first_name: string;
+    last_name: string;
+    role: UserRole;
+    status: AccountStatus;
+};
+
+export type VerifyAccountRequest = {
+    code: string;
+};
+
+export type ChangePasswordRequest = {
+    old_password?: string;
+    new_password: string;
+    confirm_password: string;
+};
+
+export type ForgotPasswordRequest = {
+    email: string;
+};
+
+export type ResetPasswordRequest = {
+    code: string;
+    new_password: string;
+    confirm_password: string;
+};
+
+export type MessageResponse = {
+    message: string;
+    success: boolean;
+};
+
+export type UserUpdate = {
+    first_name?: string;
+    last_name?: string;
+    role?: UserRole;
+    status?: AccountStatus;
+};
+
+export type EscalateRoleRequest = {
+    role_name: string;
+};
 
 export type Program = {
     id: number;
     title: string;
     description?: string;
-    study_mode: ProgramStudyMode;
-    admission_year: number;
-    created_by: number;
+    user_id: number;
     created_at: string;
+    updated_at: string;
+    user: UserPublic;
 };
 
 export type ProgramCreate = {
     title: string;
     description?: string;
-    study_mode: ProgramStudyMode;
-    admission_year: number;
 };
 
 export type ProgramUpdate = {
     title?: string;
     description?: string;
-    study_mode?: ProgramStudyMode;
-    admission_year?: number;
+    user_id?: number;
 };
 
-/**
- * required - обязательный, elective - элективный
- */
+export type ProgramCopyRequest = {
+    title: string;
+};
+
+export type PaginatedPrograms = {
+    items: Array<Program>;
+    info: PaginationInfo;
+};
+
 export type CourseType = 'required' | 'elective';
 
 export type Course = {
@@ -91,7 +143,9 @@ export type Course = {
     description?: string;
     type: CourseType;
     program_id: number;
+    user_id: number;
     created_at: string;
+    updated_at: string;
 };
 
 export type CourseCreate = {
@@ -105,44 +159,71 @@ export type CourseUpdate = {
     title?: string;
     description?: string;
     type?: CourseType;
+    program_id?: number;
+    user_id?: number;
+};
+
+export type PrerequisiteCreate = {
+    prerequisite_course_id: number;
 };
 
 export type Prerequisite = {
+    id: number;
     course_id: number;
-    prerequisite_id: number;
+    prerequisite_course_id: number;
     created_at: string;
+    updated_at: string;
+};
+
+export type PaginatedCourses = {
+    items: Array<Course>;
+    info: PaginationInfo;
 };
 
 export type CareerTrack = {
     id: number;
     title: string;
     description?: string;
-    program_id: number;
-    created_by: number;
+    user_id: number;
     created_at: string;
+    updated_at: string;
+    user: UserPublic;
+    courses_count: number;
 };
 
 export type CareerTrackCreate = {
     title: string;
     description?: string;
-    program_id: number;
 };
 
 export type CareerTrackUpdate = {
     title?: string;
     description?: string;
-};
-
-export type CareerTrackCourse = {
-    career_track_id: number;
-    course_id: number;
-    order_index: number;
-    created_at: string;
+    user_id?: number;
 };
 
 export type AddCourseToTrack = {
     course_id: number;
     order_index: number;
+};
+
+export type CareerTrackCourse = {
+    id: number;
+    career_track_id: number;
+    course_id: number;
+    order_index: number;
+    created_at: string;
+    updated_at: string;
+};
+
+export type TrackCourseItem = {
+    order_index: number;
+    course: Course;
+};
+
+export type PaginatedCareerTracks = {
+    items: Array<CareerTrack>;
+    info: PaginationInfo;
 };
 
 export type ProgressStatus = 'not_started' | 'in_progress' | 'completed';
@@ -155,7 +236,17 @@ export type UserProgress = {
     grade?: number | null;
     started_at?: string | null;
     completed_at?: string | null;
+    created_at: string;
     updated_at: string;
+};
+
+export type UserProgressWithDetails = {
+    progress: UserProgress;
+    course_title?: string | null;
+    course_type?: string | null;
+    program_id?: number | null;
+    user_name: string;
+    user_email: string;
 };
 
 export type ProgressCreate = {
@@ -172,28 +263,47 @@ export type ProgressUpdate = {
     completed_at?: string | null;
 };
 
-export type PaginatedPrograms = {
-    items?: Array<Program>;
-    page_info?: PageInfo;
-};
-
-export type PaginatedCourses = {
-    items?: Array<Course>;
-    page_info?: PageInfo;
-};
-
-export type PaginatedCareerTracks = {
-    items?: Array<CareerTrack>;
-    page_info?: PageInfo;
-};
-
 export type PaginatedProgress = {
-    items?: Array<UserProgress>;
-    page_info?: PageInfo;
+    items: Array<UserProgressWithDetails>;
+    info: PaginationInfo;
 };
+
+export type Role = {
+    id: number;
+    name: string;
+    description?: string | null;
+    created_at: string;
+    updated_at: string;
+    scopes: Array<string>;
+};
+
+export type RoleCreate = {
+    name: string;
+    description?: string;
+    scope_aliases?: Array<string>;
+};
+
+export type RoleUpdate = {
+    name?: string;
+    description?: string;
+    scope_aliases?: Array<string>;
+};
+
+export type Permission = {
+    id: number;
+    subject: string;
+    action: string;
+    created_at: string;
+    updated_at: string;
+    alias: string;
+};
+
+export type SkipParam = number;
+
+export type LimitParam = number;
 
 export type PostAuthRegisterData = {
-    body: UserCreate;
+    body: RegisterRequest;
     path?: never;
     query?: never;
     url: '/auth/register';
@@ -220,10 +330,43 @@ export type PostAuthRegisterResponses = {
     /**
      * Пользователь успешно зарегистрирован
      */
-    201: User;
+    201: MeResponse;
 };
 
 export type PostAuthRegisterResponse = PostAuthRegisterResponses[keyof PostAuthRegisterResponses];
+
+export type PostAuthVerifyData = {
+    body: VerifyAccountRequest;
+    path?: never;
+    query?: never;
+    url: '/auth/verify';
+};
+
+export type PostAuthVerifyErrors = {
+    /**
+     * Код недействителен
+     */
+    400: Error;
+    /**
+     * Код не найден
+     */
+    404: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type PostAuthVerifyError = PostAuthVerifyErrors[keyof PostAuthVerifyErrors];
+
+export type PostAuthVerifyResponses = {
+    /**
+     * Аккаунт подтвержден
+     */
+    200: MessageResponse;
+};
+
+export type PostAuthVerifyResponse = PostAuthVerifyResponses[keyof PostAuthVerifyResponses];
 
 export type PostAuthLoginData = {
     body: LoginRequest;
@@ -249,10 +392,262 @@ export type PostAuthLoginResponses = {
     /**
      * Успешный вход
      */
-    200: Token;
+    200: TokenResponse;
 };
 
 export type PostAuthLoginResponse = PostAuthLoginResponses[keyof PostAuthLoginResponses];
+
+export type PostAuthRefreshData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/refresh';
+};
+
+export type PostAuthRefreshErrors = {
+    /**
+     * Невалидный refresh token
+     */
+    401: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type PostAuthRefreshError = PostAuthRefreshErrors[keyof PostAuthRefreshErrors];
+
+export type PostAuthRefreshResponses = {
+    /**
+     * Токен обновлен
+     */
+    200: RefreshResponse;
+};
+
+export type PostAuthRefreshResponse = PostAuthRefreshResponses[keyof PostAuthRefreshResponses];
+
+export type PostAuthLogoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/logout';
+};
+
+export type PostAuthLogoutErrors = {
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type PostAuthLogoutError = PostAuthLogoutErrors[keyof PostAuthLogoutErrors];
+
+export type PostAuthLogoutResponses = {
+    /**
+     * Успешный выход
+     */
+    200: LogoutResponse;
+};
+
+export type PostAuthLogoutResponse = PostAuthLogoutResponses[keyof PostAuthLogoutResponses];
+
+export type GetAuthMeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/me';
+};
+
+export type GetAuthMeErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type GetAuthMeError = GetAuthMeErrors[keyof GetAuthMeErrors];
+
+export type GetAuthMeResponses = {
+    /**
+     * Информация о пользователе
+     */
+    200: MeResponse;
+};
+
+export type GetAuthMeResponse = GetAuthMeResponses[keyof GetAuthMeResponses];
+
+export type PostAuthForgotPasswordData = {
+    body: ForgotPasswordRequest;
+    path?: never;
+    query?: never;
+    url: '/auth/forgot-password';
+};
+
+export type PostAuthForgotPasswordErrors = {
+    /**
+     * Некорректные данные
+     */
+    400: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type PostAuthForgotPasswordError = PostAuthForgotPasswordErrors[keyof PostAuthForgotPasswordErrors];
+
+export type PostAuthForgotPasswordResponses = {
+    /**
+     * Инструкция отправлена на email
+     */
+    200: MessageResponse;
+};
+
+export type PostAuthForgotPasswordResponse = PostAuthForgotPasswordResponses[keyof PostAuthForgotPasswordResponses];
+
+export type PostAuthResetPasswordData = {
+    body: ResetPasswordRequest;
+    path?: never;
+    query?: never;
+    url: '/auth/reset-password';
+};
+
+export type PostAuthResetPasswordErrors = {
+    /**
+     * Некорректные данные
+     */
+    400: Error;
+    /**
+     * Код не найден
+     */
+    404: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type PostAuthResetPasswordError = PostAuthResetPasswordErrors[keyof PostAuthResetPasswordErrors];
+
+export type PostAuthResetPasswordResponses = {
+    /**
+     * Пароль успешно изменен
+     */
+    200: MessageResponse;
+};
+
+export type PostAuthResetPasswordResponse = PostAuthResetPasswordResponses[keyof PostAuthResetPasswordResponses];
+
+export type PostAuthChangePasswordData = {
+    body: ChangePasswordRequest;
+    path?: never;
+    query?: never;
+    url: '/auth/change-password';
+};
+
+export type PostAuthChangePasswordErrors = {
+    /**
+     * Некорректные данные
+     */
+    400: Error;
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type PostAuthChangePasswordError = PostAuthChangePasswordErrors[keyof PostAuthChangePasswordErrors];
+
+export type PostAuthChangePasswordResponses = {
+    /**
+     * Пароль успешно изменен
+     */
+    200: MessageResponse;
+};
+
+export type PostAuthChangePasswordResponse = PostAuthChangePasswordResponses[keyof PostAuthChangePasswordResponses];
+
+export type GetUsersMeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/users/me';
+};
+
+export type GetUsersMeErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type GetUsersMeError = GetUsersMeErrors[keyof GetUsersMeErrors];
+
+export type GetUsersMeResponses = {
+    /**
+     * Профиль пользователя
+     */
+    200: UserPublic;
+};
+
+export type GetUsersMeResponse = GetUsersMeResponses[keyof GetUsersMeResponses];
+
+export type PutUsersMeData = {
+    body: UserUpdate;
+    path?: never;
+    query?: never;
+    url: '/users/me';
+};
+
+export type PutUsersMeErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type PutUsersMeError = PutUsersMeErrors[keyof PutUsersMeErrors];
+
+export type PutUsersMeResponses = {
+    /**
+     * Профиль обновлен
+     */
+    200: UserPublic;
+};
+
+export type PutUsersMeResponse = PutUsersMeResponses[keyof PutUsersMeResponses];
 
 export type GetUsersData = {
     body?: never;
@@ -286,10 +681,7 @@ export type GetUsersResponses = {
     /**
      * Список пользователей
      */
-    200: {
-        items?: Array<User>;
-        page_info?: PageInfo;
-    };
+    200: Array<UserPublic>;
 };
 
 export type GetUsersResponse = GetUsersResponses[keyof GetUsersResponses];
@@ -309,7 +701,7 @@ export type GetUsersByUserIdErrors = {
      */
     401: Error;
     /**
-     * Нет доступа к данному пользователю
+     * Недостаточно прав
      */
     403: Error;
     /**
@@ -328,68 +720,21 @@ export type GetUsersByUserIdResponses = {
     /**
      * Информация о пользователе
      */
-    200: User;
+    200: UserPublic;
 };
 
 export type GetUsersByUserIdResponse = GetUsersByUserIdResponses[keyof GetUsersByUserIdResponses];
 
-export type PutUsersByUserIdData = {
-    body: UserUpdate;
+export type PostUsersByUserIdEscalateData = {
+    body: EscalateRoleRequest;
     path: {
         user_id: number;
     };
     query?: never;
-    url: '/users/{user_id}';
+    url: '/users/{user_id}/escalate';
 };
 
-export type PutUsersByUserIdErrors = {
-    /**
-     * Некорректные данные
-     */
-    400: Error;
-    /**
-     * Не авторизован
-     */
-    401: Error;
-    /**
-     * Нет прав на редактирование
-     */
-    403: Error;
-    /**
-     * Пользователь не найден
-     */
-    404: Error;
-    /**
-     * Внутренняя ошибка сервера
-     */
-    500: Error;
-};
-
-export type PutUsersByUserIdError = PutUsersByUserIdErrors[keyof PutUsersByUserIdErrors];
-
-export type PutUsersByUserIdResponses = {
-    /**
-     * Пользователь обновлен
-     */
-    200: User;
-};
-
-export type PutUsersByUserIdResponse = PutUsersByUserIdResponses[keyof PutUsersByUserIdResponses];
-
-export type PostUsersByUserIdAssignTeacherData = {
-    body?: never;
-    path: {
-        user_id: number;
-    };
-    query?: never;
-    url: '/users/{user_id}/assign-teacher';
-};
-
-export type PostUsersByUserIdAssignTeacherErrors = {
-    /**
-     * Пользователь уже является преподавателем или администратором
-     */
-    400: Error;
+export type PostUsersByUserIdEscalateErrors = {
     /**
      * Не авторизован
      */
@@ -399,7 +744,7 @@ export type PostUsersByUserIdAssignTeacherErrors = {
      */
     403: Error;
     /**
-     * Пользователь не найден
+     * Пользователь или роль не найдены
      */
     404: Error;
     /**
@@ -408,23 +753,21 @@ export type PostUsersByUserIdAssignTeacherErrors = {
     500: Error;
 };
 
-export type PostUsersByUserIdAssignTeacherError = PostUsersByUserIdAssignTeacherErrors[keyof PostUsersByUserIdAssignTeacherErrors];
+export type PostUsersByUserIdEscalateError = PostUsersByUserIdEscalateErrors[keyof PostUsersByUserIdEscalateErrors];
 
-export type PostUsersByUserIdAssignTeacherResponses = {
+export type PostUsersByUserIdEscalateResponses = {
     /**
-     * Роль успешно изменена на преподавателя
+     * Роль успешно назначена
      */
-    200: User;
+    200: UserPublic;
 };
 
-export type PostUsersByUserIdAssignTeacherResponse = PostUsersByUserIdAssignTeacherResponses[keyof PostUsersByUserIdAssignTeacherResponses];
+export type PostUsersByUserIdEscalateResponse = PostUsersByUserIdEscalateResponses[keyof PostUsersByUserIdEscalateResponses];
 
 export type GetProgramsData = {
     body?: never;
     path?: never;
     query?: {
-        study_mode?: ProgramStudyMode;
-        admission_year?: number;
         title?: string;
         skip?: number;
         limit?: number;
@@ -433,6 +776,14 @@ export type GetProgramsData = {
 };
 
 export type GetProgramsErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
     /**
      * Внутренняя ошибка сервера
      */
@@ -470,6 +821,10 @@ export type PostProgramsErrors = {
      * Недостаточно прав
      */
     403: Error;
+    /**
+     * Программа с таким названием уже существует
+     */
+    409: Error;
     /**
      * Внутренняя ошибка сервера
      */
@@ -537,6 +892,14 @@ export type GetProgramsByProgramIdData = {
 
 export type GetProgramsByProgramIdErrors = {
     /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
      * Программа не найдена
      */
     404: Error;
@@ -584,6 +947,10 @@ export type PutProgramsByProgramIdErrors = {
      */
     404: Error;
     /**
+     * Программа с таким названием уже существует
+     */
+    409: Error;
+    /**
      * Внутренняя ошибка сервера
      */
     500: Error;
@@ -601,11 +968,7 @@ export type PutProgramsByProgramIdResponses = {
 export type PutProgramsByProgramIdResponse = PutProgramsByProgramIdResponses[keyof PutProgramsByProgramIdResponses];
 
 export type PostProgramsByProgramIdCopyData = {
-    body: {
-        title: string;
-        admission_year: number;
-        study_mode?: ProgramStudyMode;
-    };
+    body: ProgramCopyRequest;
     path: {
         program_id: number;
     };
@@ -630,6 +993,10 @@ export type PostProgramsByProgramIdCopyErrors = {
      * Исходная программа не найдена
      */
     404: Error;
+    /**
+     * Программа с таким названием уже существует
+     */
+    409: Error;
     /**
      * Внутренняя ошибка сервера
      */
@@ -662,6 +1029,14 @@ export type GetCoursesData = {
 
 export type GetCoursesErrors = {
     /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
      * Внутренняя ошибка сервера
      */
     500: Error;
@@ -687,7 +1062,7 @@ export type PostCoursesData = {
 
 export type PostCoursesErrors = {
     /**
-     * Некорректные данные или program_id не существует
+     * Некорректные данные
      */
     400: Error;
     /**
@@ -698,6 +1073,14 @@ export type PostCoursesErrors = {
      * Недостаточно прав
      */
     403: Error;
+    /**
+     * Программа не найдена
+     */
+    404: Error;
+    /**
+     * Курс с таким названием уже существует в программе
+     */
+    409: Error;
     /**
      * Внутренняя ошибка сервера
      */
@@ -765,6 +1148,14 @@ export type GetCoursesByCourseIdData = {
 
 export type GetCoursesByCourseIdErrors = {
     /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
      * Курс не найден
      */
     404: Error;
@@ -812,6 +1203,10 @@ export type PutCoursesByCourseIdErrors = {
      */
     404: Error;
     /**
+     * Курс с таким названием уже существует
+     */
+    409: Error;
+    /**
      * Внутренняя ошибка сервера
      */
     500: Error;
@@ -839,6 +1234,14 @@ export type GetCoursesByCourseIdPrerequisitesData = {
 
 export type GetCoursesByCourseIdPrerequisitesErrors = {
     /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
      * Курс не найден
      */
     404: Error;
@@ -860,9 +1263,7 @@ export type GetCoursesByCourseIdPrerequisitesResponses = {
 export type GetCoursesByCourseIdPrerequisitesResponse = GetCoursesByCourseIdPrerequisitesResponses[keyof GetCoursesByCourseIdPrerequisitesResponses];
 
 export type PostCoursesByCourseIdPrerequisitesData = {
-    body: {
-        prerequisite_id: number;
-    };
+    body: PrerequisiteCreate;
     path: {
         course_id: number;
     };
@@ -872,7 +1273,7 @@ export type PostCoursesByCourseIdPrerequisitesData = {
 
 export type PostCoursesByCourseIdPrerequisitesErrors = {
     /**
-     * Некорректные данные (циклическая зависимость, дубликат)
+     * Некорректные данные (нельзя установить себя как пререквизит)
      */
     400: Error;
     /**
@@ -887,6 +1288,10 @@ export type PostCoursesByCourseIdPrerequisitesErrors = {
      * Курс не найден
      */
     404: Error;
+    /**
+     * Пререквизит уже существует
+     */
+    409: Error;
     /**
      * Внутренняя ошибка сервера
      */
@@ -904,17 +1309,17 @@ export type PostCoursesByCourseIdPrerequisitesResponses = {
 
 export type PostCoursesByCourseIdPrerequisitesResponse = PostCoursesByCourseIdPrerequisitesResponses[keyof PostCoursesByCourseIdPrerequisitesResponses];
 
-export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdData = {
+export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdData = {
     body?: never;
     path: {
         course_id: number;
-        prerequisite_id: number;
+        prerequisite_course_id: number;
     };
     query?: never;
-    url: '/courses/{course_id}/prerequisites/{prerequisite_id}';
+    url: '/courses/{course_id}/prerequisites/{prerequisite_course_id}';
 };
 
-export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdErrors = {
+export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdErrors = {
     /**
      * Не авторизован
      */
@@ -933,22 +1338,21 @@ export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdErrors = {
     500: Error;
 };
 
-export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdError = DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdErrors[keyof DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdErrors];
+export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdError = DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdErrors[keyof DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdErrors];
 
-export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdResponses = {
+export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdResponses = {
     /**
      * Пререквизит удален
      */
     204: void;
 };
 
-export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdResponse = DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdResponses[keyof DeleteCoursesByCourseIdPrerequisitesByPrerequisiteIdResponses];
+export type DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdResponse = DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdResponses[keyof DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdResponses];
 
 export type GetCareerTracksData = {
     body?: never;
     path?: never;
     query?: {
-        program_id?: number;
         title?: string;
         skip?: number;
         limit?: number;
@@ -957,6 +1361,14 @@ export type GetCareerTracksData = {
 };
 
 export type GetCareerTracksErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
     /**
      * Внутренняя ошибка сервера
      */
@@ -983,7 +1395,7 @@ export type PostCareerTracksData = {
 
 export type PostCareerTracksErrors = {
     /**
-     * Некорректные данные или program_id не существует
+     * Некорректные данные
      */
     400: Error;
     /**
@@ -994,6 +1406,10 @@ export type PostCareerTracksErrors = {
      * Недостаточно прав
      */
     403: Error;
+    /**
+     * Трек с таким названием уже существует
+     */
+    409: Error;
     /**
      * Внутренняя ошибка сервера
      */
@@ -1061,6 +1477,14 @@ export type GetCareerTracksByTrackIdData = {
 
 export type GetCareerTracksByTrackIdErrors = {
     /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
      * Трек не найден
      */
     404: Error;
@@ -1108,6 +1532,10 @@ export type PutCareerTracksByTrackIdErrors = {
      */
     404: Error;
     /**
+     * Трек с таким названием уже существует
+     */
+    409: Error;
+    /**
      * Внутренняя ошибка сервера
      */
     500: Error;
@@ -1129,11 +1557,22 @@ export type GetCareerTracksByTrackIdCoursesData = {
     path: {
         track_id: number;
     };
-    query?: never;
+    query?: {
+        skip?: number;
+        limit?: number;
+    };
     url: '/career-tracks/{track_id}/courses';
 };
 
 export type GetCareerTracksByTrackIdCoursesErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
     /**
      * Трек не найден
      */
@@ -1150,10 +1589,7 @@ export type GetCareerTracksByTrackIdCoursesResponses = {
     /**
      * Список курсов с порядковыми номерами
      */
-    200: Array<{
-        order_index?: number;
-        course?: Course;
-    }>;
+    200: Array<TrackCourseItem>;
 };
 
 export type GetCareerTracksByTrackIdCoursesResponse = GetCareerTracksByTrackIdCoursesResponses[keyof GetCareerTracksByTrackIdCoursesResponses];
@@ -1169,7 +1605,7 @@ export type PostCareerTracksByTrackIdCoursesData = {
 
 export type PostCareerTracksByTrackIdCoursesErrors = {
     /**
-     * Некорректные данные или курс уже в треке
+     * Некорректные данные
      */
     400: Error;
     /**
@@ -1184,6 +1620,10 @@ export type PostCareerTracksByTrackIdCoursesErrors = {
      * Трек или курс не найдены
      */
     404: Error;
+    /**
+     * Курс уже в треке
+     */
+    409: Error;
     /**
      * Внутренняя ошибка сервера
      */
@@ -1337,7 +1777,7 @@ export type PostUsersByUserIdCoursesByCourseIdProgressData = {
 
 export type PostUsersByUserIdCoursesByCourseIdProgressErrors = {
     /**
-     * Некорректные данные или запись уже существует
+     * Некорректные данные
      */
     400: Error;
     /**
@@ -1352,6 +1792,10 @@ export type PostUsersByUserIdCoursesByCourseIdProgressErrors = {
      * Пользователь или курс не найдены
      */
     404: Error;
+    /**
+     * Запись прогресса уже существует
+     */
+    409: Error;
     /**
      * Внутренняя ошибка сервера
      */
@@ -1412,3 +1856,219 @@ export type PutUsersByUserIdCoursesByCourseIdProgressResponses = {
 };
 
 export type PutUsersByUserIdCoursesByCourseIdProgressResponse = PutUsersByUserIdCoursesByCourseIdProgressResponses[keyof PutUsersByUserIdCoursesByCourseIdProgressResponses];
+
+export type GetRolesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/roles';
+};
+
+export type GetRolesErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type GetRolesError = GetRolesErrors[keyof GetRolesErrors];
+
+export type GetRolesResponses = {
+    /**
+     * Список ролей
+     */
+    200: Array<Role>;
+};
+
+export type GetRolesResponse = GetRolesResponses[keyof GetRolesResponses];
+
+export type PostRolesData = {
+    body: RoleCreate;
+    path?: never;
+    query?: never;
+    url: '/roles';
+};
+
+export type PostRolesErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type PostRolesError = PostRolesErrors[keyof PostRolesErrors];
+
+export type PostRolesResponses = {
+    /**
+     * Роль создана
+     */
+    201: Role;
+};
+
+export type PostRolesResponse = PostRolesResponses[keyof PostRolesResponses];
+
+export type DeleteRolesByRoleIdData = {
+    body?: never;
+    path: {
+        role_id: number;
+    };
+    query?: never;
+    url: '/roles/{role_id}';
+};
+
+export type DeleteRolesByRoleIdErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Роль не найдена
+     */
+    404: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type DeleteRolesByRoleIdError = DeleteRolesByRoleIdErrors[keyof DeleteRolesByRoleIdErrors];
+
+export type DeleteRolesByRoleIdResponses = {
+    /**
+     * Роль удалена
+     */
+    204: void;
+};
+
+export type DeleteRolesByRoleIdResponse = DeleteRolesByRoleIdResponses[keyof DeleteRolesByRoleIdResponses];
+
+export type GetRolesByRoleIdData = {
+    body?: never;
+    path: {
+        role_id: number;
+    };
+    query?: never;
+    url: '/roles/{role_id}';
+};
+
+export type GetRolesByRoleIdErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Роль не найдена
+     */
+    404: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type GetRolesByRoleIdError = GetRolesByRoleIdErrors[keyof GetRolesByRoleIdErrors];
+
+export type GetRolesByRoleIdResponses = {
+    /**
+     * Информация о роли
+     */
+    200: Role;
+};
+
+export type GetRolesByRoleIdResponse = GetRolesByRoleIdResponses[keyof GetRolesByRoleIdResponses];
+
+export type PutRolesByRoleIdData = {
+    body: RoleUpdate;
+    path: {
+        role_id: number;
+    };
+    query?: never;
+    url: '/roles/{role_id}';
+};
+
+export type PutRolesByRoleIdErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Роль не найдена
+     */
+    404: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type PutRolesByRoleIdError = PutRolesByRoleIdErrors[keyof PutRolesByRoleIdErrors];
+
+export type PutRolesByRoleIdResponses = {
+    /**
+     * Роль обновлена
+     */
+    200: Role;
+};
+
+export type PutRolesByRoleIdResponse = PutRolesByRoleIdResponses[keyof PutRolesByRoleIdResponses];
+
+export type GetPermissionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/permissions';
+};
+
+export type GetPermissionsErrors = {
+    /**
+     * Не авторизован
+     */
+    401: Error;
+    /**
+     * Недостаточно прав
+     */
+    403: Error;
+    /**
+     * Внутренняя ошибка сервера
+     */
+    500: Error;
+};
+
+export type GetPermissionsError = GetPermissionsErrors[keyof GetPermissionsErrors];
+
+export type GetPermissionsResponses = {
+    /**
+     * Список разрешений
+     */
+    200: Array<Permission>;
+};
+
+export type GetPermissionsResponse = GetPermissionsResponses[keyof GetPermissionsResponses];

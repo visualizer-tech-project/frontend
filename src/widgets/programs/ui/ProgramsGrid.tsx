@@ -1,4 +1,4 @@
-import { studyModeLabels, type Program } from '@/entities/program'
+import type { Program } from '@/entities/program'
 import {
   ProgramsFilters,
   ProgramsList,
@@ -27,67 +27,27 @@ export const ProgramsGrid = ({
 }: ProgramsGridProps) => {
   const navigate = useNavigate()
 
-  const { searchValue, studyModeFilter, admissionYearFilter } = useProgramsStore(
-    useShallow(useProgramsState),
-  )
+  const { searchValue } = useProgramsStore(useShallow(useProgramsState))
 
   const hasBackAction = Boolean(backTo || onBack)
-
-  const admissionYears = useMemo(
-    () =>
-      [...new Set(programs.map((program) => program.admission_year))].sort(
-        (currentYear, nextYear) => nextYear - currentYear,
-      ),
-    [programs],
-  )
-
-  const studyModeOptions = useMemo(
-    () => [
-      { label: 'Все форматы', value: 'all' },
-      { label: studyModeLabels['full-time'], value: 'full-time' },
-      { label: studyModeLabels['part-time'], value: 'part-time' },
-    ],
-    [],
-  )
-
-  const admissionYearOptions = useMemo(
-    () => [
-      { label: 'Все годы', value: 'all' },
-      ...admissionYears.map((year) => ({
-        label: `${year} год`,
-        value: String(year),
-      })),
-    ],
-    [admissionYears],
-  )
 
   const filteredPrograms = useMemo(() => {
     const normalizedSearch = searchValue.trim().toLowerCase()
 
     return programs.filter((program) => {
-      const matchesSearch =
+      const authorName = `${program.user.first_name} ${program.user.last_name}`.trim()
+
+      return (
         !normalizedSearch ||
-        [
-          program.title,
-          program.description ?? '',
-          studyModeLabels[program.study_mode],
-          `${program.admission_year}`,
-        ]
+        [program.title, program.description ?? '', authorName, program.user.email]
           .join(' ')
           .toLowerCase()
           .includes(normalizedSearch)
-
-      const matchesStudyMode = studyModeFilter === 'all' || program.study_mode === studyModeFilter
-
-      const matchesAdmissionYear =
-        admissionYearFilter === 'all' || program.admission_year === Number(admissionYearFilter)
-
-      return matchesSearch && matchesStudyMode && matchesAdmissionYear
+      )
     })
-  }, [admissionYearFilter, programs, searchValue, studyModeFilter])
+  }, [programs, searchValue])
 
-  const hasActiveFilters =
-    Boolean(searchValue.trim()) || studyModeFilter !== 'all' || admissionYearFilter !== 'all'
+  const hasActiveFilters = Boolean(searchValue.trim())
 
   const handleBackClick = () => {
     if (onBack) {
@@ -103,8 +63,6 @@ export const ProgramsGrid = ({
   return (
     <div className={styles.root}>
       <ProgramsFilters
-        admissionYearOptions={admissionYearOptions}
-        studyModeOptions={studyModeOptions}
         filteredCount={filteredPrograms.length}
         totalCount={programs.length}
         hasActiveFilters={hasActiveFilters}

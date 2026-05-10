@@ -1,0 +1,22 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+button:hover {
+  transform: translateY(-1px) !important;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.submitButton {
+  color: #06111d !important;
+  border: 1px solid rgb(140 195 255 / 34%) !important;
+  background: #8cc3ff !important;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 22%) !important;
+}

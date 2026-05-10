@@ -1,6 +1,6 @@
 import { Roles, useUserState, useUserStore } from '@/entities/user'
 import { ROUTES } from '@/shared/config'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/Button'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
 import styles from './AppHeader.module.css'
@@ -12,7 +12,6 @@ export const AppHeader = () => {
   const isAuthorized = Boolean(user && accessToken)
   const authRoute = isAuthorized ? ROUTES.PROFILE : ROUTES.LOGIN
   const isAdmin = user?.role === Roles.ADMIN
-  const canEditPrograms = user?.role === Roles.ADMIN || user?.role === Roles.TEACHER
 
   const navigateTo = (route: string) => {
     navigate(route)
@@ -47,18 +46,6 @@ export const AppHeader = () => {
             Программы
           </Button>
 
-          {canEditPrograms ? (
-            <Button
-              aria-current={location.pathname === ROUTES.ADD_PROGRAM ? 'page' : undefined}
-              color="default"
-              htmlType="button"
-              variant="text"
-              onClick={() => navigateTo(ROUTES.ADD_PROGRAM)}
-            >
-              Конструктор
-            </Button>
-          ) : null}
-
           {isAdmin ? (
             <Button
               aria-current={location.pathname === ROUTES.ADMIN ? 'page' : undefined}
@@ -87,8 +74,9 @@ export const AppHeader = () => {
             aria-current={location.pathname === authRoute ? 'page' : undefined}
             color="default"
             htmlType="button"
-            variant="solid"
+            variant="text"
             onClick={() => navigateTo(authRoute)}
+            className={styles.auth}
           >
             {isAuthorized ? 'Профиль' : 'Войти'}
           </Button>

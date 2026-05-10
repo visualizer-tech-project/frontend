@@ -1,4 +1,5 @@
-export { Roles } from './model/roles'
+export { roleLabels, Roles } from './model/roles'
 export type { Role } from './model/roles'
+export type { TokenResponse, UserPublic } from './model/types'
 export { useUserActions, useUserState, useUserStore } from './model/useUserStore'
 export type { IUserActions, IUserState } from './model/useUserStore'

@@ -1,0 +1,85 @@
+.root {
+  position: relative;
+  overflow: hidden;
+
+  width: 100%;
+  height: 100%;
+
+  background: #1b1a1c;
+}
+
+.flow {
+  width: 100%;
+  height: 100%;
+}
+
+.flow :global(.react-flow__pane) {
+  cursor: grab;
+}
+
+.flow :global(.react-flow__pane:active) {
+  cursor: grabbing;
+}
+
+.flow :global(.react-flow__node) {
+  cursor: grab;
+}
+
+.flow :global(.react-flow__node.dragging) {
+  cursor: grabbing;
+}
+
+.controls {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 10px;
+  background: rgb(17 17 18 / 90%);
+}
+
+.controls :global(button) {
+  border-bottom-color: rgb(255 255 255 / 8%) !important;
+  color: #f7fbff !important;
+  background: rgb(17 17 18 / 90%) !important;
+}
+
+.empty {
+  pointer-events: none;
+
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  text-align: center;
+}
+
+.miniMap {
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.empty strong {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.empty span {
+  max-width: 360px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgb(245 247 251 / 62%);
+}
+
+@media (width <= 640px) {
+  .root {
+    min-height: 100%;
+  }
+
+  .flow {
+    height: 100%;
+  }
+}
