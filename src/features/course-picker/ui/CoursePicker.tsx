@@ -8,7 +8,6 @@ import styles from './CoursePicker.module.css'
 import { CreateCourseForm } from './CreateCourseForm'
 
 const EDGE_PADDING = 16
-const HIDE_OFFSET = 24
 
 interface CoursePickerFormValues {
   courseId: number | null
@@ -43,7 +42,7 @@ export const CoursePicker = ({
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
-  } = useFloatingPanelDrag({ x: 32, y: 32 }, EDGE_PADDING, HIDE_OFFSET)
+  } = useFloatingPanelDrag({ x: 32, y: 32 }, EDGE_PADDING)
 
   const programCourseIds = useMemo(
     () => new Set(programCourses.map((course) => course.id)),

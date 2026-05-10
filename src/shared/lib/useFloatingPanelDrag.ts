@@ -11,29 +11,14 @@ type DragState = {
   height: number
 }
 
-type HiddenSide = 'left' | 'right' | null
-
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
-export const useFloatingPanelDrag = (
-  initialPosition = { x: 32, y: 108 },
-  edgePadding = 0,
-  hideOffset = 0,
-) => {
+export const useFloatingPanelDrag = (initialPosition = { x: 32, y: 108 }, edgePadding = 0) => {
   const ref = useRef<HTMLElement | null>(null)
   const dragStateRef = useRef<DragState | null>(null)
 
   const [position, setPosition] = useState(initialPosition)
   const [isDragging, setIsDragging] = useState(false)
-  const [isHidden, setIsHidden] = useState(false)
-  const [hiddenSide, setHiddenSide] = useState<HiddenSide>(null)
-  const [hiddenCenterY, setHiddenCenterY] = useState(initialPosition.y + 120)
-
-  const restoreAtPosition = (x: number, y: number) => {
-    setPosition({ x, y })
-    setIsHidden(false)
-    setHiddenSide(null)
-  }
 
   const stopDragging = (event: ReactPointerEvent<HTMLElement>) => {
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -42,6 +27,16 @@ export const useFloatingPanelDrag = (
 
     dragStateRef.current = null
     setIsDragging(false)
+  }
+
+  const getBounds = () => {
+    const container = ref.current?.parentElement
+    const rect = container?.getBoundingClientRect()
+
+    return {
+      width: rect?.width ?? window.innerWidth,
+      height: rect?.height ?? window.innerHeight,
+    }
   }
 
   const handlePointerDown = (event: ReactPointerEvent<HTMLElement>) => {
@@ -80,39 +75,19 @@ export const useFloatingPanelDrag = (
       return
     }
 
-    const deltaX = event.clientX - dragState.startClientX
-    const deltaY = event.clientY - dragState.startClientY
+    const { width: containerWidth, height: containerHeight } = getBounds()
 
-    const rawX = dragState.startX + deltaX
-    const rawY = dragState.startY + deltaY
+    const rawX = dragState.startX + event.clientX - dragState.startClientX
+    const rawY = dragState.startY + event.clientY - dragState.startClientY
 
+    const minX = edgePadding
     const minY = edgePadding
-    const maxY = Math.max(minY, window.innerHeight - dragState.height - edgePadding)
-    const maxX = Math.max(edgePadding, window.innerWidth - dragState.width - edgePadding)
-
-    const nextY = clamp(rawY, minY, maxY)
-
-    if (rawX < -(dragState.width * 0.55)) {
-      setIsHidden(true)
-      setHiddenSide('left')
-      setHiddenCenterY(nextY + dragState.height / 2)
-      setPosition({ x: -dragState.width - hideOffset, y: nextY })
-      stopDragging(event)
-      return
-    }
-
-    if (rawX > window.innerWidth - dragState.width * 0.45) {
-      setIsHidden(true)
-      setHiddenSide('right')
-      setHiddenCenterY(nextY + dragState.height / 2)
-      setPosition({ x: window.innerWidth + hideOffset, y: nextY })
-      stopDragging(event)
-      return
-    }
+    const maxX = Math.max(minX, containerWidth - dragState.width - edgePadding)
+    const maxY = Math.max(minY, containerHeight - dragState.height - edgePadding)
 
     setPosition({
-      x: clamp(rawX, edgePadding, maxX),
-      y: nextY,
+      x: clamp(rawX, minX, maxX),
+      y: clamp(rawY, minY, maxY),
     })
   }
 
@@ -128,10 +103,6 @@ export const useFloatingPanelDrag = (
     ref,
     position,
     isDragging,
-    isHidden,
-    hiddenSide,
-    hiddenCenterY,
-    restoreAtPosition,
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
