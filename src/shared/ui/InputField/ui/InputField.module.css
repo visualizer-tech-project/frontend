@@ -2,10 +2,11 @@
   width: 100%;
 }
 
-.input:global(.ant-input) {
+.input:global(.ant-input),
+.input:global(.ant-input-affix-wrapper) {
   padding: 8px 12px;
 
-  border: 1px solid rgb(255 255 255 / 10%);
+  border: 1px solid rgb(255 255 255 / 10%) !important;
   border-radius: 10px !important;
 
   color: #f7fbff !important;
@@ -17,16 +18,18 @@
     background-color 0.2s ease;
 }
 
-.input:global(.ant-input::placeholder) {
+.input:global(.ant-input::placeholder),
+.input:global(.ant-input-affix-wrapper input::placeholder) {
   color: rgb(245 247 251 / 36%);
 }
 
-.input:global(.ant-input:hover) {
-  border-color: rgb(255 255 255 / 18%);
+.input:global(.ant-input:hover),
+.input:global(.ant-input-affix-wrapper:hover) {
+  border-color: rgb(255 255 255 / 18%) !important;
 }
 
 .input:global(.ant-input:focus),
-.input:global(.ant-input-focused) {
+.input:global(.ant-input-focused:focus) {
   border-color: rgb(140 195 255 / 52%) !important;
   box-shadow: 0 0 0 3px rgb(140 195 255 / 12%) !important;
 }
@@ -51,12 +54,14 @@
   font-weight: 500;
 }
 
-.inputError:global(.ant-input) {
+.inputError:global(.ant-input),
+.inputError:global(.ant-input-affix-wrapper) {
   border-color: var(--color-error) !important;
   box-shadow: 0 0 0 3px rgb(239 68 68 / 10%) !important;
 }
 
-.inputSuccess:global(.ant-input) {
+.inputSuccess:global(.ant-input),
+.inputSuccess:global(.ant-input-affix-wrapper) {
   border-color: var(--color-success) !important;
   box-shadow: 0 0 0 3px rgb(16 185 129 / 10%) !important;
 }

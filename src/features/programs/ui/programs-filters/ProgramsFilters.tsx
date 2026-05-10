@@ -1,3 +1,4 @@
+import { pluralize } from '@/shared/lib/pluralize'
 import { Button } from '@/shared/ui/Button'
 import Search from 'antd/es/input/Search'
 import clsx from 'clsx'
@@ -14,7 +15,7 @@ interface IProgramsFilters {
   filteredCount: number
   totalCount: number
   hasActiveFilters: boolean
-
+  searchPlaceholder?: string
   onBackClick?: () => void
   backLabel?: string
   className?: string
@@ -24,6 +25,7 @@ export const ProgramsFilters: FC<IProgramsFilters> = ({
   filteredCount,
   totalCount,
   hasActiveFilters,
+  searchPlaceholder = 'Поиск',
   onBackClick,
   backLabel,
   className,
@@ -49,7 +51,7 @@ export const ProgramsFilters: FC<IProgramsFilters> = ({
         allowClear
         className={styles.search}
         enterButton="Найти"
-        placeholder="Поиск программы"
+        placeholder={searchPlaceholder}
         value={searchValue}
         onChange={(event) => setSearchValue(event.target.value)}
         onSearch={(value) => setSearchValue(value)}
@@ -57,7 +59,9 @@ export const ProgramsFilters: FC<IProgramsFilters> = ({
 
       <span className={styles.counter}>
         {filteredCount}
-        {hasActiveFilters ? ` из ${totalCount}` : ''} программ
+        {hasActiveFilters
+          ? ` из ${totalCount} элементов`
+          : ` ${pluralize(totalCount, ['элемент', 'элемента', 'элементов'])}`}
       </span>
     </div>
   )

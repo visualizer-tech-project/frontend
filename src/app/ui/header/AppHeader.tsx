@@ -46,6 +46,16 @@ export const AppHeader = () => {
             Программы
           </Button>
 
+          <Button
+            aria-current={location.pathname.startsWith(ROUTES.TRACKS) ? 'page' : undefined}
+            color="default"
+            htmlType="button"
+            variant="text"
+            onClick={() => navigateTo(ROUTES.TRACKS)}
+          >
+            Карьерные треки
+          </Button>
+
           {isAdmin ? (
             <Button
               aria-current={location.pathname === ROUTES.ADMIN ? 'page' : undefined}

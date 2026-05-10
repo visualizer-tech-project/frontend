@@ -4,6 +4,7 @@ import { Forbidden, NotFound } from '@/pages/error'
 import { HomePage } from '@/pages/home'
 import { ProfilePage } from '@/pages/profile'
 import { ProgramDetailsPage, ProgramsPage } from '@/pages/programs'
+import { TracksPage } from '@/pages/tracks'
 import { ROUTES } from '@/shared/config'
 import { Navigate } from 'react-router-dom'
 import { RequireRole } from '../providers/router/RequireRole'
@@ -32,6 +33,10 @@ export const routes = [
       {
         path: `${ROUTES.PROGRAMS}/:programId`,
         element: <ProgramDetailsPage />,
+      },
+      {
+        path: ROUTES.TRACKS,
+        element: <TracksPage />,
       },
       {
         path: ROUTES.FORBIDDEN,

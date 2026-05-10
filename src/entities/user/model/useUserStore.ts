@@ -1,22 +1,22 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import type { TokenResponse as Token, UserPublic as User } from './types'
+import type { TokenResponse, UserPublic } from './types'
 
 export interface IUserState {
-  user: User | null
-  accessToken: Token['access_token'] | null
-  tokenType: Token['token_type'] | null
+  user: UserPublic | null
+  accessToken: TokenResponse['access_token'] | null
+  tokenType: TokenResponse['token_type'] | null
 }
 
 export interface IUserActions {
   setAuth: (payload: {
-    user: User
-    accessToken: Token['access_token']
-    tokenType: Token['token_type']
+    user: UserPublic
+    accessToken: TokenResponse['access_token']
+    tokenType: TokenResponse['token_type']
   }) => void
-  setUser: (user: User | null) => void
-  setAccessToken: (accessToken: Token['access_token'] | null) => void
-  setTokenType: (tokenType: Token['token_type'] | null) => void
+  setUser: (user: UserPublic | null) => void
+  setAccessToken: (accessToken: TokenResponse['access_token'] | null) => void
+  setTokenType: (tokenType: TokenResponse['token_type'] | null) => void
   logout: () => void
 }
 
