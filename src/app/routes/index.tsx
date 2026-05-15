@@ -9,6 +9,7 @@ import { ROUTES } from '@/shared/config'
 import { Navigate } from 'react-router-dom'
 import { RequireRole } from '../providers/router/RequireRole'
 import { AppLayout } from '../ui/AppLayout'
+import { DevPage } from '@/pages/dev'
 
 export const routes = [
   {
@@ -61,6 +62,10 @@ export const routes = [
       {
         path: ROUTES.LOGIN,
         element: <LoginPage />,
+      },
+      {
+        path: ROUTES.DEV,
+        element: <DevPage />,
       },
       {
         path: '*',

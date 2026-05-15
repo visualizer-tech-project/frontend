@@ -53,7 +53,7 @@ export const Login = () => {
               </Link>
             </div>
 
-            <Link to="/forgot-password" className={styles.link}>
+            <Link to="/dev" className={styles.link}>
               Забыли пароль?
             </Link>
           </div>

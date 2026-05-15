@@ -9,4 +9,5 @@ export const ROUTES = {
   SETTINGS: '/settings',
   PROGRAMS: '/programs',
   TRACKS: '/tracks',
+  DEV: '/dev',
 } as const

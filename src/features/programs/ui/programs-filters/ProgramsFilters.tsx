@@ -26,27 +26,13 @@ export const ProgramsFilters: FC<IProgramsFilters> = ({
   totalCount,
   hasActiveFilters,
   searchPlaceholder = 'Поиск',
-  onBackClick,
-  backLabel,
   className,
 }) => {
   const { searchValue } = useProgramsStore(useShallow(useProgramsState))
   const { setSearchValue } = useProgramsStore(useShallow(useProgramsActions))
 
   return (
-    <div className={clsx(styles.toolbar, onBackClick && styles.toolbarWithBack, className)}>
-      {onBackClick ? (
-        <Button
-          className={styles.backAction}
-          color="default"
-          htmlType="button"
-          variant="text"
-          onClick={onBackClick}
-        >
-          {backLabel || 'Вернуться назад'}
-        </Button>
-      ) : null}
-
+    <div className={clsx(styles.toolbar, className)}>
       <Search
         allowClear
         className={styles.search}
