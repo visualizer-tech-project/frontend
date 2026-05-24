@@ -1,5 +1,6 @@
 import { TrackCard, type CareerTrack } from '@/entities/track'
-import { ProgramsFilters, useProgramsState, useProgramsStore } from '@/features/programs'
+import { ProgramsFilters } from '@/features/programs'
+import { useTracksActions, useTracksState, useTracksStore } from '@/features/tracks'
 import { CatalogList } from '@/widgets/catalog'
 import { useMemo } from 'react'
 import { useShallow } from 'zustand/shallow'
@@ -16,7 +17,8 @@ export const TracksGrid = ({
   actionLabel = 'Подробнее',
   isLoading = false,
 }: TracksGridProps) => {
-  const { searchValue } = useProgramsStore(useShallow(useProgramsState))
+  const { searchValue } = useTracksStore(useShallow(useTracksState))
+  const { setSearchValue } = useTracksStore(useShallow(useTracksActions))
 
   const filteredTracks = useMemo(() => {
     const normalizedSearch = searchValue.trim().toLowerCase()
@@ -36,9 +38,11 @@ export const TracksGrid = ({
   return (
     <div className={styles.root}>
       <ProgramsFilters
+        searchValue={searchValue}
         filteredCount={filteredTracks.length}
         totalCount={tracks.length}
         hasActiveFilters={Boolean(searchValue.trim())}
+        onSearchValueChange={setSearchValue}
         searchPlaceholder="Поиск трека"
         isLoading={isLoading}
       />

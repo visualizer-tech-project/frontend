@@ -3,18 +3,14 @@ import { Button } from '@/shared/ui/Button'
 import Search from 'antd/es/input/Search'
 import clsx from 'clsx'
 import type { FC } from 'react'
-import { useShallow } from 'zustand/shallow'
-import {
-  useProgramsActions,
-  useProgramsState,
-  useProgramsStore,
-} from '../../model/useProgramsStore'
 import styles from './ProgramsFilters.module.css'
 
 interface IProgramsFilters {
+  searchValue: string
   filteredCount: number
   totalCount: number
   hasActiveFilters: boolean
+  onSearchValueChange: (searchValue: string) => void
   searchPlaceholder?: string
   onBackClick?: () => void
   backLabel?: string
@@ -23,17 +19,17 @@ interface IProgramsFilters {
 }
 
 export const ProgramsFilters: FC<IProgramsFilters> = ({
+  searchValue,
   filteredCount,
   totalCount,
   hasActiveFilters,
+  onSearchValueChange,
   searchPlaceholder = 'Поиск',
   onBackClick,
   backLabel = 'Назад',
   isLoading = false,
   className,
 }) => {
-  const { searchValue } = useProgramsStore(useShallow(useProgramsState))
-  const { setSearchValue } = useProgramsStore(useShallow(useProgramsActions))
   const hasBackAction = Boolean(onBackClick)
 
   return (
@@ -51,8 +47,8 @@ export const ProgramsFilters: FC<IProgramsFilters> = ({
         disabled={isLoading}
         placeholder={searchPlaceholder}
         value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
-        onSearch={(value) => setSearchValue(value)}
+        onChange={(event) => onSearchValueChange(event.target.value)}
+        onSearch={(value) => onSearchValueChange(value)}
       />
 
       <span className={styles.counter}>

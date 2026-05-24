@@ -1,5 +1,10 @@
 import { ProgramCard, type Program } from '@/entities/program'
-import { ProgramsFilters, useProgramsState, useProgramsStore } from '@/features/programs'
+import {
+  ProgramsFilters,
+  useProgramsActions,
+  useProgramsState,
+  useProgramsStore,
+} from '@/features/programs'
 import { CatalogList } from '@/widgets/catalog'
 import clsx from 'clsx'
 import { useMemo } from 'react'
@@ -28,6 +33,7 @@ export const ProgramsGrid = ({
 }: ProgramsGridProps) => {
   const navigate = useNavigate()
   const { searchValue } = useProgramsStore(useShallow(useProgramsState))
+  const { setSearchValue } = useProgramsStore(useShallow(useProgramsActions))
   const hasBackAction = Boolean(backTo || onBack)
 
   const filteredPrograms = useMemo(() => {
@@ -64,9 +70,11 @@ export const ProgramsGrid = ({
   return (
     <div className={clsx(styles.root, surface === 'transparent' && styles.rootTransparent)}>
       <ProgramsFilters
+        searchValue={searchValue}
         filteredCount={filteredPrograms.length}
         totalCount={programs.length}
         hasActiveFilters={Boolean(searchValue.trim())}
+        onSearchValueChange={setSearchValue}
         onBackClick={hasBackAction ? handleBackClick : undefined}
         backLabel={backLabel}
         searchPlaceholder="Поиск программы"
