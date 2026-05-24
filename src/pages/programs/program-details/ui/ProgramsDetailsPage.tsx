@@ -1,15 +1,7 @@
 import { mockCourses, type Course } from '@/entities/course'
-import {
-  mockPrerequisites,
-  type Prerequisite,
-  type PrerequisiteCreate,
-} from '@/entities/prerequisite'
+import { type Prerequisite, type PrerequisiteCreate } from '@/entities/prerequisite'
 import { mockPrograms } from '@/entities/program'
-import {
-  mockProgress,
-  type ProgressSelectChangePayload,
-  type UserProgress,
-} from '@/entities/progress'
+import { type ProgressSelectChangePayload, type UserProgress } from '@/entities/progress'
 import { useUserState, useUserStore } from '@/entities/user'
 import { CoursePicker } from '@/features/course-picker'
 import { ROUTES } from '@/shared/config'
@@ -17,9 +9,14 @@ import { notifyError, notifySuccess } from '@/shared/lib/notify'
 import { useMockLoading } from '@/shared/lib/useMockLoading'
 import { wait } from '@/shared/lib/wait'
 import { ProgramFlowCanvas } from '@/widgets/program-flow'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
+import {
+  getProgramCourses,
+  getProgramPrerequisites,
+  getProgramProgress,
+} from '../lib/getProgramMockData'
 import { ProgramWorkspace } from './ProgramWorkspace/ProgramWorkspace'
 import styles from './ProgramsDetailsPage.module.css'
 
@@ -27,34 +24,25 @@ export const ProgramDetailsPage = () => {
   const { programId } = useParams()
   const { user } = useUserStore(useShallow(useUserState))
   const isProgramLoading = useMockLoading([programId, user?.id])
+  const numericProgramId = Number(programId)
 
   // MOCKS
-  const [courses, setCourses] = useState<Course[]>(
-    mockCourses.filter((course) => course.program_id === Number(programId)),
+  const [courses, setCourses] = useState<Course[]>(() => getProgramCourses(numericProgramId))
+  const [prerequisites, setPrerequisites] = useState<Prerequisite[]>(() =>
+    getProgramPrerequisites(numericProgramId),
   )
-  const [prerequisites, setPrerequisites] = useState<Prerequisite[]>(() => {
-    const courseIds = mockCourses
-      .filter((course) => course.program_id === Number(programId))
-      .map((course) => course.id)
 
-    return mockPrerequisites.filter(
-      (prerequisite) =>
-        courseIds.includes(prerequisite.course_id) &&
-        courseIds.includes(prerequisite.prerequisite_course_id),
-    )
-  })
-
-  const [progress, setProgress] = useState<UserProgress[]>(() => {
-    const courseIds = mockCourses
-      .filter((course) => course.program_id === Number(programId))
-      .map((course) => course.id)
-
-    return mockProgress.filter(
-      (item) => item.user_id === user?.id && courseIds.includes(item.course_id),
-    )
-  })
+  const [progress, setProgress] = useState<UserProgress[]>(() =>
+    getProgramProgress(numericProgramId, user?.id),
+  )
   const [removingCourseIds, setRemovingCourseIds] = useState<Course['id'][]>([])
   const [removingPrerequisiteIds, setRemovingPrerequisiteIds] = useState<Prerequisite['id'][]>([])
+
+  useEffect(() => {
+    setCourses(getProgramCourses(numericProgramId))
+    setPrerequisites(getProgramPrerequisites(numericProgramId))
+    setProgress(getProgramProgress(numericProgramId, user?.id))
+  }, [numericProgramId, user?.id])
 
   const handleCourseRemove = useCallback(async (courseId: number) => {
     setRemovingCourseIds((current) =>
@@ -192,7 +180,6 @@ export const ProgramDetailsPage = () => {
     })
   }, [])
 
-  const numericProgramId = Number(programId)
   const program = mockPrograms.find(({ id }) => id === numericProgramId)
 
   if (!program || Number.isNaN(numericProgramId)) return <NavLink to={ROUTES.NOT_FOUND} />
