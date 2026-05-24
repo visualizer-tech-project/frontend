@@ -14,6 +14,7 @@ interface ProgramsGridProps {
   backTo?: string
   onBack?: () => void
   surface?: 'default' | 'transparent'
+  isLoading?: boolean
 }
 
 export const ProgramsGrid = ({
@@ -23,6 +24,7 @@ export const ProgramsGrid = ({
   backTo,
   onBack,
   surface = 'default',
+  isLoading = false,
 }: ProgramsGridProps) => {
   const navigate = useNavigate()
   const { searchValue } = useProgramsStore(useShallow(useProgramsState))
@@ -68,6 +70,7 @@ export const ProgramsGrid = ({
         onBackClick={hasBackAction ? handleBackClick : undefined}
         backLabel={backLabel}
         searchPlaceholder="Поиск программы"
+        isLoading={isLoading}
       />
 
       <CatalogList
@@ -75,6 +78,7 @@ export const ProgramsGrid = ({
         getKey={(program) => program.id}
         renderItem={(program) => <ProgramCard actionLabel={actionLabel} program={program} />}
         emptyDescription="Измените поисковый запрос, чтобы увидеть подходящие программы."
+        isLoading={isLoading}
       />
     </div>
   )

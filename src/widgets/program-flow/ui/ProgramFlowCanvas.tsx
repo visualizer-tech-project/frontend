@@ -33,11 +33,14 @@ interface ProgramFlowCanvasProps {
   prerequisites: Prerequisite[]
   progress: UserProgress[]
   canEditFlow: boolean
-  onCourseRemove: (courseId: number) => void
+  onCourseRemove: (courseId: number) => void | Promise<void>
   onCourseUpdate: (course: Course) => void
   onEdgeConnect: (courseId: number, prerequisiteCreate: PrerequisiteCreate) => void
   onProgressChange: (payload: ProgressSelectChangePayload) => void
-  onEdgeDelete: (prerequisite: Prerequisite) => void
+  onEdgeDelete: (prerequisite: Prerequisite) => void | Promise<void>
+  isLoading?: boolean
+  isEdgeDeleting?: boolean
+  removingCourseIds?: Course['id'][]
 }
 
 const nodeTypes: NodeTypes = {
@@ -60,11 +63,17 @@ export const ProgramFlowCanvas = ({
   onProgressChange,
   onEdgeConnect,
   onEdgeDelete,
+  isLoading = false,
+  isEdgeDeleting = false,
+  removingCourseIds = [],
 }: ProgramFlowCanvasProps) => {
   const { user } = useUserStore(useShallow(useUserState))
   const activeUserId = user?.id ?? null
 
   const isLayoutAppliedRef = useRef(false)
+  const removingCourseIdSet = useMemo(() => new Set(removingCourseIds), [removingCourseIds])
+  const isInteractionLocked = isLoading || isEdgeDeleting
+  const canEditEdges = canEditFlow && !isInteractionLocked
 
   const progressByCourseId = useMemo(() => {
     const map = new Map<Course['id'], UserProgress>()
@@ -95,6 +104,7 @@ export const ProgramFlowCanvas = ({
           onProgressChange,
           canEditFlow: canEditFlow,
           canEditCourse: canEditCourse(user, course),
+          isCourseRemoving: removingCourseIdSet.has(course.id),
         }),
       ),
     [
@@ -106,6 +116,7 @@ export const ProgramFlowCanvas = ({
       onProgressChange,
       canEditFlow,
       user,
+      removingCourseIdSet,
     ],
   )
 
@@ -148,6 +159,7 @@ export const ProgramFlowCanvas = ({
           onProgressChange,
           canEditFlow: canEditFlow,
           canEditCourse: canEditCourse(user, course),
+          isCourseRemoving: removingCourseIdSet.has(course.id),
         })
 
         const currentNode = currentNodeById.get(nextNode.id)
@@ -172,6 +184,7 @@ export const ProgramFlowCanvas = ({
     onCourseUpdate,
     onProgressChange,
     user,
+    removingCourseIdSet,
   ])
 
   useEffect(() => {
@@ -212,10 +225,14 @@ export const ProgramFlowCanvas = ({
           edges={edges}
           nodes={nodes}
           nodeTypes={nodeTypes}
-          nodesConnectable={canEditFlow}
-          onConnect={canEditFlow ? handleEdgeConnect : undefined}
-          onEdgesDelete={canEditFlow ? handleEdgesDelete : undefined}
-          onEdgesChange={canEditFlow ? onEdgesChange : undefined}
+          edgesFocusable={!isInteractionLocked}
+          elementsSelectable={!isInteractionLocked}
+          nodesConnectable={canEditEdges}
+          nodesDraggable={!isInteractionLocked}
+          nodesFocusable={!isInteractionLocked}
+          onConnect={canEditEdges ? handleEdgeConnect : undefined}
+          onEdgesDelete={canEditEdges ? handleEdgesDelete : undefined}
+          onEdgesChange={canEditEdges ? onEdgesChange : undefined}
           onNodesChange={onNodesChange}
           proOptions={flowProOptions}
           fitViewOptions={fitViewOptions}
@@ -234,7 +251,18 @@ export const ProgramFlowCanvas = ({
         </ReactFlow>
       </ReactFlowProvider>
 
-      {!courses.length ? (
+      {isLoading ? (
+        <div className={styles.loading} aria-live="polite">
+          <span className={styles.loader} />
+          <strong>Загружаем граф</strong>
+          <span>Курсы и связи появятся через несколько секунд.</span>
+        </div>
+      ) : isEdgeDeleting ? (
+        <div className={styles.actionLoading} aria-live="polite">
+          <span className={styles.smallLoader} />
+          <strong>Удаляем связь</strong>
+        </div>
+      ) : !courses.length ? (
         <div className={styles.empty}>
           <strong>Холст пуст</strong>
           <span>Добавь курс, чтобы создать первый перетаскиваемый элемент.</span>

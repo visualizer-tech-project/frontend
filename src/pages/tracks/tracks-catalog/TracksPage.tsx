@@ -1,10 +1,12 @@
 import { mockTracks } from '@/entities/track'
+import { useMockLoading } from '@/shared/lib/useMockLoading'
 import { PageHero } from '@/widgets/page-hero'
 import { TracksGrid } from '@/widgets/tracks'
 import { useMemo } from 'react'
 import styles from './TracksPage.module.css'
 
 export const TracksPage = () => {
+  const isTracksLoading = useMockLoading()
   const authorsCount = useMemo(() => new Set(mockTracks.map((track) => track.user_id)).size, [])
 
   const latestUpdate = useMemo(
@@ -53,7 +55,7 @@ export const TracksPage = () => {
             <p>Поиск учитывает название трека, описание и имя автора.</p>
           </div>
 
-          <TracksGrid actionLabel="Открыть трек" tracks={mockTracks} />
+          <TracksGrid actionLabel="Открыть трек" tracks={mockTracks} isLoading={isTracksLoading} />
         </section>
       </div>
     </section>

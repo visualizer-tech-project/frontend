@@ -1,7 +1,10 @@
 import { ROUTES } from '@/shared/config'
+import { notifyError, notifySuccess } from '@/shared/lib/notify'
+import { wait } from '@/shared/lib/wait'
 import { Button } from '@/shared/ui/Button'
 import { InputField } from '@/shared/ui/InputField'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { forgotPasswordSchema, type ForgotPasswordValues } from '../model/validation'
@@ -9,6 +12,7 @@ import styles from './Auth.module.css'
 import { AuthWrapper } from './AuthWrapper'
 
 export const ForgotPassword = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { control, handleSubmit } = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -17,13 +21,23 @@ export const ForgotPassword = () => {
     mode: 'onBlur',
   })
 
-  const onSubmit = (values: ForgotPasswordValues) => {
-    console.log(values)
+  const onSubmit = async (values: ForgotPasswordValues) => {
+    setIsSubmitting(true)
+
+    try {
+      await wait(450)
+      console.log(values)
+      notifySuccess('Ссылка отправлена', 'Проверьте почту для восстановления пароля.')
+    } catch {
+      notifyError('Не удалось отправить ссылку', 'Попробуйте повторить запрос позже.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <AuthWrapper title="Восстановление пароля">
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <InputField
           control={control}
           className={styles.input}
@@ -46,7 +60,7 @@ export const ForgotPassword = () => {
 
           <Button
             className={styles.button}
-            onClick={handleSubmit(onSubmit)}
+            loading={isSubmitting}
             size="large"
             type="primary"
             variant="filled"

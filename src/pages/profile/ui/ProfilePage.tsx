@@ -1,16 +1,20 @@
 import { roleLabels, Roles, useUserActions, useUserState, useUserStore } from '@/entities/user'
 import { ROUTES } from '@/shared/config'
+import { formatDate } from '@/shared/lib/formatDate'
+import { notifyError, notifySuccess } from '@/shared/lib/notify'
+import { wait } from '@/shared/lib/wait'
 import { Button } from '@/shared/ui/Button'
 import { PageHero } from '@/widgets/page-hero'
+import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
 import styles from './ProfilePage.module.css'
-import { formatDate } from '@/shared/lib/formatDate'
 
 export const ProfilePage = () => {
   const navigate = useNavigate()
   const { user } = useUserStore(useShallow(useUserState))
   const { logout } = useUserStore(useShallow(useUserActions))
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   if (!user) return <NavLink to={ROUTES.LOGIN} />
 
@@ -20,9 +24,19 @@ export const ProfilePage = () => {
     { label: 'С нами', value: formatDate(user.created_at) },
   ]
 
-  const handleLogout = () => {
-    logout()
-    navigate(ROUTES.HOME)
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+
+    try {
+      await wait(350)
+      logout()
+      notifySuccess('Вы вышли из аккаунта', 'Сессия завершена.')
+      navigate(ROUTES.HOME)
+    } catch {
+      notifyError('Не удалось выйти', 'Попробуйте повторить действие.')
+    } finally {
+      setIsLoggingOut(false)
+    }
   }
 
   return (
@@ -88,6 +102,7 @@ export const ProfilePage = () => {
             className={styles.logout}
             color="default"
             htmlType="button"
+            loading={isLoggingOut}
             variant="text"
             onClick={handleLogout}
           >

@@ -1,6 +1,7 @@
 import { mockPrograms } from '@/entities/program'
 import { Roles, useUserState, useUserStore } from '@/entities/user'
 import { CreateProgramButton } from '@/features/program-create'
+import { useMockLoading } from '@/shared/lib/useMockLoading'
 import { PageHero } from '@/widgets/page-hero'
 import { ProgramsGrid } from '@/widgets/programs'
 import { useShallow } from 'zustand/shallow'
@@ -8,6 +9,7 @@ import styles from './ProgramsPage.module.css'
 
 export const ProgramsPage = () => {
   const { user } = useUserStore(useShallow(useUserState))
+  const isProgramsLoading = useMockLoading()
 
   return (
     <section className={styles.page}>
@@ -36,7 +38,11 @@ export const ProgramsPage = () => {
             </p>
           </div>
 
-          <ProgramsGrid actionLabel="Открыть граф" programs={mockPrograms} />
+          <ProgramsGrid
+            actionLabel="Открыть граф"
+            programs={mockPrograms}
+            isLoading={isProgramsLoading}
+          />
         </section>
       </div>
     </section>

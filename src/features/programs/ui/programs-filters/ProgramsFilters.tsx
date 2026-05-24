@@ -18,6 +18,7 @@ interface IProgramsFilters {
   searchPlaceholder?: string
   onBackClick?: () => void
   backLabel?: string
+  isLoading?: boolean
   className?: string
 }
 
@@ -28,6 +29,7 @@ export const ProgramsFilters: FC<IProgramsFilters> = ({
   searchPlaceholder = 'Поиск',
   onBackClick,
   backLabel = 'Назад',
+  isLoading = false,
   className,
 }) => {
   const { searchValue } = useProgramsStore(useShallow(useProgramsState))
@@ -46,6 +48,7 @@ export const ProgramsFilters: FC<IProgramsFilters> = ({
         allowClear
         className={styles.search}
         enterButton="Найти"
+        disabled={isLoading}
         placeholder={searchPlaceholder}
         value={searchValue}
         onChange={(event) => setSearchValue(event.target.value)}
@@ -53,10 +56,13 @@ export const ProgramsFilters: FC<IProgramsFilters> = ({
       />
 
       <span className={styles.counter}>
-        {filteredCount}
-        {hasActiveFilters
-          ? ` из ${totalCount} элементов`
-          : ` ${pluralize(totalCount, ['элемент', 'элемента', 'элементов'])}`}
+        {isLoading
+          ? 'Загрузка...'
+          : `${filteredCount}${
+              hasActiveFilters
+                ? ` из ${totalCount} элементов`
+                : ` ${pluralize(totalCount, ['элемент', 'элемента', 'элементов'])}`
+            }`}
       </span>
     </div>
   )

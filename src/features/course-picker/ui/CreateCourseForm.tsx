@@ -6,6 +6,7 @@ import {
   type CourseCreate,
 } from '@/entities/course'
 import { postCourses } from '@/shared/api/generated'
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { InputField } from '@/shared/ui/InputField'
 import { SelectField } from '@/shared/ui/SelectField'
@@ -17,11 +18,17 @@ import styles from './CoursePicker.module.css'
 
 interface CreateCourseFormProps {
   onCourseCreated: (course: Course) => void
+  disabled?: boolean
+  onPendingChange?: (isPending: boolean) => void
 }
 
 const TEMP_PROGRAM_ID = 0
 
-export const CreateCourseForm = ({ onCourseCreated }: CreateCourseFormProps) => {
+export const CreateCourseForm = ({
+  onCourseCreated,
+  disabled = false,
+  onPendingChange,
+}: CreateCourseFormProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { control, handleSubmit, reset } = useForm<CreateCourseValues>({
@@ -43,25 +50,38 @@ export const CreateCourseForm = ({ onCourseCreated }: CreateCourseFormProps) => 
 
     setErrorMessage(null)
     setIsSubmitting(true)
+    onPendingChange?.(true)
 
-    const { data, error } = await postCourses({
-      body: course,
-    })
+    try {
+      const { data, error } = await postCourses({
+        body: course,
+      })
 
-    setIsSubmitting(false)
+      if (error) {
+        const message = getErrorMessage(error, 'Не удалось создать курс')
+        setErrorMessage(message)
+        notifyError('Курс не создан', message)
+        return
+      }
 
-    if (error) {
-      setErrorMessage(error.detail || 'Не удалось создать курс')
-      return
+      if (!data) {
+        const message = 'Сервер не вернул созданный курс'
+        setErrorMessage(message)
+        notifyError('Курс не создан', message)
+        return
+      }
+
+      onCourseCreated(data)
+      reset()
+      notifySuccess('Курс создан', 'Новый курс добавлен на холст.')
+    } catch (error) {
+      const message = getErrorMessage(error, 'Не удалось создать курс')
+      setErrorMessage(message)
+      notifyError('Курс не создан', message)
+    } finally {
+      setIsSubmitting(false)
+      onPendingChange?.(false)
     }
-
-    if (!data) {
-      setErrorMessage('Сервер не вернул созданный курс')
-      return
-    }
-
-    onCourseCreated(data)
-    reset()
   }
 
   return (
@@ -77,6 +97,7 @@ export const CreateCourseForm = ({ onCourseCreated }: CreateCourseFormProps) => 
         placeholder="Название курса"
         title="Название"
         className={styles.inputField}
+        disabled={disabled || isSubmitting}
       />
 
       <TextAreaField
@@ -86,6 +107,7 @@ export const CreateCourseForm = ({ onCourseCreated }: CreateCourseFormProps) => 
         placeholder="Коротко о содержании"
         title="Описание"
         className={styles.inputField}
+        disabled={disabled || isSubmitting}
       />
 
       <SelectField
@@ -94,11 +116,17 @@ export const CreateCourseForm = ({ onCourseCreated }: CreateCourseFormProps) => 
         options={courseTypeOptions}
         title="Тип"
         className={styles.inputField}
+        disabled={disabled || isSubmitting}
       />
 
       {errorMessage ? <p className={styles.formError}>{errorMessage}</p> : null}
 
-      <Button className={styles.courseActionButton} htmlType="submit" loading={isSubmitting}>
+      <Button
+        className={styles.courseActionButton}
+        htmlType="submit"
+        disabled={disabled || isSubmitting}
+        loading={isSubmitting}
+      >
         Добавить на холст
       </Button>
     </form>

@@ -6,11 +6,17 @@
 
   --color-bg-page: #f8f8f8; /* Фон страницы */
   --color-bg-container: #ffffff; /* Фон карточек/модалок */
+  --color-bg-dark: #0d1216; /* Темный фон приложения */
+  --color-bg-dark-soft: #171b22; /* Темные панели */
+  --color-bg-dark-elevated: #181e27; /* Приподнятые темные элементы */
+  --color-text-on-dark: #f7fbff; /* Текст на темном фоне */
+  --color-text-on-dark-secondary: rgb(245 247 251 / 72%); /* Второстепенный текст на темном фоне */
 
   --color-purple: #7188d4; /* Основной фиолетовый */
   --color-purple-hover: #8da2e8; /* При наведении */
   --color-purple-active: #5a6fb8; /* При клике */
   --color-purple-light: #e8edff; /* Светлый фон для фиолетового */
+  --color-accent-blue: #4aa3ff; /* Синий акцент темной темы */
 
   --color-success: #52c41a; /* Зеленый - успех */
   --color-success-bg: #f6ffed; /* Фон успеха */

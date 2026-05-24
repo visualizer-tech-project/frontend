@@ -19,6 +19,10 @@
   border-color: var(--color-warning);
 }
 
+.pending {
+  opacity: 0.76;
+}
+
 .node:hover .removeButton,
 .node:hover .editButton {
   transform: scale(1);
@@ -113,6 +117,12 @@
   transition: all 0.3s !important;
   visibility: hidden;
   opacity: 0;
+}
+
+.node .activeActionButton {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
 }
 
 .removeButton {

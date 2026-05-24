@@ -20,6 +20,7 @@ export const CourseFlowNode = ({ data }: NodeProps<Node<CourseFlowNodeData>>) =>
     canEditCourse,
     userId,
     progress,
+    isCourseRemoving,
   } = data
 
   const handleEditCourse = (e: MouseEvent) => {
@@ -29,10 +30,20 @@ export const CourseFlowNode = ({ data }: NodeProps<Node<CourseFlowNodeData>>) =>
     setIsEdit((prev) => !prev)
   }
 
+  const handleCourseRemoveClick = (e: MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (!isCourseRemoving) {
+      onCourseRemove(course.id)
+    }
+  }
+
   return (
     <div
       className={clsx(
         styles.node,
+        isCourseRemoving && styles.pending,
         progress?.status === 'completed' && styles.completed,
         progress?.status === 'in_progress' && styles.inProgress,
       )}
@@ -71,13 +82,21 @@ export const CourseFlowNode = ({ data }: NodeProps<Node<CourseFlowNodeData>>) =>
 
         {canEditFlow && (
           <Button
-            className={clsx(styles.removeButton, styles.circleButton, 'nodrag')}
+            className={clsx(
+              styles.removeButton,
+              styles.circleButton,
+              isCourseRemoving && styles.activeActionButton,
+              'nodrag',
+            )}
             color="default"
             aria-label="Удалить курс"
+            aria-busy={isCourseRemoving}
+            disabled={isCourseRemoving}
             htmlType="button"
             icon={<DeleteOutlined />}
+            loading={isCourseRemoving}
             variant="solid"
-            onClick={() => onCourseRemove(course.id)}
+            onClick={handleCourseRemoveClick}
           />
         )}
       </div>

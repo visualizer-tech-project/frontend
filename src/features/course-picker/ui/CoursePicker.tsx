@@ -1,5 +1,7 @@
 import { courseTypeLabels, type Course } from '@/entities/course'
+import { notifyError, notifySuccess } from '@/shared/lib/notify'
 import { useFloatingPanelDrag } from '@/shared/lib/useFloatingPanelDrag'
+import { wait } from '@/shared/lib/wait'
 import { Button } from '@/shared/ui/Button'
 import { SelectField } from '@/shared/ui/SelectField'
 import { useMemo, useState } from 'react'
@@ -18,16 +20,21 @@ interface CoursePickerProps {
   onExistingCourseAdd: (course: Course) => void
   onNewCourseAdd: (course: Course) => void
   programCourses: Course[]
+  isLoading?: boolean
 }
+
+type CoursePickerPendingAction = 'adding-existing' | 'creating-new'
 
 export const CoursePicker = ({
   courses,
   onExistingCourseAdd,
   onNewCourseAdd,
   programCourses,
+  isLoading = false,
 }: CoursePickerProps) => {
   const [searchValue, setSearchValue] = useState('')
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [pendingAction, setPendingAction] = useState<CoursePickerPendingAction | null>(null)
   const { control, reset, watch } = useForm<CoursePickerFormValues>({
     defaultValues: {
       courseId: null,
@@ -77,14 +84,35 @@ export const CoursePicker = ({
     return courseOptions.filter((option) => option.searchLabel.includes(normalizedSearch))
   }, [courseOptions, searchValue])
 
-  const handleAddExistingCourse = () => {
-    if (!selectedCourse) {
+  const isAddingExisting = pendingAction === 'adding-existing'
+  const isCreatingCourse = pendingAction === 'creating-new'
+  const isPending = Boolean(pendingAction)
+  const pendingMessage = isLoading
+    ? 'Загружаем курсы...'
+    : isAddingExisting
+      ? 'Добавляем курс на холст...'
+      : isCreatingCourse
+        ? 'Создаем новый курс...'
+        : null
+
+  const handleAddExistingCourse = async () => {
+    if (!selectedCourse || isPending || isLoading) {
       return
     }
 
-    onExistingCourseAdd(selectedCourse)
-    reset()
-    setSearchValue('')
+    setPendingAction('adding-existing')
+
+    try {
+      await wait(350)
+      onExistingCourseAdd(selectedCourse)
+      reset()
+      setSearchValue('')
+      notifySuccess('Курс добавлен', 'Курс успешно добавлен на холст.')
+    } catch {
+      notifyError('Не удалось добавить курс', 'Попробуйте выбрать курс еще раз.')
+    } finally {
+      setPendingAction(null)
+    }
   }
 
   return (
@@ -119,6 +147,7 @@ export const CoursePicker = ({
           <Button
             className={styles.collapseButton}
             color="default"
+            disabled={isPending}
             htmlType="button"
             variant="text"
             onClick={() => setIsCollapsed((value) => !value)}
@@ -126,6 +155,13 @@ export const CoursePicker = ({
             {isCollapsed ? 'Раскрыть' : 'Скрыть'}
           </Button>
         </div>
+
+        {pendingMessage ? (
+          <div className={styles.pendingState} role="status" aria-live="polite">
+            <span className={styles.pendingSpinner} />
+            {pendingMessage}
+          </div>
+        ) : null}
 
         {!isCollapsed && (
           <div className={styles.content}>
@@ -139,12 +175,16 @@ export const CoursePicker = ({
                 options={filteredCourseOptions}
                 placeholder="Поиск курса"
                 searchValue={searchValue}
+                loading={isLoading}
+                disabled={isLoading || isPending || !courses.length}
                 onSearch={setSearchValue}
               />
             </div>
 
             <div className={styles.selectedList} aria-label="Выбранный курс">
-              {selectedCourse ? (
+              {isLoading ? (
+                <p className={styles.empty}>Курсы загружаются...</p>
+              ) : selectedCourse ? (
                 <div className={styles.selectedCourse}>
                   <div>
                     <strong>{selectedCourse.title}</strong>
@@ -154,18 +194,27 @@ export const CoursePicker = ({
                   </div>
                   <Button
                     className={styles.courseActionButton}
-                    disabled={programCourseIds.has(selectedCourse.id)}
+                    disabled={programCourseIds.has(selectedCourse.id) || isPending || isLoading}
+                    loading={isAddingExisting}
                     onClick={handleAddExistingCourse}
                   >
                     {programCourseIds.has(selectedCourse.id) ? 'Уже добавлен' : 'Добавить'}
                   </Button>
                 </div>
+              ) : !courses.length ? (
+                <p className={styles.empty}>Доступных курсов пока нет.</p>
               ) : (
                 <p className={styles.empty}>Выбери курс из списка или добавь новый ниже.</p>
               )}
             </div>
 
-            <CreateCourseForm onCourseCreated={onNewCourseAdd} />
+            <CreateCourseForm
+              disabled={isLoading || isAddingExisting}
+              onCourseCreated={onNewCourseAdd}
+              onPendingChange={(isSubmitting) =>
+                setPendingAction(isSubmitting ? 'creating-new' : null)
+              }
+            />
           </div>
         )}
       </div>

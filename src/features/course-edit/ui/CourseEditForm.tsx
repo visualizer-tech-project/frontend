@@ -5,12 +5,14 @@ import {
   type CourseUpdate,
   type CreateCourseValues,
 } from '@/entities/course'
+import { notifyError, notifySuccess } from '@/shared/lib/notify'
+import { wait } from '@/shared/lib/wait'
 import { Button } from '@/shared/ui/Button'
 import { SelectField } from '@/shared/ui/SelectField'
 import { TextAreaField } from '@/shared/ui/TextAreaField'
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
-import type { FC } from 'react'
+import { useState, type FC } from 'react'
 import { useForm } from 'react-hook-form'
 import styles from './CourseEditForm.module.css'
 
@@ -27,6 +29,7 @@ export const CourseEditForm: FC<ICourseEditForm> = ({
   onClose,
   className,
 }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const {
     handleSubmit,
     control,
@@ -41,23 +44,33 @@ export const CourseEditForm: FC<ICourseEditForm> = ({
     resolver: zodResolver(createCourseSchema),
   })
 
-  const onSubmit = (values: CreateCourseValues) => {
-    const courseUpdateResponse = {
-      ...values,
-      program_id: course.program_id,
-      user_id: course.user_id,
-    } satisfies CourseUpdate
+  const onSubmit = async (values: CreateCourseValues) => {
+    setIsSubmitting(true)
 
-    console.log(courseUpdateResponse)
+    try {
+      const courseUpdateResponse = {
+        ...values,
+        program_id: course.program_id,
+        user_id: course.user_id,
+      } satisfies CourseUpdate
 
-    const newCourse: Course = {
-      ...course,
-      ...courseUpdateResponse,
-      updated_at: new Date().toISOString(),
+      await wait(350)
+      console.log(courseUpdateResponse)
+
+      const newCourse: Course = {
+        ...course,
+        ...courseUpdateResponse,
+        updated_at: new Date().toISOString(),
+      }
+
+      onCourseUpdate(newCourse)
+      notifySuccess('Курс обновлен', 'Изменения курса успешно сохранены.')
+      onClose()
+    } catch {
+      notifyError('Не удалось обновить курс', 'Попробуйте сохранить изменения еще раз.')
+    } finally {
+      setIsSubmitting(false)
     }
-
-    onCourseUpdate(newCourse)
-    onClose()
   }
 
   return (
@@ -81,7 +94,13 @@ export const CourseEditForm: FC<ICourseEditForm> = ({
       <SelectField control={control} name="type" title="Тип" options={courseTypeOptions} />
 
       <div className={styles.actions}>
-        <Button htmlType="submit" type="primary" variant="solid" disabled={!isDirty || !isValid}>
+        <Button
+          htmlType="submit"
+          type="primary"
+          variant="solid"
+          disabled={!isDirty || !isValid || isSubmitting}
+          loading={isSubmitting}
+        >
           Сохранить
         </Button>
 
@@ -90,6 +109,7 @@ export const CourseEditForm: FC<ICourseEditForm> = ({
           variant="text"
           type="text"
           className={styles.closeButton}
+          disabled={isSubmitting}
           onClick={onClose}
         >
           Отменить

@@ -8,9 +8,14 @@ import styles from './TracksGrid.module.css'
 interface TracksGridProps {
   tracks: CareerTrack[]
   actionLabel?: string
+  isLoading?: boolean
 }
 
-export const TracksGrid = ({ tracks, actionLabel = 'Подробнее' }: TracksGridProps) => {
+export const TracksGrid = ({
+  tracks,
+  actionLabel = 'Подробнее',
+  isLoading = false,
+}: TracksGridProps) => {
   const { searchValue } = useProgramsStore(useShallow(useProgramsState))
 
   const filteredTracks = useMemo(() => {
@@ -35,6 +40,7 @@ export const TracksGrid = ({ tracks, actionLabel = 'Подробнее' }: Track
         totalCount={tracks.length}
         hasActiveFilters={Boolean(searchValue.trim())}
         searchPlaceholder="Поиск трека"
+        isLoading={isLoading}
       />
 
       <CatalogList
@@ -42,6 +48,7 @@ export const TracksGrid = ({ tracks, actionLabel = 'Подробнее' }: Track
         getKey={(track) => track.id}
         renderItem={(track) => <TrackCard actionLabel={actionLabel} track={track} />}
         emptyDescription="Измените поисковый запрос, чтобы увидеть подходящие треки."
+        isLoading={isLoading}
       />
     </div>
   )

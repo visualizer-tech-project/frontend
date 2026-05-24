@@ -13,6 +13,9 @@ import {
 import { useUserState, useUserStore } from '@/entities/user'
 import { CoursePicker } from '@/features/course-picker'
 import { ROUTES } from '@/shared/config'
+import { notifyError, notifySuccess } from '@/shared/lib/notify'
+import { useMockLoading } from '@/shared/lib/useMockLoading'
+import { wait } from '@/shared/lib/wait'
 import { ProgramFlowCanvas } from '@/widgets/program-flow'
 import { useCallback, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
@@ -23,6 +26,7 @@ import styles from './ProgramsDetailsPage.module.css'
 export const ProgramDetailsPage = () => {
   const { programId } = useParams()
   const { user } = useUserStore(useShallow(useUserState))
+  const isProgramLoading = useMockLoading([programId, user?.id])
 
   // MOCKS
   const [courses, setCourses] = useState<Course[]>(
@@ -49,9 +53,31 @@ export const ProgramDetailsPage = () => {
       (item) => item.user_id === user?.id && courseIds.includes(item.course_id),
     )
   })
+  const [removingCourseIds, setRemovingCourseIds] = useState<Course['id'][]>([])
+  const [removingPrerequisiteIds, setRemovingPrerequisiteIds] = useState<Prerequisite['id'][]>([])
 
-  const handleCourseRemove = useCallback((courseId: number) => {
-    setCourses((currentCourses) => currentCourses.filter((course) => course.id !== courseId))
+  const handleCourseRemove = useCallback(async (courseId: number) => {
+    setRemovingCourseIds((current) =>
+      current.includes(courseId) ? current : [...current, courseId],
+    )
+
+    try {
+      // TODO: заменить задержку на удаление курса из программы через API.
+      await wait(600)
+
+      setCourses((currentCourses) => currentCourses.filter((course) => course.id !== courseId))
+      setPrerequisites((current) =>
+        current.filter(
+          (prerequisite) =>
+            prerequisite.course_id !== courseId && prerequisite.prerequisite_course_id !== courseId,
+        ),
+      )
+      notifySuccess('Курс удален', 'Курс успешно удален с холста.')
+    } catch {
+      notifyError('Не удалось удалить курс', 'Попробуйте удалить курс еще раз.')
+    } finally {
+      setRemovingCourseIds((current) => current.filter((id) => id !== courseId))
+    }
   }, [])
 
   const handleCourseUpdate = useCallback((updatedCourse: Course) => {
@@ -121,10 +147,12 @@ export const ProgramDetailsPage = () => {
             prerequisite.id === tempPrerequisite.id ? createdPrerequisite : prerequisite,
           ),
         )
+        notifySuccess('Связь добавлена', 'Зависимость между курсами успешно сохранена.')
       } catch {
         setPrerequisites((current) =>
           current.filter((prerequisite) => prerequisite.id !== tempPrerequisite.id),
         )
+        notifyError('Не удалось добавить связь', 'Изменение откатилось. Попробуйте еще раз.')
       }
     },
     [],
@@ -133,13 +161,20 @@ export const ProgramDetailsPage = () => {
   const handleEdgeDelete = useCallback(async (prerequisite: Prerequisite) => {
     const previousPrerequisite = prerequisite
 
+    setRemovingPrerequisiteIds((current) =>
+      current.includes(prerequisite.id) ? current : [...current, prerequisite.id],
+    )
     setPrerequisites((current) => current.filter((item) => item.id !== prerequisite.id))
 
     try {
       // TODO: заменить задержку на удаление prerequisite через API.
-      await new Promise((resolve) => setTimeout(resolve, 600))
+      await wait(600)
+      notifySuccess('Связь удалена', 'Зависимость между курсами успешно удалена.')
     } catch {
       setPrerequisites((current) => [...current, previousPrerequisite])
+      notifyError('Не удалось удалить связь', 'Изменение откатилось. Попробуйте еще раз.')
+    } finally {
+      setRemovingPrerequisiteIds((current) => current.filter((id) => id !== prerequisite.id))
     }
   }, [])
 
@@ -179,6 +214,9 @@ export const ProgramDetailsPage = () => {
           onEdgeConnect={handleEdgeConnect}
           onEdgeDelete={handleEdgeDelete}
           canEditFlow={canEditProgram}
+          isLoading={isProgramLoading}
+          isEdgeDeleting={removingPrerequisiteIds.length > 0}
+          removingCourseIds={removingCourseIds}
         />
 
         {canEditProgram && (
@@ -187,6 +225,7 @@ export const ProgramDetailsPage = () => {
             programCourses={courses}
             onExistingCourseAdd={handleExistingCourseAdd}
             onNewCourseAdd={handleNewCourseAdd}
+            isLoading={isProgramLoading}
           />
         )}
       </div>

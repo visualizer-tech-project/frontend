@@ -29,7 +29,7 @@ type UserStore = IUserState & IUserActions
 // }
 const initialState: IUserState = {
   user: {
-    id: 10,
+    id: 1,
     email: 'teacher@example.com',
     first_name: 'Vlavla',
     last_name: 'Kommers',

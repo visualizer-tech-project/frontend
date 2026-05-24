@@ -14,6 +14,7 @@ interface CreateCourseNodeProps {
   onProgressChange: (payload: ProgressSelectChangePayload) => void
   canEditFlow: boolean
   canEditCourse: boolean
+  isCourseRemoving: boolean
 }
 
 export type CourseFlowNodeData = Omit<CreateCourseNodeProps, 'index'>
@@ -28,6 +29,7 @@ export const createCourseNode = ({
   onProgressChange,
   canEditCourse,
   canEditFlow,
+  isCourseRemoving,
 }: CreateCourseNodeProps): Node<CourseFlowNodeData> => ({
   id: `${COURSE_NODE_PREFIX}-${course.id}`,
   type: COURSE_NODE_PREFIX,
@@ -44,5 +46,6 @@ export const createCourseNode = ({
     onProgressChange,
     canEditFlow,
     canEditCourse,
+    isCourseRemoving,
   },
 })

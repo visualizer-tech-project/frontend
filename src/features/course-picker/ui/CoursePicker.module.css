@@ -22,6 +22,36 @@
   margin-top: 10px;
 }
 
+.pendingState {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 12px;
+  padding: 9px 10px;
+  border: 1px solid rgb(140 195 255 / 18%);
+  border-radius: 10px;
+
+  color: rgb(245 247 251 / 78%);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+
+  background: rgb(140 195 255 / 8%);
+}
+
+.pendingSpinner {
+  flex: 0 0 auto;
+
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgb(245 247 251 / 22%);
+  border-top-color: #8cc3ff;
+  border-radius: 50%;
+
+  animation: pendingSpin 0.85s linear infinite;
+}
+
 .eyebrow,
 .formHeader span {
   font-size: 11px;
@@ -216,4 +246,10 @@
 .dragHandle:hover span,
 .dragHandle[data-dragging='true'] span {
   background: rgb(140 195 255 / 64%);
+}
+
+@keyframes pendingSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }

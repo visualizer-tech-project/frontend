@@ -7,12 +7,23 @@ interface IProgramsList {
   programs: Program[]
   actionLabel?: string
   className?: string
+  isLoading?: boolean
 }
 
-export const ProgramsList: FC<IProgramsList> = ({ programs, actionLabel, className }) => {
+export const ProgramsList: FC<IProgramsList> = ({
+  programs,
+  actionLabel,
+  className,
+  isLoading = false,
+}) => {
   return (
     <div className={clsx(styles.root, className)}>
-      {programs.length ? (
+      {isLoading ? (
+        <div className={styles.emptyState} aria-busy="true">
+          <h3>Загружаем программы</h3>
+          <p>Список появится сразу после ответа сервера.</p>
+        </div>
+      ) : programs.length ? (
         <div className={styles.grid}>
           {programs.map((program) => (
             <ProgramCard

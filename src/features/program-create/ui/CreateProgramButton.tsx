@@ -1,4 +1,6 @@
 import { ROUTES } from '@/shared/config'
+import { notifyError, notifySuccess } from '@/shared/lib/notify'
+import { wait } from '@/shared/lib/wait'
 import { Button } from '@/shared/ui/Button'
 import { InputField } from '@/shared/ui/InputField'
 import { TextAreaField } from '@/shared/ui/TextAreaField'
@@ -19,6 +21,7 @@ interface CreateProgramButtonProps {
 export const CreateProgramButton = ({ className, children }: CreateProgramButtonProps) => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { control, handleSubmit, reset } = useForm<CreateProgramValues>({
     defaultValues: {
       title: '',
@@ -38,10 +41,19 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
   }
 
   const onSubmit = async (values: CreateProgramValues) => {
-    // TODO: сохранить программу через API/mutation после подключения backend.
-    console.log(values)
+    setIsSubmitting(true)
 
-    navigate(`${ROUTES.PROGRAMS}/${1}`)
+    try {
+      // TODO: сохранить программу через API/mutation после подключения backend.
+      await wait(450)
+      console.log(values)
+      notifySuccess('Программа создана', 'Новая программа успешно сохранена.')
+      navigate(`${ROUTES.PROGRAMS}/${1}`)
+    } catch {
+      notifyError('Не удалось создать программу', 'Проверьте данные и повторите попытку.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -94,6 +106,7 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
             <Button
               className={styles.secondaryButton}
               color="default"
+              disabled={isSubmitting}
               htmlType="button"
               variant="text"
               onClick={handleClose}
@@ -106,6 +119,7 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
               color="default"
               htmlType="submit"
               icon={<SaveOutlined />}
+              loading={isSubmitting}
               variant="filled"
             >
               Создать
