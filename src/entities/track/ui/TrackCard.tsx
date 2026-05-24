@@ -1,6 +1,6 @@
-import { type CareerTrack } from '@/entities/track'
 import { Link } from 'react-router-dom'
-import styles from '../../program/ui/ProgramCard.module.css'
+import type { CareerTrack } from '../model/types'
+import styles from './TrackCard.module.css'
 
 interface TracksGridProps {
   track: CareerTrack

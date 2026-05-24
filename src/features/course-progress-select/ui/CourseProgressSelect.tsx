@@ -1,6 +1,5 @@
 import type { Course } from '@/entities/course'
-import type { ProgressStatus, UserProgress } from '@/entities/progress'
-import type { ProgressSelectChangePayload } from '@/entities/progress/model/types'
+import type { ProgressSelectChangePayload, ProgressStatus, UserProgress } from '@/entities/progress'
 import type { UserPublic } from '@/entities/user'
 import {
   deleteUsersByUserIdCoursesByCourseIdProgress,

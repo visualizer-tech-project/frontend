@@ -1,10 +1,9 @@
-import { type CareerTrack } from '@/entities/track'
+import { TrackCard, type CareerTrack } from '@/entities/track'
 import { ProgramsFilters, useProgramsState, useProgramsStore } from '@/features/programs'
 import { CatalogList } from '@/widgets/catalog'
 import { useMemo } from 'react'
 import { useShallow } from 'zustand/shallow'
 import styles from './TracksGrid.module.css'
-import { TrackCard } from '@/entities/track/ui/TrackCard'
 
 interface TracksGridProps {
   tracks: CareerTrack[]

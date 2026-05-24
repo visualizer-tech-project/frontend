@@ -1,4 +1,4 @@
-import { progressStatusLabels, type ProgressStatus } from '@/entities/progress/model/types'
+import { progressStatusLabels, type ProgressStatus } from '@/entities/progress'
 
 export const progressStatusOptions = [
   {
