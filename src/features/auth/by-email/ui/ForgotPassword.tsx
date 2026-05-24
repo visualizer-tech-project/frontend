@@ -4,26 +4,25 @@ import { InputField } from '@/shared/ui/InputField'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { loginSchema, type LoginValues } from '../model/validation'
+import { forgotPasswordSchema, type ForgotPasswordValues } from '../model/validation'
 import styles from './Auth.module.css'
 import { AuthWrapper } from './AuthWrapper'
 
-export const Login = () => {
-  const { control, handleSubmit } = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
+export const ForgotPassword = () => {
+  const { control, handleSubmit } = useForm<ForgotPasswordValues>({
+    resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
     mode: 'onBlur',
   })
 
-  const onSubmit = (values: LoginValues) => {
+  const onSubmit = (values: ForgotPasswordValues) => {
     console.log(values)
   }
 
   return (
-    <AuthWrapper title="Вход">
+    <AuthWrapper title="Восстановление пароля">
       <form className={styles.form}>
         <InputField
           control={control}
@@ -34,29 +33,15 @@ export const Login = () => {
           title="Ваша почта:"
         />
 
-        <InputField
-          control={control}
-          className={styles.input}
-          name="password"
-          type="password"
-          placeholder="Ваш пароль"
-          title="Ваш пароль:"
-          isPassword
-        />
-
         <div className={styles.bottom}>
           <div className={styles.bottomInfo}>
-            <div className={styles.switch}>
-              <span>Нет аккаунта?</span>
+            <div className={styles.switch} style={{ justifyContent: 'center' }}>
+              <span>Вспомнили пароль?</span>
 
-              <Link to="/register" className={styles.link}>
-                Создать
+              <Link to={ROUTES.LOGIN} className={styles.link}>
+                Войти
               </Link>
             </div>
-
-            <Link to={ROUTES.FORGOT_PASSWORD} className={styles.link}>
-              Забыли пароль?
-            </Link>
           </div>
 
           <Button
@@ -67,7 +52,7 @@ export const Login = () => {
             variant="filled"
             htmlType="submit"
           >
-            Войти
+            Отправить ссылку
           </Button>
         </div>
       </form>

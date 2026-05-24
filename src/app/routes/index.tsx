@@ -1,5 +1,5 @@
 import { Roles } from '@/entities/user'
-import { LoginPage, RegisterPage } from '@/pages/auth'
+import { ForgotPasswordPage, LoginPage, RegisterPage } from '@/pages/auth'
 import { Forbidden, NotFound } from '@/pages/error'
 import { HomePage } from '@/pages/home'
 import { ProfilePage } from '@/pages/profile'
@@ -62,6 +62,10 @@ export const routes = [
       {
         path: ROUTES.LOGIN,
         element: <LoginPage />,
+      },
+      {
+        path: ROUTES.FORGOT_PASSWORD,
+        element: <ForgotPasswordPage />,
       },
       {
         path: ROUTES.DEV,

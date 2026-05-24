@@ -65,6 +65,8 @@ export const ProgramsGrid = ({
         filteredCount={filteredPrograms.length}
         totalCount={programs.length}
         hasActiveFilters={Boolean(searchValue.trim())}
+        onBackClick={hasBackAction ? handleBackClick : undefined}
+        backLabel={backLabel}
         searchPlaceholder="Поиск программы"
       />
 

@@ -18,7 +18,7 @@ export const ProgramsList: FC<IProgramsList> = ({ programs, actionLabel, classNa
             <ProgramCard
               key={program.id}
               actionLabel={actionLabel || 'Подробнее'}
-              programId={program.id}
+              program={program}
             />
           ))}
         </div>

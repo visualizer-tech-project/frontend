@@ -1,38 +1,54 @@
-.content {
+.page {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
   width: 100%;
-  max-width: 500px !important;
-  max-height: 600px;
-  margin: 50px auto;
-  border: 1px solid rgb(255 255 255 / 8%);
-  border-radius: 30px;
+  padding: 56px 16px;
+}
+
+.content {
+  flex: 0 0 auto;
+  width: min(100% - 32px, 460px);
+  max-width: 460px !important;
+  margin: 0;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 18px;
 
   color: #f5f7fb;
 
-  background: rgb(17 22 28 / 84%);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 24px 80px rgb(0 0 0 / 24%);
+  background: linear-gradient(180deg, rgb(24 30 39 / 96%) 0%, rgb(13 18 24 / 98%) 100%);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 24px 80px rgb(0 0 0 / 36%),
+    0 0 0 1px rgb(140 195 255 / 6%) inset;
 }
 
 .container {
-  padding: 40px;
+  padding: 36px;
 }
 
 .title {
   margin: 0;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
 
-  font-size: 40px;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.1;
   text-align: center;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 .button {
-  margin-top: 5px;
+  width: 100%;
+  height: 48px !important;
+  margin-top: 6px;
 }
 
 .bottom {
@@ -46,9 +62,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+
+  color: rgb(245 247 251 / 86%);
+  font-size: 15px;
+  line-height: 1.35;
 }
 
 .switch {
@@ -56,14 +77,46 @@
   flex: 1;
   gap: 5px;
   align-items: center;
-
 }
 
 .link {
+  flex-shrink: 0;
+
   color: var(--color-purple);
+  font-weight: 600;
   transition: all 0.3s;
 }
 
 .link:hover {
   color: var(--color-purple-hover);
+}
+
+@media (width <= 544px) {
+  .page {
+    padding: 32px 12px;
+  }
+
+  .content {
+    width: 100%;
+    border-radius: 16px;
+  }
+
+  .container {
+    padding: 28px 22px;
+  }
+
+  .title {
+    margin-bottom: 24px;
+    font-size: 28px;
+  }
+
+  .bottomInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .switch {
+    flex: none;
+  }
 }

@@ -22,25 +22,25 @@ export interface IUserActions {
 
 type UserStore = IUserState & IUserActions
 
-const initialState: IUserState = {
-  user: null,
-  accessToken: null,
-  tokenType: null,
-}
 // const initialState: IUserState = {
-//   user: {
-//     id: 1,
-//     email: 'teacher@example.com',
-//     first_name: 'Vlavla',
-//     last_name: 'Kommers',
-//     role: 'student',
-//     status: 'confirmed',
-//     created_at: new Date().toISOString(),
-//     updated_at: new Date().toISOString(),
-//   },
-//   accessToken: 'mock-access-token',
-//   tokenType: 'bearer',
+//   user: null,
+//   accessToken: null,
+//   tokenType: null,
 // }
+const initialState: IUserState = {
+  user: {
+    id: 10,
+    email: 'teacher@example.com',
+    first_name: 'Vlavla',
+    last_name: 'Kommers',
+    role: 'teacher',
+    status: 'confirmed',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  accessToken: 'mock-access-token',
+  tokenType: 'bearer',
+}
 
 export const useUserStore = create<UserStore>()(
   devtools(

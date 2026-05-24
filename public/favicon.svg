@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Карта учебных программ">
+  <rect width="64" height="64" rx="14" fill="#f8fafc"/>
+  <path d="M20 21h20M24 42h16M22 23l8 16M40 23l-8 16" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="18" cy="21" r="8" fill="#14b8a6"/>
+  <circle cx="43" cy="21" r="8" fill="#2563eb"/>
+  <circle cx="31" cy="43" r="9" fill="#f59e0b"/>
+  <circle cx="18" cy="21" r="3" fill="#f8fafc"/>
+  <circle cx="43" cy="21" r="3" fill="#f8fafc"/>
+  <circle cx="31" cy="43" r="3.5" fill="#f8fafc"/>
+</svg>
