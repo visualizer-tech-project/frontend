@@ -32,7 +32,7 @@ export const routes = [
         element: <ProgramsPage />,
       },
       {
-        path: `${ROUTES.PROGRAMS}/:programId`,
+        path: ROUTES.PROGRAM_DETAILS,
         element: <ProgramDetailsPage />,
       },
       {

@@ -38,12 +38,7 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
   }
 
   const onSubmit = async (values: CreateProgramValues) => {
-    // const body: ProgramCreate = {
-    //   ...values,
-    //   description: values.description || undefined,
-    // }
-
-    // add saving program with react-query
+    // TODO: сохранить программу через API/mutation после подключения backend.
     console.log(values)
 
     navigate(`${ROUTES.PROGRAMS}/${1}`)

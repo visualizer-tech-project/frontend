@@ -5,8 +5,11 @@ import {
   type PrerequisiteCreate,
 } from '@/entities/prerequisite'
 import { mockPrograms } from '@/entities/program'
-import { mockProgress, type UserProgress } from '@/entities/progress'
-import type { ProgressSelectChangePayload } from '@/entities/progress/model/types'
+import {
+  mockProgress,
+  type ProgressSelectChangePayload,
+  type UserProgress,
+} from '@/entities/progress'
 import { useUserState, useUserStore } from '@/entities/user'
 import { CoursePicker } from '@/features/course-picker'
 import { ROUTES } from '@/shared/config'
@@ -105,16 +108,7 @@ export const ProgramDetailsPage = () => {
       })
 
       try {
-        // const createdPrerequisite = await postCoursesByCourseIdPrerequisites({
-        //   path: {
-        //     course_id: courseId,
-        //   },
-        //   body: {
-        //     prerequisite_course_id: prerequisiteCreate.prerequisite_course_id,
-        //   },
-        // })
-
-        // mock request delay
+        // TODO: заменить задержку на создание prerequisite через API.
         await new Promise((resolve) => setTimeout(resolve, 600))
 
         const createdPrerequisite: Prerequisite = {
@@ -142,14 +136,7 @@ export const ProgramDetailsPage = () => {
     setPrerequisites((current) => current.filter((item) => item.id !== prerequisite.id))
 
     try {
-      // await deleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseId({
-      //   path: {
-      //     course_id: prerequisite.course_id,
-      //     prerequisite_course_id: prerequisite.prerequisite_course_id
-      //   }
-      // })
-
-      // mock request delay
+      // TODO: заменить задержку на удаление prerequisite через API.
       await new Promise((resolve) => setTimeout(resolve, 600))
     } catch {
       setPrerequisites((current) => [...current, previousPrerequisite])
