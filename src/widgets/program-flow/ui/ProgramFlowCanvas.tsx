@@ -1,7 +1,6 @@
 import type { Course } from '@/entities/course'
 import type { Prerequisite, PrerequisiteCreate } from '@/entities/prerequisite'
-import type { UserProgress } from '@/entities/progress'
-import type { ProgressSelectChangePayload } from '@/entities/progress/model/types'
+import type { ProgressSelectChangePayload, UserProgress } from '@/entities/progress'
 import { useUserState, useUserStore } from '@/entities/user'
 import { getDagreLayoutedNodes } from '@/shared/lib/getDagreLayoutedNodes'
 import {
@@ -22,7 +21,7 @@ import '@xyflow/react/dist/style.css'
 import { useEffect, useMemo, useRef } from 'react'
 import { useShallow } from 'zustand/shallow'
 import { canEditCourse } from '../lib/canEditCourse'
-import { createCourseNode, type ICourseFlowNodeData } from '../lib/createCourseNode'
+import { createCourseNode, type CourseFlowNodeData } from '../lib/createCourseNode'
 import { mapConnectionToPrerequisiteCreate } from '../lib/mapConnectionToPrerequisiteCreate'
 import { mapDeletedEdgesToPrerequisites } from '../lib/mapDeletedEdgesToPrerequisites'
 import { mapPrerequisitesToEdges } from '../lib/mapPrerequisitesToEdges'
@@ -45,6 +44,12 @@ const nodeTypes: NodeTypes = {
   course: CourseFlowNode,
 }
 
+const flowProOptions = { hideAttribution: true }
+const fitViewOptions = {
+  minZoom: 0.8,
+  maxZoom: 0.8,
+}
+
 export const ProgramFlowCanvas = ({
   courses,
   prerequisites,
@@ -57,17 +62,33 @@ export const ProgramFlowCanvas = ({
   onEdgeDelete,
 }: ProgramFlowCanvasProps) => {
   const { user } = useUserStore(useShallow(useUserState))
+  const activeUserId = user?.id ?? null
 
   const isLayoutAppliedRef = useRef(false)
+
+  const progressByCourseId = useMemo(() => {
+    const map = new Map<Course['id'], UserProgress>()
+
+    if (!activeUserId) {
+      return map
+    }
+
+    progress.forEach((item) => {
+      if (item.user_id === activeUserId) {
+        map.set(item.course_id, item)
+      }
+    })
+
+    return map
+  }, [activeUserId, progress])
 
   const initialNodes = useMemo(
     () =>
       courses.map((course, index) =>
         createCourseNode({
           course,
-          userId: user?.id ?? null,
-          progress:
-            progress.find((el) => el.course_id === course.id && el.user_id === user?.id) ?? null,
+          userId: activeUserId,
+          progress: progressByCourseId.get(course.id) ?? null,
           index,
           onCourseRemove,
           onCourseUpdate,
@@ -76,7 +97,16 @@ export const ProgramFlowCanvas = ({
           canEditCourse: canEditCourse(user, course),
         }),
       ),
-    [courses, onCourseRemove, canEditFlow, onCourseUpdate, user, onProgressChange, progress],
+    [
+      courses,
+      activeUserId,
+      progressByCourseId,
+      onCourseRemove,
+      onCourseUpdate,
+      onProgressChange,
+      canEditFlow,
+      user,
+    ],
   )
 
   const initialEdges = useMemo(
@@ -88,7 +118,7 @@ export const ProgramFlowCanvas = ({
     [prerequisites],
   )
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node<ICourseFlowNodeData>>(initialNodes)
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node<CourseFlowNodeData>>(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
 
   useEffect(() => {
@@ -110,9 +140,8 @@ export const ProgramFlowCanvas = ({
       return courses.map((course, index) => {
         const nextNode = createCourseNode({
           course,
-          userId: user?.id ?? null,
-          progress:
-            progress.find((el) => el.course_id === course.id && el.user_id === user?.id) ?? null,
+          userId: activeUserId,
+          progress: progressByCourseId.get(course.id) ?? null,
           index,
           onCourseRemove,
           onCourseUpdate,
@@ -135,12 +164,13 @@ export const ProgramFlowCanvas = ({
     })
   }, [
     courses,
+    activeUserId,
+    progressByCourseId,
     onCourseRemove,
     setNodes,
     canEditFlow,
     onCourseUpdate,
     onProgressChange,
-    progress,
     user,
   ])
 
@@ -187,11 +217,8 @@ export const ProgramFlowCanvas = ({
           onEdgesDelete={canEditFlow ? handleEdgesDelete : undefined}
           onEdgesChange={canEditFlow ? onEdgesChange : undefined}
           onNodesChange={onNodesChange}
-          proOptions={{ hideAttribution: true }}
-          fitViewOptions={{
-            minZoom: 0.8,
-            maxZoom: 0.8,
-          }}
+          proOptions={flowProOptions}
+          fitViewOptions={fitViewOptions}
         >
           <Background variant={BackgroundVariant.Dots} />
           <Controls className={styles.controls} />

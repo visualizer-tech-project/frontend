@@ -1,11 +1,10 @@
 import type { Course } from '@/entities/course'
-import type { UserProgress } from '@/entities/progress'
-import type { ProgressSelectChangePayload } from '@/entities/progress/model/types'
+import type { ProgressSelectChangePayload, UserProgress } from '@/entities/progress'
 import type { UserPublic } from '@/entities/user'
 import type { Node } from '@xyflow/react'
 import { COURSE_NODE_PREFIX } from '../model/types'
 
-interface createCourseNodePropsTypes {
+interface CreateCourseNodeProps {
   course: Course
   userId: UserPublic['id'] | null
   index: number
@@ -17,7 +16,7 @@ interface createCourseNodePropsTypes {
   canEditCourse: boolean
 }
 
-export type ICourseFlowNodeData = Omit<createCourseNodePropsTypes, 'index'>
+export type CourseFlowNodeData = Omit<CreateCourseNodeProps, 'index'>
 
 export const createCourseNode = ({
   course,
@@ -29,7 +28,7 @@ export const createCourseNode = ({
   onProgressChange,
   canEditCourse,
   canEditFlow,
-}: createCourseNodePropsTypes): Node<ICourseFlowNodeData> => ({
+}: CreateCourseNodeProps): Node<CourseFlowNodeData> => ({
   id: `${COURSE_NODE_PREFIX}-${course.id}`,
   type: COURSE_NODE_PREFIX,
   position: {

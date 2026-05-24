@@ -6,10 +6,10 @@ import { DeleteOutlined } from '@ant-design/icons'
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import clsx from 'clsx'
 import { useState, type MouseEvent } from 'react'
-import type { ICourseFlowNodeData } from '../lib/createCourseNode'
+import type { CourseFlowNodeData } from '../lib/createCourseNode'
 import styles from './CourseFlowNode.module.css'
 
-export const CourseFlowNode = ({ data }: NodeProps<Node<ICourseFlowNodeData>>) => {
+export const CourseFlowNode = ({ data }: NodeProps<Node<CourseFlowNodeData>>) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const {
     course,
@@ -20,7 +20,7 @@ export const CourseFlowNode = ({ data }: NodeProps<Node<ICourseFlowNodeData>>) =
     canEditCourse,
     userId,
     progress,
-  } = data as ICourseFlowNodeData
+  } = data
 
   const handleEditCourse = (e: MouseEvent) => {
     e.preventDefault()
