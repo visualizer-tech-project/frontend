@@ -48,7 +48,6 @@ export const CourseEditForm: FC<ICourseEditForm> = ({
       user_id: course.user_id,
     } satisfies CourseUpdate
 
-    // update course
     console.log(courseUpdateResponse)
 
     const newCourse: Course = {
@@ -62,7 +61,7 @@ export const CourseEditForm: FC<ICourseEditForm> = ({
   }
 
   return (
-    <form className={clsx(className, styles.form, 'nodrag')}>
+    <form className={clsx(className, styles.form, 'nodrag')} onSubmit={handleSubmit(onSubmit)}>
       <TextAreaField
         control={control}
         name="title"
@@ -82,13 +81,7 @@ export const CourseEditForm: FC<ICourseEditForm> = ({
       <SelectField control={control} name="type" title="Тип" options={courseTypeOptions} />
 
       <div className={styles.actions}>
-        <Button
-          htmlType="submit"
-          variant="solid"
-          className={styles.submitButton}
-          disabled={!isDirty || !isValid}
-          onClick={handleSubmit(onSubmit)}
-        >
+        <Button htmlType="submit" type="primary" variant="solid" disabled={!isDirty || !isValid}>
           Сохранить
         </Button>
 
