@@ -1,0 +1,39 @@
+.root:global(.ant-segmented) {
+  padding: 4px;
+  border: 1px solid rgb(140 195 255 / 22%);
+  border-radius: 999px;
+
+  background: rgb(17 22 28 / 92%);
+  box-shadow: 0 16px 38px rgb(0 0 0 / 28%);
+}
+
+.root :global(.ant-segmented-group) {
+  gap: 2px;
+}
+
+.root :global(.ant-segmented-item) {
+  min-height: 32px;
+  border-radius: 999px;
+
+  color: rgb(245 247 251 / 72%);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.root :global(.ant-segmented-item-label) {
+  min-height: 32px;
+  padding: 0 12px;
+  line-height: 32px;
+}
+
+.root :global(.ant-segmented-thumb),
+.root :global(.ant-segmented-item-selected) {
+  border-radius: 999px;
+  color: #06111d;
+  background: #8cc3ff;
+}
+
+.root :global(.ant-segmented-item:not(.ant-segmented-item-selected):hover) {
+  color: #f7fbff !important;
+  background: rgb(255 255 255 / 8%);
+}

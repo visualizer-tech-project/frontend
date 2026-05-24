@@ -23,6 +23,15 @@
   opacity: 0.76;
 }
 
+.dimmed {
+  opacity: 0.34;
+  filter: grayscale(0.5) saturate(0.65);
+}
+
+.dimmed:hover {
+  opacity: 0.52;
+}
+
 .node:hover .removeButton,
 .node:hover .editButton {
   transform: scale(1);
