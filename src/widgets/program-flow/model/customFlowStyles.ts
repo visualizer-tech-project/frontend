@@ -16,3 +16,15 @@ export const defaultEdgeOptions = {
     color: '#8cc3ff',
   },
 }
+
+export const dimmedEdgeOptions = {
+  style: {
+    stroke: 'rgb(140 195 255 / 32%)',
+    strokeWidth: 1.5,
+  },
+  animated: false,
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+    color: 'rgb(140 195 255 / 32%)',
+  },
+}

@@ -2,6 +2,12 @@ import type { Course } from '@/entities/course'
 import type { Prerequisite, PrerequisiteCreate } from '@/entities/prerequisite'
 import type { ProgressSelectChangePayload, UserProgress } from '@/entities/progress'
 import { useUserState, useUserStore } from '@/entities/user'
+import {
+  COURSE_TYPE_FILTER_ALL,
+  CourseTypeFilter,
+  shouldDimCourseByTypeFilter,
+  type CourseTypeFilterValue,
+} from '@/features/course-type-filter'
 import { getDagreLayoutedNodes } from '@/shared/lib/getDagreLayoutedNodes'
 import {
   Background,
@@ -18,13 +24,13 @@ import {
   type NodeTypes,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useShallow } from 'zustand/shallow'
 import { canEditCourse } from '../lib/canEditCourse'
 import { createCourseNode, type CourseFlowNodeData } from '../lib/createCourseNode'
 import { mapConnectionToPrerequisiteCreate } from '../lib/mapConnectionToPrerequisiteCreate'
 import { mapDeletedEdgesToPrerequisites } from '../lib/mapDeletedEdgesToPrerequisites'
-import { mapPrerequisitesToEdges } from '../lib/mapPrerequisitesToEdges'
+import { mapPrerequisitesToCourseTypeFilteredEdges } from '../lib/mapPrerequisitesToCourseTypeFilteredEdges'
 import { CourseFlowNode } from './CourseFlowNode'
 import styles from './ProgramFlowCanvas.module.css'
 
@@ -70,10 +76,22 @@ export const ProgramFlowCanvas = ({
   const { user } = useUserStore(useShallow(useUserState))
   const activeUserId = user?.id ?? null
 
+  const [courseTypeFilter, setCourseTypeFilter] =
+    useState<CourseTypeFilterValue>(COURSE_TYPE_FILTER_ALL)
   const isLayoutAppliedRef = useRef(false)
   const removingCourseIdSet = useMemo(() => new Set(removingCourseIds), [removingCourseIds])
   const isInteractionLocked = isLoading || isEdgeDeleting
   const canEditEdges = canEditFlow && !isInteractionLocked
+
+  const dimmedCourseIdSet = useMemo(
+    () =>
+      new Set(
+        courses
+          .filter((course) => shouldDimCourseByTypeFilter(course.type, courseTypeFilter))
+          .map((course) => course.id),
+      ),
+    [courses, courseTypeFilter],
+  )
 
   const progressByCourseId = useMemo(() => {
     const map = new Map<Course['id'], UserProgress>()
@@ -105,6 +123,7 @@ export const ProgramFlowCanvas = ({
           canEditFlow: canEditFlow,
           canEditCourse: canEditCourse(user, course),
           isCourseRemoving: removingCourseIdSet.has(course.id),
+          isDimmed: dimmedCourseIdSet.has(course.id),
         }),
       ),
     [
@@ -117,16 +136,13 @@ export const ProgramFlowCanvas = ({
       canEditFlow,
       user,
       removingCourseIdSet,
+      dimmedCourseIdSet,
     ],
   )
 
   const initialEdges = useMemo(
-    () =>
-      mapPrerequisitesToEdges(prerequisites).map((edge) => ({
-        ...edge,
-        type: 'step',
-      })),
-    [prerequisites],
+    () => mapPrerequisitesToCourseTypeFilteredEdges(prerequisites, dimmedCourseIdSet),
+    [dimmedCourseIdSet, prerequisites],
   )
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node<CourseFlowNodeData>>(initialNodes)
@@ -160,6 +176,7 @@ export const ProgramFlowCanvas = ({
           canEditFlow: canEditFlow,
           canEditCourse: canEditCourse(user, course),
           isCourseRemoving: removingCourseIdSet.has(course.id),
+          isDimmed: dimmedCourseIdSet.has(course.id),
         })
 
         const currentNode = currentNodeById.get(nextNode.id)
@@ -185,16 +202,12 @@ export const ProgramFlowCanvas = ({
     onProgressChange,
     user,
     removingCourseIdSet,
+    dimmedCourseIdSet,
   ])
 
   useEffect(() => {
-    setEdges(
-      mapPrerequisitesToEdges(prerequisites).map((edge) => ({
-        ...edge,
-        type: 'step',
-      })),
-    )
-  }, [prerequisites, setEdges])
+    setEdges(mapPrerequisitesToCourseTypeFilteredEdges(prerequisites, dimmedCourseIdSet))
+  }, [dimmedCourseIdSet, prerequisites, setEdges])
 
   const handleEdgesDelete = (deletedEdges: Edge[]) => {
     const deletedPrerequisites = mapDeletedEdgesToPrerequisites(deletedEdges, prerequisites)
@@ -206,7 +219,6 @@ export const ProgramFlowCanvas = ({
     const prerequisiteCreateResult = mapConnectionToPrerequisiteCreate(connection)
 
     if (!prerequisiteCreateResult) {
-      console.log('no prerequisiteCreateResult')
       return
     }
 
@@ -250,6 +262,15 @@ export const ProgramFlowCanvas = ({
           />
         </ReactFlow>
       </ReactFlowProvider>
+
+      {!isLoading && courses.length ? (
+        <CourseTypeFilter
+          className={styles.typeFilter}
+          disabled={isInteractionLocked}
+          value={courseTypeFilter}
+          onChange={setCourseTypeFilter}
+        />
+      ) : null}
 
       {isLoading ? (
         <div className={styles.loading} aria-live="polite">

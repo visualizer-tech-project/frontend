@@ -42,6 +42,13 @@
   background: rgb(17 17 18 / 90%) !important;
 }
 
+.typeFilter {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 6;
+}
+
 .empty {
   pointer-events: none;
 
