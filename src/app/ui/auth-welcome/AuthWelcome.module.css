@@ -1,0 +1,94 @@
+.overlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+  background: rgb(5 9 14 / 62%);
+  backdrop-filter: blur(8px);
+}
+
+.card {
+  width: min(100%, 520px);
+  padding: 34px;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: 20px;
+
+  color: #f7fbff;
+  text-align: center;
+
+  background:
+    linear-gradient(135deg, rgb(19 26 34 / 96%) 0%, rgb(10 15 21 / 98%) 100%),
+    radial-gradient(circle at 20% 12%, rgb(74 163 255 / 18%), transparent 34%);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 34%);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 14px;
+  padding: 7px 12px;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 999px;
+
+  color: rgb(245 247 251 / 72%);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+
+  background: rgb(255 255 255 / 7%);
+}
+
+.title {
+  margin: 0;
+
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.description {
+  margin: 16px 0 0;
+
+  color: rgb(245 247 251 / 76%);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+
+  margin-top: 28px;
+}
+
+@media (width <= 544px) {
+  .overlay {
+    padding: 14px;
+  }
+
+  .card {
+    padding: 28px 20px;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}
