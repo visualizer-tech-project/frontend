@@ -1,3 +1,4 @@
+import { ROUTES } from '@/shared/config'
 import { Link } from 'react-router-dom'
 import type { CareerTrack } from '../model/types'
 import styles from './TrackCard.module.css'
@@ -9,7 +10,7 @@ interface TracksGridProps {
 
 export const TrackCard = ({ track, actionLabel = 'Подробнее' }: TracksGridProps) => {
   return (
-    <Link className={styles.card} to={`/tracks/${track.id}`}>
+    <Link className={styles.card} to={`${ROUTES.TRACKS}/${track.id}`}>
       <div className={styles.metaRow}>
         <span className={styles.chip}>Трек</span>
         <span className={styles.chip}>{track.courses_count} курсов</span>

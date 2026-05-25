@@ -41,7 +41,7 @@ export const mockTracks: CareerTrack[] = [
     user_id: 1,
     created_at: '2026-02-01T00:00:00.000Z',
     updated_at: '2026-02-10T00:00:00.000Z',
-    courses_count: 8,
+    courses_count: 3,
     user: teachers[0],
   },
   {
@@ -51,7 +51,7 @@ export const mockTracks: CareerTrack[] = [
     user_id: 2,
     created_at: '2026-02-02T00:00:00.000Z',
     updated_at: '2026-02-11T00:00:00.000Z',
-    courses_count: 10,
+    courses_count: 3,
     user: teachers[1],
   },
   {
@@ -61,7 +61,7 @@ export const mockTracks: CareerTrack[] = [
     user_id: 3,
     created_at: '2026-02-03T00:00:00.000Z',
     updated_at: '2026-02-12T00:00:00.000Z',
-    courses_count: 7,
+    courses_count: 3,
     user: teachers[2],
   },
 ]

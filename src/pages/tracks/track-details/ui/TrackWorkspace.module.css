@@ -1,0 +1,7 @@
+.page {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  flex: 1;
+  padding-top: clamp(32px, 6vh, 64px);
+  color: var(--color-text-on-dark);
+}

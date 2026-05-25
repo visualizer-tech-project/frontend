@@ -1,0 +1,5 @@
+@media (width <= 640px) {
+  .button:global(.ant-btn) {
+    width: 100%;
+  }
+}
