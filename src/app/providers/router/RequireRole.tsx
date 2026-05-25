@@ -1,6 +1,8 @@
+import { type Role, useUserState, useUserStore } from '@/entities/user'
+import { ROUTES } from '@/shared/config'
 import type { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Roles, type Role } from '@/entities/user'
+import { useShallow } from 'zustand/shallow'
 
 interface IRequireRole {
   children: ReactNode
@@ -8,17 +10,14 @@ interface IRequireRole {
 }
 
 export const RequireRole = ({ children, roles }: IRequireRole) => {
-  const user = {
-    isAuth: true,
-    role: Roles.USER,
-  }
+  const { accessToken, user } = useUserStore(useShallow(useUserState))
 
-  if (!user.isAuth) {
-    return <Navigate to='/auth' replace />
+  if (!accessToken || !user) {
+    return <Navigate to={ROUTES.LOGIN} replace />
   }
 
   if (roles && !roles.includes(user.role)) {
-    return <Navigate to='/forbidden' replace />
+    return <Navigate to={ROUTES.FORBIDDEN} replace />
   }
 
   return children

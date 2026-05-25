@@ -1,10 +1,15 @@
 .layout {
   min-height: 100vh;
+  background: var(--color-bg-page);
+  display: flex;
+  flex-direction: column;
 }
 
 .main {
+  flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: max-content;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at top, rgb(74 163 255 / 22%), transparent 40%),
+    linear-gradient(180deg, #0d1216 0%, #171b22 100%);
 }

@@ -1,0 +1,255 @@
+.root {
+  width: min(330px, calc(100vw - 24px));
+  padding: 16px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 0 0 14px 14px;
+
+  color: #f7fbff;
+
+  background: rgb(16 16 17 / 94%);
+  box-shadow: 0 22px 58px rgb(0 0 0 / 34%);
+  backdrop-filter: blur(16px);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.content {
+  margin-top: 10px;
+}
+
+.pendingState {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 12px;
+  padding: 9px 10px;
+  border: 1px solid rgb(140 195 255 / 18%);
+  border-radius: 10px;
+
+  color: rgb(245 247 251 / 78%);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+
+  background: rgb(140 195 255 / 8%);
+}
+
+.pendingSpinner {
+  flex: 0 0 auto;
+
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgb(245 247 251 / 22%);
+  border-top-color: #8cc3ff;
+  border-radius: 50%;
+
+  animation: pendingSpin 0.85s linear infinite;
+}
+
+.eyebrow,
+.formHeader span {
+  font-size: 11px;
+  font-weight: 800;
+  color: rgb(245 247 251 / 40%);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.panelHeader strong {
+  font-size: 11px;
+  font-weight: 800;
+  color: rgb(245 247 251 / 58%);
+}
+
+.searchRow {
+  gap: 8px;
+  align-items: stretch;
+}
+
+.courseSelect {
+  width: 100%;
+}
+
+.courseSelect :global(.ant-select-selector),
+.iconButton {
+  min-height: 44px;
+  border: none !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+  background: #262526 !important;
+}
+
+.iconButton {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.selectedList {
+  margin: 14px 0;
+  padding-top: 14px;
+  border-top: 1px solid rgb(227 227 227 / 18%);
+}
+
+.selectedCourse {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.selectedCourse div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.selectedCourse strong {
+  overflow-wrap: anywhere;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #f7fbff;
+}
+
+.empty {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: rgb(245 247 251 / 58%);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid rgb(227 227 227 / 18%);
+}
+
+.formHeader h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputField {
+  min-width: 0;
+}
+
+.field > span {
+  font-size: 12px;
+  font-weight: 800;
+  color: rgb(245 247 251 / 62%);
+}
+
+.field small {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ff8d8d;
+}
+
+.formError {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #ff8d8d;
+}
+
+.form :global(.ant-input) {
+  min-height: 38px;
+}
+
+.form :global(.ant-input::placeholder) {
+  color: rgb(245 247 251 / 36%);
+}
+
+.courseActionButton {
+  color: #06111d !important;
+  border: 1px solid rgb(140 195 255 / 34%) !important;
+  background: #8cc3ff !important;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 22%) !important;
+}
+
+.courseActionButton:hover {
+  transform: translateY(-1px) !important;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (width <= 640px) {
+  .root {
+    padding: 14px;
+  }
+
+  .selectedCourse {
+    grid-template-columns: 1fr;
+  }
+}
+
+.floatingPanel {
+  touch-action: none;
+
+  position: absolute;
+  z-index: 10;
+}
+
+.dragHandle {
+  cursor: grab;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 24px;
+  margin: 0 0 -1px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+
+  background: rgb(16 16 17 / 94%);
+  box-shadow: 0 16px 44px rgb(0 0 0 / 22%);
+  backdrop-filter: blur(16px);
+}
+
+.dragHandle span {
+  width: 46px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgb(245 247 251 / 22%);
+}
+
+.dragHandle[data-dragging='true'] {
+  cursor: grabbing;
+}
+
+.dragHandle:hover span,
+.dragHandle[data-dragging='true'] span {
+  background: rgb(140 195 255 / 64%);
+}
+
+@keyframes pendingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,203 @@
+.node {
+  position: relative;
+
+  width: 260px;
+  border: 2px solid #8cc3ff;
+  border-radius: 16px;
+
+  color: #f7fbff;
+
+  background: #1c1a1c;
+  box-shadow: 0 18px 34px rgb(0 0 0 / 30%);
+}
+
+.completed {
+  border-color: var(--color-success);
+}
+
+.inProgress {
+  border-color: var(--color-warning);
+}
+
+.pending {
+  opacity: 0.76;
+}
+
+.node:hover .removeButton,
+.node:hover .editButton {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  padding: 12px 14px;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+}
+
+.header span {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.header strong {
+  font-size: 11px;
+  font-weight: 800;
+  color: #8cc3ff;
+  text-transform: uppercase;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content {
+  padding: 14px;
+}
+
+.body h3,
+.body p {
+  margin: 0;
+}
+
+.body h3 {
+  overflow-wrap: anywhere;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+
+  background: #2a292a;
+}
+
+.body p {
+  overflow-wrap: anywhere;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: rgb(245 247 251 / 72%);
+  text-align: center;
+
+  background: #262526;
+}
+
+.actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.circleButton {
+  width: 32px !important;
+  height: 32px !important;
+  margin: 0;
+  padding: 0 !important;
+  border-radius: 50% !important;
+
+  font-size: 15px !important;
+  box-shadow: none !important;
+  transform: scale(0.6);
+  transition: all 0.3s !important;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.node .activeActionButton {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.removeButton {
+  background: #fff !important;
+}
+
+.editButton {
+  background: #fff !important;
+}
+
+.editButton:global(.ant-btn) span {
+  color: #10b981 !important;
+}
+
+.removeButton:global(.ant-btn) span {
+  color: var(--color-error) !important;
+}
+
+.circle:global(.ant-btn):hover,
+.circle:global(.ant-btn):focus-visible {
+  transform: scale(1.05) !important;
+}
+
+.circle:global(.ant-btn):active {
+  transform: translateY(0);
+}
+
+.handle {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgb(140 195 255 / 42%);
+  background: #8cc3ff;
+}
+
+.handleCompleted {
+  background: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.handleInProgress {
+  background: var(--color-warning);
+  border-color: var(--color-warning);
+}
+
+.completedLabel {
+  color: var(--color-success) !important;
+}
+
+.inProgressLabel {
+  color: var(--color-warning) !important;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 10px 12px;
+  background: #262526;
+  border-radius: 10px;
+}
+
+.text {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: rgb(245 247 251 / 72%);
+  text-align: center;
+}
+
+.statusWrapper {
+  margin-top: 20px;
+}
+
+.selectInput {
+  margin-top: 5px;
+}

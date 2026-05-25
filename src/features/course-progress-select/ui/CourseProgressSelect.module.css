@@ -1,0 +1,3 @@
+.select :global(.ant-select) {
+  border: none !important;
+}

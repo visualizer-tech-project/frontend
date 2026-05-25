@@ -1,0 +1,14 @@
+.root {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  width: 100%;
+  min-width: 0;
+}
+
+.rootTransparent {
+  background: transparent;
+}

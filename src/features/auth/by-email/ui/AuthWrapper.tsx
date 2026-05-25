@@ -9,12 +9,14 @@ interface IAuthWrapper {
 
 export const AuthWrapper = ({ children, title }: IAuthWrapper) => {
   return (
-    <Content className={styles.content}>
-      <div className={styles.container}>
-        <h1 className={styles.title}>{title}</h1>
+    <div className={styles.page}>
+      <Content className={styles.content}>
+        <div className={styles.container}>
+          <h1 className={styles.title}>{title}</h1>
 
-        {children}
-      </div>
-    </Content>
+          {children}
+        </div>
+      </Content>
+    </div>
   )
 }

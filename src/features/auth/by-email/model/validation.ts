@@ -26,3 +26,9 @@ export const loginSchema = z.object({
 })
 
 export type LoginValues = z.infer<typeof loginSchema>
+
+export const forgotPasswordSchema = z.object({
+  email: z.email('Укажите корректную почту'),
+})
+
+export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>

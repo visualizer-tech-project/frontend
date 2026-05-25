@@ -1,1 +1,1 @@
-export { Forbidden, PageNotFound } from './ui/'
+export { Forbidden, NotFound } from './ui/'

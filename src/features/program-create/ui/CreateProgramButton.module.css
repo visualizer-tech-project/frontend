@@ -1,0 +1,177 @@
+.modal :global(.ant-modal-content) {
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 18px;
+  color: #f7fbff;
+  background: rgb(16 16 17 / 98%) !important;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 44%);
+  padding: 0 !important;
+}
+
+.modal :global(.ant-modal-container) {
+  background: #f7fbff;
+  padding: 30px;
+}
+
+.modal :global(.ant-modal-close) {
+  color: #06111d;
+  opacity: 0.6;
+}
+
+.modal :global(.ant-modal-close:hover) {
+  opacity: 1;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.formHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formHeader span {
+  font-size: 11px;
+  font-weight: 800;
+  color: rgb(245 247 251 / 40%);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.formHeader h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.summary div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 10px 12px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 12px;
+
+  background: #1c1a1c;
+}
+
+.summary span {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(245 247 251 / 58%);
+}
+
+.summary strong {
+  font-size: 15px;
+  color: #8cc3ff;
+}
+
+.field {
+  min-width: 0;
+  --color-text-light: var(--color-text) !important;
+}
+
+.field :global(.ant-input),
+.field :global(textarea.ant-input),
+.field :global(.ant-select-selector) {
+  border-color: rgba(6, 17, 29, 0.2) !important;
+  color: #06111d !important;
+  background: #f7fbff !important;
+}
+
+.field :global(.ant-input),
+.field :global(.ant-select-selector) {
+  min-height: 40px;
+}
+
+.field :global(.ant-input::placeholder),
+.field :global(textarea::placeholder) {
+  color: rgb(245 247 251 / 36%);
+}
+
+.field :global(.ant-select) {
+  width: 100%;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  gap: 12px;
+}
+
+.message {
+  padding: 10px 12px;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: rgb(245 247 251 / 82%);
+
+  background: #1c1a1c;
+}
+
+.message[data-type='success'] {
+  border-color: rgb(140 195 255 / 34%);
+  color: #d8ecff;
+}
+
+.message[data-type='error'] {
+  border-color: rgb(255 141 141 / 34%);
+  color: #ffd6d6;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.secondaryButton {
+  color: #06111d !important;
+  border-color: #06111d !important;
+}
+
+.primaryButton {
+  background: #0d1216 !important;
+  color: #f4f8fb !important;
+}
+
+@media (width <= 640px) {
+  .root {
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+  }
+
+  .button:global(.ant-btn) {
+    width: 100%;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .primaryButton:global(.ant-btn),
+  .secondaryButton:global(.ant-btn) {
+    width: 100%;
+  }
+}

@@ -1,6 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+html {
+  min-height: 100%;
+}
+
+body,
+#root {
+  min-height: 100vh;
+  margin: 0;
+}
+
 body {
+  font-family: Montserrat, 'Segoe UI', sans-serif;
   font-size: 16px;
   line-height: 1.2;
   color: var(--color-text);
+
   background-color: var(--color-white);
+
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ant-notification-notice-wrapper {
+  overflow: visible !important;
+  border-radius: 16px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.ant-notification-notice {
+  overflow: hidden !important;
+  border: 1px solid rgb(255 255 255 / 10%) !important;
+  border-radius: 16px !important;
+  color: var(--color-text-on-dark) !important;
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-dark-elevated) 0%,
+    var(--color-bg-dark) 100%
+  ) !important;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 34%) !important;
+}
+
+.ant-notification-notice-success {
+  border-color: rgb(82 196 26 / 38%) !important;
+}
+
+.ant-notification-notice-error {
+  border-color: rgb(255 77 79 / 42%) !important;
+}
+
+.ant-notification-notice-title,
+.ant-notification-notice-message {
+  color: var(--color-text-on-dark) !important;
+  font-weight: 800 !important;
+}
+
+.ant-notification-notice-description {
+  color: var(--color-text-on-dark-secondary) !important;
+}
+
+.ant-notification-notice-icon {
+  margin-top: 2px;
+}
+
+.ant-notification-notice-icon-success {
+  color: var(--color-success) !important;
+}
+
+.ant-notification-notice-icon-error {
+  color: var(--color-error) !important;
+}
+
+.ant-notification-notice-close {
+  color: rgb(245 247 251 / 62%) !important;
+}
+
+.ant-notification-notice-close:hover {
+  color: var(--color-text-on-dark) !important;
+  background: rgb(255 255 255 / 8%) !important;
+}
+
+.ant-notification-notice-progress,
+.ant-notification-notice-progress::-webkit-progress-bar {
+  background-color: rgb(255 255 255 / 8%) !important;
+}
+
+.ant-notification-notice-progress::-webkit-progress-value {
+  background: linear-gradient(90deg, var(--color-accent-blue), var(--color-purple));
+}
+
+.ant-notification-notice-progress::-moz-progress-bar {
+  background: linear-gradient(90deg, var(--color-accent-blue), var(--color-purple));
 }

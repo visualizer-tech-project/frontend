@@ -1,18 +1,18 @@
-import { Layout } from 'antd'
-import { Content, Footer, Header } from 'antd/es/layout/layout'
 import { Outlet } from 'react-router-dom'
 import styles from './AppLayout.module.css'
+import { AuthWelcome } from './auth-welcome/AuthWelcome'
+import { AppFooter } from './footer/AppFooter'
+import { AppHeader } from './header/AppHeader'
 
 export const AppLayout = () => {
   return (
-    <Layout className={styles.layout}>
-      <Header>HEADER</Header>
-
-      <Content className={styles.main}>
+    <div className={styles.layout}>
+      <AppHeader />
+      <main className={styles.main}>
         <Outlet />
-      </Content>
-
-      <Footer>FOOTER</Footer>
-    </Layout>
+      </main>
+      <AppFooter />
+      <AuthWelcome />
+    </div>
   )
 }

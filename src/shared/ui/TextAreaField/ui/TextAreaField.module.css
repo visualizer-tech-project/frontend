@@ -1,0 +1,63 @@
+.textarea {
+  width: 100%;
+}
+
+.textarea:global(.ant-input) {
+  min-height: 70px;
+  padding: 8px 12px;
+
+  border: 1px solid rgb(255 255 255 / 10%) !important;
+  border-radius: 10px !important;
+
+  color: #f7fbff !important;
+  background: #262526 !important;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.textarea:global(.ant-input::placeholder) {
+  color: rgb(245 247 251 / 36%);
+}
+
+.textarea:global(.ant-input:hover) {
+  border-color: rgb(255 255 255 / 18%) !important;
+}
+
+.textarea:global(.ant-input:focus),
+.textarea:global(.ant-input-focused) {
+  border-color: rgb(140 195 255 / 52%) !important;
+  box-shadow: 0 0 0 3px rgb(140 195 255 / 12%) !important;
+}
+
+.title {
+  display: block;
+  margin-bottom: 8px;
+
+  color: var(--color-text-light);
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.error {
+  display: block;
+  margin-top: 5px;
+
+  color: var(--color-error);
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.textareaError:global(.ant-input) {
+  border-color: var(--color-error) !important;
+  box-shadow: 0 0 0 3px rgb(239 68 68 / 10%) !important;
+}
+
+.textareaSuccess:global(.ant-input) {
+  border-color: var(--color-success) !important;
+  box-shadow: 0 0 0 3px rgb(16 185 129 / 10%) !important;
+}

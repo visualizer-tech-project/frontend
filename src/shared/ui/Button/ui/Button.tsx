@@ -4,12 +4,12 @@ import type { ReactNode } from 'react'
 import styles from './Button.module.css'
 
 interface IButton extends ButtonProps {
-  children: ReactNode
+  children?: ReactNode
 }
 
 export const Button = ({ children, className, ...props }: IButton) => {
   return (
-    <AntdButton className={clsx(className, styles.button)} {...props}>
+    <AntdButton className={clsx(styles.button, className)} {...props}>
       {children}
     </AntdButton>
   )

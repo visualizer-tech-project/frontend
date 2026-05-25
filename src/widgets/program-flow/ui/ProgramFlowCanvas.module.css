@@ -1,0 +1,170 @@
+.root {
+  position: relative;
+  overflow: hidden;
+
+  width: 100%;
+  height: 100%;
+
+  background: #1b1a1c;
+}
+
+.flow {
+  width: 100%;
+  height: 100%;
+}
+
+.flow :global(.react-flow__pane) {
+  cursor: grab;
+}
+
+.flow :global(.react-flow__pane:active) {
+  cursor: grabbing;
+}
+
+.flow :global(.react-flow__node) {
+  cursor: grab;
+}
+
+.flow :global(.react-flow__node.dragging) {
+  cursor: grabbing;
+}
+
+.controls {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 10px;
+  background: rgb(17 17 18 / 90%);
+}
+
+.controls :global(button) {
+  border-bottom-color: rgb(255 255 255 / 8%) !important;
+  color: #f7fbff !important;
+  background: rgb(17 17 18 / 90%) !important;
+}
+
+.empty {
+  pointer-events: none;
+
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  text-align: center;
+}
+
+.loading {
+  pointer-events: none;
+
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  text-align: center;
+
+  background: rgb(27 26 28 / 72%);
+  backdrop-filter: blur(4px);
+}
+
+.loader {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgb(255 255 255 / 18%);
+  border-top-color: #8cc3ff;
+  border-radius: 50%;
+
+  animation: loaderSpin 0.9s linear infinite;
+}
+
+.miniMap {
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.empty strong {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.empty span {
+  max-width: 360px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgb(245 247 251 / 62%);
+}
+
+.loading strong {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.loading span:not(.loader) {
+  max-width: 360px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgb(245 247 251 / 62%);
+}
+
+.actionLoading {
+  pointer-events: none;
+
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid rgb(140 195 255 / 22%);
+  border-radius: 999px;
+
+  color: #f7fbff;
+
+  background: rgb(17 22 28 / 92%);
+  box-shadow: 0 16px 38px rgb(0 0 0 / 28%);
+}
+
+.actionLoading strong {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.smallLoader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgb(255 255 255 / 18%);
+  border-top-color: #8cc3ff;
+  border-radius: 50%;
+
+  animation: loaderSpin 0.85s linear infinite;
+}
+
+@keyframes loaderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (width <= 640px) {
+  .root {
+    min-height: 100%;
+  }
+
+  .flow {
+    height: 100%;
+  }
+}
