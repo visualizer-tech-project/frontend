@@ -32,9 +32,9 @@ import { mapConnectionToPrerequisiteCreate } from '../lib/mapConnectionToPrerequ
 import { mapDeletedEdgesToPrerequisites } from '../lib/mapDeletedEdgesToPrerequisites'
 import { mapPrerequisitesToCourseTypeFilteredEdges } from '../lib/mapPrerequisitesToCourseTypeFilteredEdges'
 import { CourseFlowNode } from './CourseFlowNode'
-import styles from './ProgramFlowCanvas.module.css'
+import styles from './LearningFlowCanvas.module.css'
 
-interface ProgramFlowCanvasProps {
+interface LearningFlowCanvasProps {
   courses: Course[]
   prerequisites: Prerequisite[]
   progress: UserProgress[]
@@ -59,7 +59,7 @@ const fitViewOptions = {
   maxZoom: 0.8,
 }
 
-export const ProgramFlowCanvas = ({
+export const LearningFlowCanvas = ({
   courses,
   prerequisites,
   progress,
@@ -72,7 +72,7 @@ export const ProgramFlowCanvas = ({
   isLoading = false,
   isEdgeDeleting = false,
   removingCourseIds = [],
-}: ProgramFlowCanvasProps) => {
+}: LearningFlowCanvasProps) => {
   const { user } = useUserStore(useShallow(useUserState))
   const activeUserId = user?.id ?? null
 
@@ -226,7 +226,7 @@ export const ProgramFlowCanvas = ({
   }
 
   return (
-    <section className={styles.root} aria-label="Холст программы">
+    <section className={styles.root} aria-label="Холст курсов">
       <ReactFlowProvider>
         <ReactFlow
           fitView

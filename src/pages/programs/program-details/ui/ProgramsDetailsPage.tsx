@@ -12,7 +12,7 @@ import { ROUTES } from '@/shared/config'
 import { notifyError, notifySuccess } from '@/shared/lib/notify'
 import { useMockLoading } from '@/shared/lib/useMockLoading'
 import { wait } from '@/shared/lib/wait'
-import { ProgramFlowCanvas } from '@/widgets/program-flow'
+import { LearningFlowCanvas } from '@/widgets/learning-flow'
 import { useCallback, useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
@@ -198,7 +198,7 @@ export const ProgramDetailsPage = () => {
       <ProgramWorkspace program={program} />
 
       <div className={styles.canvas}>
-        <ProgramFlowCanvas
+        <LearningFlowCanvas
           courses={courses}
           prerequisites={prerequisites}
           progress={progress}
@@ -216,7 +216,7 @@ export const ProgramDetailsPage = () => {
         {canEditProgram && (
           <CoursePicker
             courses={mockCourses}
-            programCourses={courses}
+            selectedCourses={courses}
             onExistingCourseAdd={handleExistingCourseAdd}
             onNewCourseAdd={handleNewCourseAdd}
             isLoading={isProgramLoading}
