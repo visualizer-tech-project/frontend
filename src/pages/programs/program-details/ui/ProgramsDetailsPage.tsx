@@ -1,5 +1,6 @@
 import { mockCourses, type Course } from '@/entities/course'
 import {
+  mockProgramPrerequisites,
   type Prerequisite,
   type PrerequisiteCreate,
   type ProgramPrerequisite,
@@ -74,30 +75,36 @@ export const ProgramDetailsPage = () => {
     }
   }, [])
 
-  const handleCourseUpdate = useCallback((updatedCourse: Course) => {
-    setCourses((currentCourses) =>
-      currentCourses.map((course) =>
-        course.id === updatedCourse.id
-          ? {
-              ...course,
-              ...updatedCourse,
-            }
-          : course,
-      ),
-    )
-  }, [])
+  const handleCourseUpdate = useCallback(
+    (updatedCourse: Course) => {
+      setCourses((currentCourses) =>
+        currentCourses.map((course) =>
+          course.id === updatedCourse.id
+            ? {
+                ...course,
+                ...updatedCourse,
+              }
+            : course,
+        ),
+      )
+    },
+    [numericProgramId],
+  )
 
-  const handleExistingCourseAdd = useCallback((course: Course) => {
-    setCourses((currentCourses) => {
-      const alreadyExists = currentCourses.some((currentCourse) => currentCourse.id === course.id)
+  const handleExistingCourseAdd = useCallback(
+    (course: Course) => {
+      setCourses((currentCourses) => {
+        const alreadyExists = currentCourses.some((currentCourse) => currentCourse.id === course.id)
 
-      if (alreadyExists) {
-        return currentCourses
-      }
+        if (alreadyExists) {
+          return currentCourses
+        }
 
-      return [...currentCourses, course]
-    })
-  }, [])
+        return [...currentCourses, course]
+      })
+    },
+    [numericProgramId],
+  )
 
   const handleNewCourseAdd = useCallback((course: Course) => {
     setCourses((currentCourses) => [...currentCourses, course])
@@ -137,6 +144,8 @@ export const ProgramDetailsPage = () => {
           id: Date.now(),
         }
 
+        mockProgramPrerequisites.push(createdPrerequisite)
+
         setPrerequisites((current) =>
           current.map((prerequisite) =>
             prerequisite.id === tempPrerequisite.id ? createdPrerequisite : prerequisite,
@@ -153,25 +162,37 @@ export const ProgramDetailsPage = () => {
     [numericProgramId],
   )
 
-  const handleEdgeDelete = useCallback(async (prerequisite: Prerequisite) => {
-    const previousPrerequisite = prerequisite as ProgramPrerequisite
+  const handleEdgeDelete = useCallback(
+    async (prerequisite: Prerequisite) => {
+      const previousPrerequisite = prerequisite as ProgramPrerequisite
 
-    setRemovingPrerequisiteIds((current) =>
-      current.includes(prerequisite.id) ? current : [...current, prerequisite.id],
-    )
-    setPrerequisites((current) => current.filter((item) => item.id !== prerequisite.id))
+      setRemovingPrerequisiteIds((current) =>
+        current.includes(prerequisite.id) ? current : [...current, prerequisite.id],
+      )
+      setPrerequisites((current) => current.filter((item) => item.id !== prerequisite.id))
 
-    try {
-      // TODO: заменить задержку на удаление prerequisite через API.
-      await wait(600)
-      notifySuccess('Связь удалена', 'Зависимость между курсами успешно удалена.')
-    } catch {
-      setPrerequisites((current) => [...current, previousPrerequisite])
-      notifyError('Не удалось удалить связь', 'Изменение откатилось. Попробуйте еще раз.')
-    } finally {
-      setRemovingPrerequisiteIds((current) => current.filter((id) => id !== prerequisite.id))
-    }
-  }, [])
+      try {
+        // TODO: заменить задержку на удаление prerequisite через API.
+        await wait(600)
+
+        const prerequisiteIndex = mockProgramPrerequisites.findIndex(
+          (item) => item.id === prerequisite.id && item.program_id === numericProgramId,
+        )
+
+        if (prerequisiteIndex !== -1) {
+          mockProgramPrerequisites.splice(prerequisiteIndex, 1)
+        }
+
+        notifySuccess('Связь удалена', 'Зависимость между курсами успешно удалена.')
+      } catch {
+        setPrerequisites((current) => [...current, previousPrerequisite])
+        notifyError('Не удалось удалить связь', 'Изменение откатилось. Попробуйте еще раз.')
+      } finally {
+        setRemovingPrerequisiteIds((current) => current.filter((id) => id !== prerequisite.id))
+      }
+    },
+    [numericProgramId],
+  )
 
   const handleProgressChange = useCallback((payload: ProgressSelectChangePayload) => {
     setProgress((current) => {

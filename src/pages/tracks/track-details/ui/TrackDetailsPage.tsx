@@ -1,5 +1,10 @@
 import { mockCourses, type Course } from '@/entities/course'
-import { type Prerequisite, type PrerequisiteCreate } from '@/entities/prerequisite'
+import {
+  mockTrackPrerequisites,
+  type Prerequisite,
+  type PrerequisiteCreate,
+  type TrackPrerequisite,
+} from '@/entities/prerequisite'
 import { type ProgressSelectChangePayload, type UserProgress } from '@/entities/progress'
 import { mockTracks, mockTrackCourses } from '@/entities/track'
 import { useUserState, useUserStore } from '@/entities/user'
@@ -13,7 +18,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
 import {
-  getPrerequisitesForCourses,
+  getTrackPrerequisitesForCourses,
   getTrackCourses,
   getTrackPrerequisites,
   getTrackProgress,
@@ -29,14 +34,16 @@ export const TrackDetailsPage = () => {
 
   // MOCKS
   const [courses, setCourses] = useState<Course[]>(() => getTrackCourses(numericTrackId))
-  const [prerequisites, setPrerequisites] = useState<Prerequisite[]>(() =>
+  const [prerequisites, setPrerequisites] = useState<TrackPrerequisite[]>(() =>
     getTrackPrerequisites(numericTrackId),
   )
   const [progress, setProgress] = useState<UserProgress[]>(() =>
     getTrackProgress(numericTrackId, user?.id),
   )
   const [removingCourseIds, setRemovingCourseIds] = useState<Course['id'][]>([])
-  const [removingPrerequisiteIds, setRemovingPrerequisiteIds] = useState<Prerequisite['id'][]>([])
+  const [removingPrerequisiteIds, setRemovingPrerequisiteIds] = useState<TrackPrerequisite['id'][]>(
+    [],
+  )
 
   useEffect(() => {
     setCourses(getTrackCourses(numericTrackId))
@@ -130,7 +137,7 @@ export const TrackDetailsPage = () => {
           currentTrack.updated_at = now
         }
 
-        setPrerequisites(getPrerequisitesForCourses(nextCourses))
+        setPrerequisites(getTrackPrerequisitesForCourses(numericTrackId, nextCourses))
 
         return nextCourses
       })
@@ -140,8 +147,9 @@ export const TrackDetailsPage = () => {
 
   const handleEdgeConnect = useCallback(
     async (courseId: number, prerequisiteCreate: PrerequisiteCreate) => {
-      const tempPrerequisite: Prerequisite = {
+      const tempPrerequisite: TrackPrerequisite = {
         id: -Date.now(),
+        career_track_id: numericTrackId,
         course_id: courseId,
         prerequisite_course_id: prerequisiteCreate.prerequisite_course_id,
         created_at: new Date().toISOString(),
@@ -166,10 +174,12 @@ export const TrackDetailsPage = () => {
         // TODO: заменить задержку на создание prerequisite через API.
         await wait(600)
 
-        const createdPrerequisite: Prerequisite = {
+        const createdPrerequisite: TrackPrerequisite = {
           ...tempPrerequisite,
           id: Date.now(),
         }
+
+        mockTrackPrerequisites.push(createdPrerequisite)
 
         setPrerequisites((current) =>
           current.map((prerequisite) =>
@@ -184,29 +194,40 @@ export const TrackDetailsPage = () => {
         notifyError('Не удалось добавить связь', 'Изменение откатилось. Попробуйте еще раз.')
       }
     },
-    [],
+    [numericTrackId],
   )
 
-  const handleEdgeDelete = useCallback(async (prerequisite: Prerequisite) => {
-    const previousPrerequisite = prerequisite
+  const handleEdgeDelete = useCallback(
+    async (prerequisite: Prerequisite) => {
+      const previousPrerequisite = prerequisite as TrackPrerequisite
 
-    setRemovingPrerequisiteIds((current) =>
-      current.includes(prerequisite.id) ? current : [...current, prerequisite.id],
-    )
-    setPrerequisites((current) => current.filter((item) => item.id !== prerequisite.id))
+      setRemovingPrerequisiteIds((current) =>
+        current.includes(prerequisite.id) ? current : [...current, prerequisite.id],
+      )
+      setPrerequisites((current) => current.filter((item) => item.id !== prerequisite.id))
 
-    try {
-      // TODO: заменить задержку на удаление prerequisite через API.
-      await wait(600)
+      try {
+        // TODO: заменить задержку на удаление prerequisite через API.
+        await wait(600)
 
-      notifySuccess('Связь удалена', 'Зависимость между курсами успешно удалена.')
-    } catch {
-      setPrerequisites((current) => [...current, previousPrerequisite])
-      notifyError('Не удалось удалить связь', 'Изменение откатилось. Попробуйте еще раз.')
-    } finally {
-      setRemovingPrerequisiteIds((current) => current.filter((id) => id !== prerequisite.id))
-    }
-  }, [])
+        const prerequisiteIndex = mockTrackPrerequisites.findIndex(
+          (item) => item.id === prerequisite.id && item.career_track_id === numericTrackId,
+        )
+
+        if (prerequisiteIndex !== -1) {
+          mockTrackPrerequisites.splice(prerequisiteIndex, 1)
+        }
+
+        notifySuccess('Связь удалена', 'Зависимость между курсами успешно удалена.')
+      } catch {
+        setPrerequisites((current) => [...current, previousPrerequisite])
+        notifyError('Не удалось удалить связь', 'Изменение откатилось. Попробуйте еще раз.')
+      } finally {
+        setRemovingPrerequisiteIds((current) => current.filter((id) => id !== prerequisite.id))
+      }
+    },
+    [numericTrackId],
+  )
 
   const handleProgressChange = useCallback((payload: ProgressSelectChangePayload) => {
     setProgress((current) => {
