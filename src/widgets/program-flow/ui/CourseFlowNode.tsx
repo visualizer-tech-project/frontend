@@ -21,6 +21,7 @@ export const CourseFlowNode = ({ data }: NodeProps<Node<CourseFlowNodeData>>) =>
     userId,
     progress,
     isCourseRemoving,
+    isDimmed,
   } = data
 
   const handleEditCourse = (e: MouseEvent) => {
@@ -44,6 +45,7 @@ export const CourseFlowNode = ({ data }: NodeProps<Node<CourseFlowNodeData>>) =>
       className={clsx(
         styles.node,
         isCourseRemoving && styles.pending,
+        isDimmed && styles.dimmed,
         progress?.status === 'completed' && styles.completed,
         progress?.status === 'in_progress' && styles.inProgress,
       )}

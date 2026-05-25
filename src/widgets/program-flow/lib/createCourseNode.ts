@@ -15,6 +15,7 @@ interface CreateCourseNodeProps {
   canEditFlow: boolean
   canEditCourse: boolean
   isCourseRemoving: boolean
+  isDimmed: boolean
 }
 
 export type CourseFlowNodeData = Omit<CreateCourseNodeProps, 'index'>
@@ -30,6 +31,7 @@ export const createCourseNode = ({
   canEditCourse,
   canEditFlow,
   isCourseRemoving,
+  isDimmed,
 }: CreateCourseNodeProps): Node<CourseFlowNodeData> => ({
   id: `${COURSE_NODE_PREFIX}-${course.id}`,
   type: COURSE_NODE_PREFIX,
@@ -47,5 +49,6 @@ export const createCourseNode = ({
     canEditFlow,
     canEditCourse,
     isCourseRemoving,
+    isDimmed,
   },
 })
