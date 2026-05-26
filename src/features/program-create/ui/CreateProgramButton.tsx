@@ -66,9 +66,9 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
         <Button
           className={styles.button}
           color="default"
+          disabled={isSubmitting}
           htmlType="button"
           icon={<SaveOutlined />}
-          disabled={isSubmitting}
           variant="solid"
           onClick={handleOpen}
         >

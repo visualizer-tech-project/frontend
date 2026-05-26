@@ -1,6 +1,7 @@
 import { mockPrograms } from '@/entities/program'
 import { Roles, useUserState, useUserStore } from '@/entities/user'
 import { CreateProgramButton } from '@/features/program-create'
+import { ImportProgramButton } from '@/features/program-import'
 import { useMockLoading } from '@/shared/lib/useMockLoading'
 import { PageHero } from '@/widgets/page-hero'
 import { ProgramsGrid } from '@/widgets/programs'
@@ -20,7 +21,10 @@ export const ProgramsPage = () => {
           title="Образовательные программы"
         >
           {user?.role === Roles.TEACHER || user?.role === Roles.ADMIN ? (
-            <CreateProgramButton>Создать программу</CreateProgramButton>
+            <div className={styles.heroActions}>
+              <CreateProgramButton>Создать программу</CreateProgramButton>
+              <ImportProgramButton>Импорт Excel/CSV</ImportProgramButton>
+            </div>
           ) : null}
         </PageHero>
 

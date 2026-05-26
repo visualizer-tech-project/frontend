@@ -26,6 +26,7 @@
   padding: 26px;
 
   --color-text-light: var(--color-text);
+  --field-placeholder-color: color-mix(in srgb, var(--color-bg-dark) 46%, transparent);
 }
 
 .formHeader {
@@ -48,6 +49,15 @@
   font-size: 24px;
   font-weight: 800;
   line-height: 1.15;
+}
+
+.formHeader p {
+  max-width: 58ch;
+  margin: 2px 0 0;
+
+  color: color-mix(in srgb, var(--color-bg-dark) 58%, transparent);
+  font-size: 14px;
+  line-height: 1.55;
 }
 
 .form :global(.ant-input),

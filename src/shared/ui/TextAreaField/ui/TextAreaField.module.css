@@ -19,7 +19,8 @@
 }
 
 .textarea:global(.ant-input::placeholder) {
-  color: rgb(245 247 251 / 36%);
+  color: var(--field-placeholder-color, rgb(245 247 251 / 36%)) !important;
+  opacity: 1;
 }
 
 .textarea:global(.ant-input:hover) {
