@@ -1,0 +1,113 @@
+.modal:global(.ant-modal) :global(.ant-modal-content) {
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-bg-dark) 18%, transparent);
+  border-radius: 18px;
+
+  color: var(--color-bg-dark);
+
+  background: var(--color-white);
+  box-shadow: 0 30px 80px color-mix(in srgb, var(--color-bg-dark) 34%, transparent);
+}
+
+.modal:global(.ant-modal) :global(.ant-modal-close) {
+  color: var(--color-bg-dark);
+  opacity: 0.56;
+}
+
+.modal:global(.ant-modal) :global(.ant-modal-close:hover) {
+  opacity: 1;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  padding: 26px;
+
+  --color-text-light: var(--color-text);
+}
+
+.formHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formHeader span {
+  color: color-mix(in srgb, var(--color-bg-dark) 42%, transparent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.formHeader h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.form :global(.ant-input),
+.form :global(textarea.ant-input) {
+  border-color: color-mix(in srgb, var(--color-bg-dark) 20%, transparent) !important;
+  color: var(--color-bg-dark) !important;
+  background: var(--color-white) !important;
+}
+
+.form :global(.ant-input) {
+  min-height: 42px;
+}
+
+.form :global(.ant-input::placeholder),
+.form :global(textarea::placeholder) {
+  color: color-mix(in srgb, var(--color-bg-dark) 38%, transparent);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.secondaryButton:global(.ant-btn.ant-btn-color-default.ant-btn-variant-text) {
+  border: 1px solid var(--color-bg-dark);
+  color: var(--color-bg-dark);
+  background: var(--color-white);
+}
+
+.secondaryButton:global(.ant-btn.ant-btn-color-default.ant-btn-variant-text):hover,
+.secondaryButton:global(.ant-btn.ant-btn-color-default.ant-btn-variant-text):focus-visible {
+  border-color: var(--color-bg-dark);
+  color: var(--color-bg-dark);
+}
+
+.primaryButton:global(.ant-btn.ant-btn-color-default.ant-btn-variant-filled) {
+  border-color: var(--color-bg-dark);
+  color: var(--color-white);
+  background: var(--color-bg-dark);
+}
+
+.primaryButton:global(.ant-btn.ant-btn-color-default.ant-btn-variant-filled):hover,
+.primaryButton:global(.ant-btn.ant-btn-color-default.ant-btn-variant-filled):focus-visible {
+  border-color: var(--color-bg-dark-soft);
+  color: var(--color-white);
+  background: var(--color-bg-dark-soft);
+}
+
+@media (width <= 640px) {
+  .form {
+    padding: 22px;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .primaryButton:global(.ant-btn),
+  .secondaryButton:global(.ant-btn) {
+    width: 100%;
+  }
+}

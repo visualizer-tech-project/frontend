@@ -1,4 +1,6 @@
 import { ProgramCard, type Program } from '@/entities/program'
+import { Roles, useUserState, useUserStore } from '@/entities/user'
+import { ProgramCopyButton } from '@/features/program-copy'
 import {
   ProgramsFilters,
   useProgramsActions,
@@ -32,9 +34,11 @@ export const ProgramsGrid = ({
   isLoading = false,
 }: ProgramsGridProps) => {
   const navigate = useNavigate()
+  const { user } = useUserStore(useShallow(useUserState))
   const { searchValue } = useProgramsStore(useShallow(useProgramsState))
   const { setSearchValue } = useProgramsStore(useShallow(useProgramsActions))
   const hasBackAction = Boolean(backTo || onBack)
+  const canCopyPrograms = user?.role === Roles.TEACHER || user?.role === Roles.ADMIN
 
   const filteredPrograms = useMemo(() => {
     const normalizedSearch = searchValue.trim().toLowerCase()
@@ -84,7 +88,11 @@ export const ProgramsGrid = ({
       <CatalogList
         items={filteredPrograms}
         getKey={(program) => program.id}
-        renderItem={(program) => <ProgramCard actionLabel={actionLabel} program={program} />}
+        renderItem={(program) => (
+          <ProgramCard actionLabel={actionLabel} program={program}>
+            {canCopyPrograms ? <ProgramCopyButton program={program} /> : null}
+          </ProgramCard>
+        )}
         emptyDescription="Измените поисковый запрос, чтобы увидеть подходящие программы."
         isLoading={isLoading}
       />

@@ -1,5 +1,6 @@
 import { ROUTES } from '@/shared/config'
 import { formatDate } from '@/shared/lib/formatDate'
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { programLabel } from '../model/constants'
 import type { Program } from '../model/types'
@@ -9,17 +10,19 @@ interface ProgramCardProps {
   program: Program
   actionLabel?: string
   to?: string
+  children?: ReactNode
 }
 
 export const ProgramCard = ({
   program,
   actionLabel = 'Открыть программу',
   to = `${ROUTES.PROGRAMS}/${program.id}`,
+  children,
 }: ProgramCardProps) => {
   const authorName = `${program.user.first_name} ${program.user.last_name}`.trim()
 
   return (
-    <Link className={styles.card} to={to}>
+    <article className={styles.card}>
       <div className={styles.metaRow}>
         <span className={styles.chip}>{programLabel}</span>
 
@@ -41,8 +44,14 @@ export const ProgramCard = ({
           Обновлено: <span>{formatDate(program.updated_at)}</span>
         </p>
 
-        <span className={styles.action}>{actionLabel}</span>
+        <div className={styles.actions}>
+          <Link className={styles.action} to={to}>
+            {actionLabel}
+          </Link>
+
+          {children}
+        </div>
       </div>
-    </Link>
+    </article>
   )
 }

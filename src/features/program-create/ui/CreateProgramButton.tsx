@@ -2,11 +2,11 @@ import { ROUTES } from '@/shared/config'
 import { notifyError, notifySuccess } from '@/shared/lib/notify'
 import { wait } from '@/shared/lib/wait'
 import { Button } from '@/shared/ui/Button'
+import { FormModal } from '@/shared/ui/FormModal'
 import { InputField } from '@/shared/ui/InputField'
 import { TextAreaField } from '@/shared/ui/TextAreaField'
 import { SaveOutlined } from '@ant-design/icons'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Modal } from 'antd'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -36,6 +36,10 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
   }
 
   const handleClose = () => {
+    if (isSubmitting) {
+      return
+    }
+
     reset()
     setIsOpen(false)
   }
@@ -64,6 +68,7 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
           color="default"
           htmlType="button"
           icon={<SaveOutlined />}
+          disabled={isSubmitting}
           variant="solid"
           onClick={handleOpen}
         >
@@ -71,62 +76,33 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
         </Button>
       </div>
 
-      <Modal
-        centered
-        className={styles.modal}
+      <FormModal
+        eyebrow="Создание программы"
+        isSubmitting={isSubmitting}
         open={isOpen}
-        footer={null}
-        title={null}
+        submitIcon={<SaveOutlined />}
+        submitLabel="Создать"
+        title="Вы создаете новую программу"
         onCancel={handleClose}
+        onSubmit={handleSubmit(onSubmit)}
       >
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.formHeader}>
-            <span>Создание программы</span>
-            <h2>Вы создаете новую программу</h2>
-          </div>
+        <InputField
+          control={control}
+          name="title"
+          placeholder="Название программы"
+          title="Название"
+          disabled={isSubmitting}
+        />
 
-          <InputField
-            control={control}
-            name="title"
-            placeholder="Название программы"
-            title="Название"
-            className={styles.field}
-          />
-
-          <TextAreaField
-            control={control}
-            name="description"
-            autoSize={{ minRows: 3, maxRows: 5 }}
-            placeholder="Коротко о программе"
-            title="Описание"
-            className={styles.field}
-          />
-
-          <div className={styles.actions}>
-            <Button
-              className={styles.secondaryButton}
-              color="default"
-              disabled={isSubmitting}
-              htmlType="button"
-              variant="text"
-              onClick={handleClose}
-            >
-              Отмена
-            </Button>
-
-            <Button
-              className={styles.primaryButton}
-              color="default"
-              htmlType="submit"
-              icon={<SaveOutlined />}
-              loading={isSubmitting}
-              variant="filled"
-            >
-              Создать
-            </Button>
-          </div>
-        </form>
-      </Modal>
+        <TextAreaField
+          control={control}
+          name="description"
+          autoSize={{ minRows: 3, maxRows: 5 }}
+          placeholder="Коротко о программе"
+          title="Описание"
+          disabled={isSubmitting}
+        />
+      </FormModal>
     </>
   )
 }
