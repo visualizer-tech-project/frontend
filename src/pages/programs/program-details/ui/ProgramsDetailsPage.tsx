@@ -1,5 +1,9 @@
 import { mockCourses, type Course } from '@/entities/course'
-import { type Prerequisite, type PrerequisiteCreate } from '@/entities/prerequisite'
+import {
+  type Prerequisite,
+  type PrerequisiteCreate,
+  type ProgramPrerequisite,
+} from '@/entities/prerequisite'
 import { mockPrograms } from '@/entities/program'
 import { type ProgressSelectChangePayload, type UserProgress } from '@/entities/progress'
 import { useUserState, useUserStore } from '@/entities/user'
@@ -28,7 +32,7 @@ export const ProgramDetailsPage = () => {
 
   // MOCKS
   const [courses, setCourses] = useState<Course[]>(() => getProgramCourses(numericProgramId))
-  const [prerequisites, setPrerequisites] = useState<Prerequisite[]>(() =>
+  const [prerequisites, setPrerequisites] = useState<ProgramPrerequisite[]>(() =>
     getProgramPrerequisites(numericProgramId),
   )
 
@@ -36,7 +40,9 @@ export const ProgramDetailsPage = () => {
     getProgramProgress(numericProgramId, user?.id),
   )
   const [removingCourseIds, setRemovingCourseIds] = useState<Course['id'][]>([])
-  const [removingPrerequisiteIds, setRemovingPrerequisiteIds] = useState<Prerequisite['id'][]>([])
+  const [removingPrerequisiteIds, setRemovingPrerequisiteIds] = useState<
+    ProgramPrerequisite['id'][]
+  >([])
 
   useEffect(() => {
     setCourses(getProgramCourses(numericProgramId))
@@ -99,8 +105,9 @@ export const ProgramDetailsPage = () => {
 
   const handleEdgeConnect = useCallback(
     async (courseId: number, prerequisiteCreate: PrerequisiteCreate) => {
-      const tempPrerequisite: Prerequisite = {
+      const tempPrerequisite: ProgramPrerequisite = {
         id: -Date.now(),
+        program_id: numericProgramId,
         course_id: courseId,
         prerequisite_course_id: prerequisiteCreate.prerequisite_course_id,
         created_at: new Date().toISOString(),
@@ -125,7 +132,7 @@ export const ProgramDetailsPage = () => {
         // TODO: заменить задержку на создание prerequisite через API.
         await new Promise((resolve) => setTimeout(resolve, 600))
 
-        const createdPrerequisite: Prerequisite = {
+        const createdPrerequisite: ProgramPrerequisite = {
           ...tempPrerequisite,
           id: Date.now(),
         }
@@ -143,11 +150,11 @@ export const ProgramDetailsPage = () => {
         notifyError('Не удалось добавить связь', 'Изменение откатилось. Попробуйте еще раз.')
       }
     },
-    [],
+    [numericProgramId],
   )
 
   const handleEdgeDelete = useCallback(async (prerequisite: Prerequisite) => {
-    const previousPrerequisite = prerequisite
+    const previousPrerequisite = prerequisite as ProgramPrerequisite
 
     setRemovingPrerequisiteIds((current) =>
       current.includes(prerequisite.id) ? current : [...current, prerequisite.id],

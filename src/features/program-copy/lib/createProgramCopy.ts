@@ -1,5 +1,5 @@
 import type { Course } from '@/entities/course'
-import type { Prerequisite } from '@/entities/prerequisite'
+import type { ProgramPrerequisite } from '@/entities/prerequisite'
 import type { Program } from '@/entities/program'
 import type { UserPublic } from '@/entities/user'
 import type { CopyProgramValues } from '../model/validation'
@@ -8,8 +8,35 @@ interface CreateProgramCopyParams {
   values: CopyProgramValues
   sourceProgram: Program
   sourceCourses: Course[]
-  sourcePrerequisites: Prerequisite[]
+  sourcePrerequisites: ProgramPrerequisite[]
+  existingProgramIds: Program['id'][]
+  existingPrerequisiteIds: ProgramPrerequisite['id'][]
   user: UserPublic | null
+}
+
+const RANDOM_ID_HEX_LENGTH = 12
+const FALLBACK_RANDOM_ID_MAX = Number.MAX_SAFE_INTEGER - 1
+
+const createRandomNumericId = () => {
+  const uuid = globalThis.crypto?.randomUUID?.()
+
+  if (uuid) {
+    return Number.parseInt(uuid.replaceAll('-', '').slice(0, RANDOM_ID_HEX_LENGTH), 16)
+  }
+
+  return Math.floor(Math.random() * FALLBACK_RANDOM_ID_MAX) + 1
+}
+
+const reserveMockId = (reservedIds: Set<number>) => {
+  let id = createRandomNumericId()
+
+  while (id <= 0 || reservedIds.has(id)) {
+    id = createRandomNumericId()
+  }
+
+  reservedIds.add(id)
+
+  return id
 }
 
 export const createProgramCopy = ({
@@ -17,41 +44,25 @@ export const createProgramCopy = ({
   sourceProgram,
   sourceCourses,
   sourcePrerequisites,
+  existingProgramIds,
+  existingPrerequisiteIds,
   user,
 }: CreateProgramCopyParams) => {
   const now = new Date().toISOString()
-  const programId = Date.now()
-  const courseIdOffset = programId + 1000
-  const prerequisiteIdOffset = programId + 5000
-  const courseIdBySourceId = new Map<Course['id'], Course['id']>()
-
-  const courses = sourceCourses.map((course, index) => {
-    const courseId = courseIdOffset + index
-    courseIdBySourceId.set(course.id, courseId)
-
-    return {
-      ...course,
-      id: courseId,
-      program_id: programId,
-      user_id: user?.id ?? course.user_id,
-      created_at: now,
-      updated_at: now,
-    }
-  })
-
+  const programId = reserveMockId(new Set(existingProgramIds))
+  const courseIds = sourceCourses.map((course) => course.id)
+  const courseIdSet = new Set(courseIds)
+  const reservedPrerequisiteIds = new Set(existingPrerequisiteIds)
   const prerequisites = sourcePrerequisites
     .filter(
       (prerequisite) =>
-        courseIdBySourceId.has(prerequisite.course_id) &&
-        courseIdBySourceId.has(prerequisite.prerequisite_course_id),
+        courseIdSet.has(prerequisite.course_id) &&
+        courseIdSet.has(prerequisite.prerequisite_course_id),
     )
-    .map((prerequisite, index) => ({
+    .map((prerequisite) => ({
       ...prerequisite,
-      id: prerequisiteIdOffset + index,
-      course_id: courseIdBySourceId.get(prerequisite.course_id) as Course['id'],
-      prerequisite_course_id: courseIdBySourceId.get(
-        prerequisite.prerequisite_course_id,
-      ) as Course['id'],
+      id: reserveMockId(reservedPrerequisiteIds),
+      program_id: programId,
       created_at: now,
       updated_at: now,
     }))
@@ -69,7 +80,6 @@ export const createProgramCopy = ({
 
   return {
     program,
-    courses,
     prerequisites,
   }
 }

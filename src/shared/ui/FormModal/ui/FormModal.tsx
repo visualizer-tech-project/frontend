@@ -34,7 +34,10 @@ export const FormModal = ({
     <Modal
       centered
       className={styles.modal}
+      closable={{ disabled: isSubmitting }}
       footer={null}
+      keyboard={!isSubmitting}
+      mask={{ closable: !isSubmitting }}
       open={open}
       title={null}
       width={width}
@@ -65,6 +68,7 @@ export const FormModal = ({
             color="default"
             htmlType="submit"
             icon={submitIcon}
+            disabled={isSubmitting}
             loading={isSubmitting}
             variant="filled"
           >

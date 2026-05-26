@@ -1,6 +1,6 @@
 import { mockCourses } from '@/entities/course'
-import { mockPrerequisites } from '@/entities/prerequisite'
-import type { Program } from '@/entities/program'
+import { mockProgramPrerequisites } from '@/entities/prerequisite'
+import { mockPrograms, type Program } from '@/entities/program'
 import { useUserState, useUserStore } from '@/entities/user'
 import { ROUTES } from '@/shared/config'
 import { notifyError, notifySuccess } from '@/shared/lib/notify'
@@ -32,18 +32,30 @@ export const ProgramCopyButton = ({ program, className }: ProgramCopyButtonProps
   const { user } = useUserStore(useShallow(useUserState))
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const courses = useMemo(
-    () => mockCourses.filter((course) => course.program_id === program.id),
-    [program.id],
-  )
+  const courses = useMemo(() => {
+    const courseIds = new Set(
+      mockCourses.filter((course) => course.program_id === program.id).map((course) => course.id),
+    )
+
+    mockProgramPrerequisites
+      .filter((prerequisite) => prerequisite.program_id === program.id)
+      .forEach((prerequisite) => {
+        courseIds.add(prerequisite.course_id)
+        courseIds.add(prerequisite.prerequisite_course_id)
+      })
+
+    return mockCourses.filter((course) => courseIds.has(course.id))
+  }, [program.id])
   const prerequisites = useMemo(() => {
     const courseIds = new Set(courses.map((course) => course.id))
 
-    return mockPrerequisites.filter(
+    return mockProgramPrerequisites.filter(
       (prerequisite) =>
-        courseIds.has(prerequisite.course_id) && courseIds.has(prerequisite.prerequisite_course_id),
+        prerequisite.program_id === program.id &&
+        courseIds.has(prerequisite.course_id) &&
+        courseIds.has(prerequisite.prerequisite_course_id),
     )
-  }, [courses])
+  }, [courses, program.id])
   const stats = useMemo(() => getProgramCopyStats(courses), [courses])
   const defaultValues = useMemo<CopyProgramValues>(
     () => ({
@@ -84,11 +96,13 @@ export const ProgramCopyButton = ({ program, className }: ProgramCopyButtonProps
         sourceProgram: program,
         sourceCourses: courses,
         sourcePrerequisites: prerequisites,
+        existingProgramIds: mockPrograms.map(({ id }) => id),
+        existingPrerequisiteIds: mockProgramPrerequisites.map(({ id }) => id),
         user,
       })
 
       addProgramCopyToMocks(copiedProgram)
-      notifySuccess('Программа скопирована', 'Курсы и связи перенесены в новую программу.')
+      notifySuccess('Программа скопирована', 'Курсы привязаны, связи скопированы.')
       setIsOpen(false)
       navigate(`${ROUTES.PROGRAMS}/${copiedProgram.program.id}`)
     } catch {
@@ -105,6 +119,7 @@ export const ProgramCopyButton = ({ program, className }: ProgramCopyButtonProps
         color="default"
         htmlType="button"
         icon={<CopyOutlined />}
+        disabled={isSubmitting}
         variant="text"
         onClick={handleOpen}
       >
