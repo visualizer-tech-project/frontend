@@ -1,0 +1,64 @@
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.summaryCard {
+  display: flex;
+  min-width: 0;
+  min-height: 162px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 24px;
+  border: 1px solid color-mix(in srgb, var(--color-accent-blue) 16%, transparent);
+  border-radius: 16px;
+
+  background:
+    linear-gradient(180deg, rgb(24 30 39 / 92%), rgb(13 18 22 / 92%)), var(--color-bg-dark-elevated);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 5%),
+    0 20px 46px rgb(0 0 0 / 22%);
+
+  transition: all 0.3s;
+}
+
+.summaryCard:hover {
+  transform: scale(1.02);
+}
+
+.summaryCard span {
+  color: rgb(245 247 251 / 62%);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.summaryCard strong {
+  color: var(--color-text-on-dark);
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.summaryCard p {
+  margin: 0;
+  color: var(--color-text-on-dark-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+@media (width <= 960px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 560px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+}

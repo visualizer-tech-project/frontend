@@ -1,0 +1,19 @@
+.page {
+  flex: 1;
+  padding: clamp(38px, 6vh, 72px) 28px 48px;
+  color: var(--color-text-on-dark);
+}
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+@media (width <= 640px) {
+  .page {
+    padding: 16px;
+  }
+}

@@ -9,6 +9,7 @@ export const ROUTES = {
   FORBIDDEN: '/forbidden',
   NOT_FOUND: '/not-found',
   PROFILE: '/profile',
+  PROGRESS: '/progress',
   SETTINGS: '/settings',
   PROGRAMS: PROGRAMS_ROUTE,
   PROGRAM_DETAILS: `${PROGRAMS_ROUTE}/:programId`,

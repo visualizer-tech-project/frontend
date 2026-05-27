@@ -1,0 +1,48 @@
+.focusSection {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.focusSection article {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 18px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 16px;
+
+  background: rgb(17 22 28 / 72%);
+  transition: all 0.3s;
+}
+
+.focusSection article:hover {
+  transform: scale(1.02);
+}
+
+.focusSection :global(.anticon) {
+  color: var(--color-accent-blue);
+  font-size: 22px;
+}
+
+.focusSection span {
+  color: rgb(245 247 251 / 58%);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.focusSection strong {
+  overflow-wrap: anywhere;
+  color: var(--color-text-on-dark);
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+@media (width <= 780px) {
+  .focusSection {
+    grid-template-columns: 1fr;
+  }
+}
