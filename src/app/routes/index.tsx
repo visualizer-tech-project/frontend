@@ -3,6 +3,7 @@ import { ForgotPasswordPage, LoginPage, RegisterPage } from '@/pages/auth'
 import { Forbidden, NotFound } from '@/pages/error'
 import { HomePage } from '@/pages/home'
 import { ProfilePage } from '@/pages/profile'
+import { ProgressPage } from '@/pages/progress'
 import { ProgramDetailsPage, ProgramsPage } from '@/pages/programs'
 import { TracksPage } from '@/pages/tracks'
 import { ROUTES } from '@/shared/config'
@@ -52,6 +53,14 @@ export const routes = [
         element: (
           <RequireRole roles={[Roles.STUDENT, Roles.ADMIN, Roles.TEACHER]}>
             <ProfilePage />
+          </RequireRole>
+        ),
+      },
+      {
+        path: ROUTES.PROGRESS,
+        element: (
+          <RequireRole roles={[Roles.STUDENT, Roles.ADMIN, Roles.TEACHER]}>
+            <ProgressPage />
           </RequireRole>
         ),
       },

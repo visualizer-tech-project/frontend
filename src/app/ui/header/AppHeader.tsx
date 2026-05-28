@@ -56,6 +56,18 @@ export const AppHeader = () => {
             Карьерные треки
           </Button>
 
+          {isAuthorized ? (
+            <Button
+              aria-current={location.pathname === ROUTES.PROGRESS ? 'page' : undefined}
+              color="default"
+              htmlType="button"
+              variant="text"
+              onClick={() => navigateTo(ROUTES.PROGRESS)}
+            >
+              Прогресс
+            </Button>
+          ) : null}
+
           {isAdmin ? (
             <Button
               aria-current={location.pathname === ROUTES.ADMIN ? 'page' : undefined}

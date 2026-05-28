@@ -21,3 +21,9 @@ export type ProgressSelectChangePayload =
       type: 'updated'
       newProgress: UserProgress
     }
+
+export interface CourseProgressItem {
+  course: Course
+  progress: UserProgress | null
+  status: ProgressStatus
+}

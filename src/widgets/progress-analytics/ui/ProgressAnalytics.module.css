@@ -1,0 +1,174 @@
+.analytics {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.8fr);
+  gap: 24px;
+  align-items: end;
+}
+
+.sectionEyebrow {
+  margin: 0 0 8px;
+
+  color: var(--color-accent-blue);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.sectionHeader p {
+  margin: 0;
+  color: var(--color-text-on-dark-secondary);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.analyticsGrid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr);
+  gap: 16px;
+}
+
+.progressRingPanel,
+.distributionPanel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 18px;
+
+  padding: 22px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 16px;
+
+  background: rgb(17 22 28 / 72%);
+  box-shadow: 0 18px 44px rgb(0 0 0 / 18%);
+}
+
+.progressRingPanel {
+  justify-content: center;
+  align-items: center;
+}
+
+.ringChart:global(.ant-progress) {
+  max-width: 320px;
+  color: var(--color-text-on-dark);
+}
+
+.ringChart :global(.ant-progress-text) {
+  color: var(--color-text-on-dark) !important;
+  font-weight: 800;
+}
+
+.ringValue {
+  font-weight: 800;
+  color: var(--color-success) !important;
+}
+
+.chartLegend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.chartLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-on-dark-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.chartLegend span::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+}
+
+.legendCompleted::before {
+  background: var(--color-success);
+}
+
+.legendInProgress::before {
+  background: var(--color-warning);
+}
+
+.legendNotStarted::before {
+  background: rgb(255 255 255 / 22%);
+}
+
+.distributionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.distributionHeader span,
+.typeStats span {
+  color: rgb(245 247 251 / 58%);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.distributionHeader strong,
+.typeStats strong {
+  color: var(--color-text-on-dark);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.statusBars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.typeStats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.typeStats > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 4%);
+}
+
+.statusBars :global(.ant-progress-line),
+.typeStats :global(.ant-progress-line) {
+  margin: 0;
+}
+
+@media (width <= 900px) {
+  .analyticsGrid,
+  .sectionHeader {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (width <= 560px) {
+  .typeStats {
+    grid-template-columns: 1fr;
+  }
+}
