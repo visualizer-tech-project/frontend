@@ -68,12 +68,31 @@ export const ProgressPage = () => {
     return <NavLink to={ROUTES.LOGIN} />
   }
 
-  const completedItems = courseItems.filter((item) => item.status === 'completed')
-  const inProgressItems = courseItems.filter((item) => item.status === 'in_progress')
-  const notStartedItems = courseItems.filter((item) => item.status === 'not_started')
-  const activeItems = courseItems.filter((item) => item.status !== 'not_started')
+  const { completedItems, inProgressItems, notStartedItems, activeItems } = courseItems.reduce<{
+    completedItems: CourseProgressItem[]
+    inProgressItems: CourseProgressItem[]
+    notStartedItems: CourseProgressItem[]
+    activeItems: CourseProgressItem[]
+  }>(
+    (acc, el) => {
+      if (el.status === 'completed') {
+        acc.completedItems.push(el)
+      } else if (el.status === 'in_progress') {
+        acc.inProgressItems.push(el)
+      } else if (el.status === 'not_started') {
+        acc.notStartedItems.push(el)
+      }
+      if (el.status !== 'not_started') {
+        acc.activeItems.push(el)
+      }
+      return acc
+    },
+    { completedItems: [], inProgressItems: [], notStartedItems: [], activeItems: [] },
+  )
+
   const totalCourses = courseItems.length
   const completedPercent = getPercent(completedItems.length, totalCourses)
+
   const filteredCourseItems = courseItems.filter((item) => {
     if (activeFilter === 'all') {
       return true
