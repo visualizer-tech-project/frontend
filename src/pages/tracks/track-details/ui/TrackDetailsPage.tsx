@@ -6,7 +6,7 @@ import {
   type TrackPrerequisite,
 } from '@/entities/prerequisite'
 import { type ProgressSelectChangePayload, type UserProgress } from '@/entities/progress'
-import { mockTracks, mockTrackCourses } from '@/entities/track'
+import { mockTrackCourses, mockTracks } from '@/entities/track'
 import { useUserState, useUserStore } from '@/entities/user'
 import { CoursePicker } from '@/features/course-picker'
 import { ROUTES } from '@/shared/config'
@@ -18,9 +18,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
 import {
-  getTrackPrerequisitesForCourses,
   getTrackCourses,
   getTrackPrerequisites,
+  getTrackPrerequisitesForCourses,
   getTrackProgress,
 } from '../lib/getTrackMockData'
 import styles from './TrackDetailsPage.module.css'
@@ -52,7 +52,7 @@ export const TrackDetailsPage = () => {
   }, [numericTrackId, user?.id])
 
   const handleCourseRemove = useCallback(
-    async (courseId: number) => {
+    async (courseId: Course['id']) => {
       setRemovingCourseIds((current) =>
         current.includes(courseId) ? current : [...current, courseId],
       )
@@ -63,10 +63,12 @@ export const TrackDetailsPage = () => {
 
         setCourses((currentCourses) => {
           const nextCourses = currentCourses.filter((course) => course.id !== courseId)
+
           const trackCourseIndex = mockTrackCourses.findIndex(
             (trackCourse) =>
               trackCourse.career_track_id === numericTrackId && trackCourse.course_id === courseId,
           )
+
           const currentTrack = mockTracks.find(({ id }) => id === numericTrackId)
 
           if (trackCourseIndex !== -1) {
@@ -78,15 +80,17 @@ export const TrackDetailsPage = () => {
             currentTrack.updated_at = new Date().toISOString()
           }
 
-          setPrerequisites((current) =>
-            current.filter(
-              (prerequisite) =>
-                prerequisite.course_id !== courseId &&
-                prerequisite.prerequisite_course_id !== courseId,
-            ),
-          )
           return nextCourses
         })
+
+        setPrerequisites((current) =>
+          current.filter(
+            (prerequisite) =>
+              prerequisite.course_id !== courseId &&
+              prerequisite.prerequisite_course_id !== courseId,
+          ),
+        )
+
         notifySuccess('Курс удален', 'Курс успешно удален из трека.')
       } catch {
         notifyError('Не удалось удалить курс', 'Попробуйте удалить курс еще раз.')
