@@ -1,4 +1,5 @@
 import { mockTracks } from '@/entities/track'
+import { CreateTrackButton } from '@/features/track-create'
 import { useMockLoading } from '@/shared/lib/useMockLoading'
 import { PageHero } from '@/widgets/page-hero'
 import { TracksGrid } from '@/widgets/tracks'
@@ -41,7 +42,9 @@ export const TracksPage = () => {
               value: latestUpdate,
             },
           ]}
-        />
+        >
+          <CreateTrackButton>Создать трек</CreateTrackButton>
+        </PageHero>
 
         <section className={styles.catalog} aria-labelledby="tracks-title">
           <div className={styles.catalogHeader}>

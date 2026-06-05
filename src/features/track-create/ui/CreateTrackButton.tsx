@@ -1,3 +1,4 @@
+import { Roles, useUserState, useUserStore } from '@/entities/user'
 import { ROUTES } from '@/shared/config'
 import { notifyError, notifySuccess } from '@/shared/lib/notify'
 import { wait } from '@/shared/lib/wait'
@@ -10,26 +11,35 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { createProgramSchema, type CreateProgramValues } from '../model/validation'
-import styles from './CreateProgramButton.module.css'
+import { useShallow } from 'zustand/shallow'
+import { addTrackToMocks } from '../lib/addTrackToMocks'
+import { createTrack } from '../lib/createTrack'
+import { createTrackSchema, type CreateTrackValues } from '../model/validation'
+import styles from './CreateTrackButton.module.css'
 
-interface CreateProgramButtonProps {
+interface CreateTrackButtonProps {
   children?: string
   className?: string
 }
 
-export const CreateProgramButton = ({ className, children }: CreateProgramButtonProps) => {
+export const CreateTrackButton = ({ children, className }: CreateTrackButtonProps) => {
   const navigate = useNavigate()
+  const { user } = useUserStore(useShallow(useUserState))
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { control, handleSubmit, reset } = useForm<CreateProgramValues>({
+  const canCreateTrack = user?.role === Roles.TEACHER || user?.role === Roles.ADMIN
+  const { control, handleSubmit, reset } = useForm<CreateTrackValues>({
     defaultValues: {
       title: '',
       description: '',
     },
     mode: 'onBlur',
-    resolver: zodResolver(createProgramSchema),
+    resolver: zodResolver(createTrackSchema),
   })
+
+  if (!canCreateTrack) {
+    return null
+  }
 
   const handleOpen = () => {
     setIsOpen(true)
@@ -44,17 +54,21 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
     setIsOpen(false)
   }
 
-  const onSubmit = async (values: CreateProgramValues) => {
+  const handleCreateTrack = async (values: CreateTrackValues) => {
     setIsSubmitting(true)
 
     try {
-      // TODO: сохранить программу через API/mutation после подключения backend.
+      // TODO: заменить мок-создание на API mutation после подключения backend.
       await wait(450)
-      console.log(values)
-      notifySuccess('Программа создана', 'Новая программа успешно сохранена.')
-      navigate(`${ROUTES.PROGRAMS}/${1}`)
+
+      const createdTrack = createTrack({ values, user })
+
+      addTrackToMocks(createdTrack)
+      notifySuccess('Трек создан', 'Новый карьерный трек успешно сохранен.')
+      setIsOpen(false)
+      navigate(`${ROUTES.TRACKS}/${createdTrack.track.id}`)
     } catch {
-      notifyError('Не удалось создать программу', 'Проверьте данные и повторите попытку.')
+      notifyError('Не удалось создать трек', 'Проверьте данные и повторите попытку.')
     } finally {
       setIsSubmitting(false)
     }
@@ -66,30 +80,30 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
         <Button
           className={styles.button}
           color="default"
-          disabled={isSubmitting}
           htmlType="button"
           icon={<SaveOutlined />}
           variant="solid"
           onClick={handleOpen}
         >
-          {children || 'Создать программу'}
+          {children || 'Создать трек'}
         </Button>
       </div>
 
       <FormModal
-        eyebrow="Создание программы"
+        eyebrow="Создание трека"
         isSubmitting={isSubmitting}
         open={isOpen}
         submitIcon={<SaveOutlined />}
         submitLabel="Создать"
-        title="Вы создаете новую программу"
+        title="Вы создаете новый карьерный трек"
+        width={620}
         onCancel={handleClose}
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleCreateTrack)}
       >
         <InputField
           control={control}
           name="title"
-          placeholder="Название программы"
+          placeholder="Название трека"
           title="Название"
           disabled={isSubmitting}
         />
@@ -98,7 +112,7 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
           control={control}
           name="description"
           autoSize={{ minRows: 3, maxRows: 5 }}
-          placeholder="Коротко о программе"
+          placeholder="Коротко о треке"
           title="Описание"
           disabled={isSubmitting}
         />

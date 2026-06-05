@@ -1,2 +1,2 @@
-export { ProgramFlowCanvas } from './ui/ProgramFlowCanvas'
+export { LearningFlowCanvas } from './ui/LearningFlowCanvas'
 export type { ProgramCourseConnection } from './model/types'

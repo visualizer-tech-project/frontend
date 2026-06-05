@@ -1,0 +1,202 @@
+.button:global(.ant-btn.ant-btn-color-default.ant-btn-variant-solid) {
+  padding: 18px 20px !important;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text-on-dark);
+  white-space: nowrap;
+  border: 1px solid var(--color-text-on-dark) !important;
+  background-color: transparent;
+  box-shadow: 0 1px 2px rgb(13 18 22 / 8%);
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.button:global(.ant-btn.ant-btn-color-default.ant-btn-variant-solid):hover,
+.button:global(.ant-btn.ant-btn-color-default.ant-btn-variant-solid):focus-visible {
+  border-color: var(--color-white) !important;
+  color: var(--color-bg-dark);
+  background-color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgb(13 18 22 / 14%);
+}
+
+.button:global(.ant-btn.ant-btn-color-default.ant-btn-variant-solid):active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgb(13 18 22 / 12%);
+}
+
+.fileField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fileTitle {
+  color: var(--color-text-light);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.fileControl {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid color-mix(in srgb, var(--color-bg-dark) 20%, transparent);
+  border-radius: 10px;
+
+  color: var(--color-bg-dark);
+  background: var(--color-white);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.fileControl:hover {
+  border-color: color-mix(in srgb, var(--color-bg-dark) 34%, transparent);
+}
+
+.fileControlSuccess {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px rgb(16 185 129 / 10%);
+}
+
+.fileControlError {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgb(239 68 68 / 10%);
+}
+
+.fileControlDisabled {
+  opacity: 0.6;
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.fileInput:disabled {
+  cursor: not-allowed;
+}
+
+.fileName {
+  overflow: hidden;
+
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileMeta {
+  flex: 0 0 auto;
+  color: color-mix(in srgb, var(--color-bg-dark) 48%, transparent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.fileHint {
+  margin: 0;
+  color: color-mix(in srgb, var(--color-bg-dark) 56%, transparent);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.fileError {
+  color: var(--color-error);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.csvFormat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--color-bg-dark) 10%, transparent);
+  border-radius: 14px;
+
+  color: var(--color-bg-dark);
+}
+
+.csvFormatTitle {
+  color: color-mix(in srgb, var(--color-bg-dark) 62%, transparent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.csvTableWrapper {
+  overflow-x: auto;
+  border: 1px solid color-mix(in srgb, var(--color-bg-dark) 10%, transparent);
+  border-radius: 10px;
+}
+
+.csvTable {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  color: var(--color-bg-dark);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.csvTable th,
+.csvTable td {
+  padding: 10px 12px;
+  border-right: 1px solid color-mix(in srgb, var(--color-bg-dark) 8%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-bg-dark) 8%, transparent);
+  text-align: left;
+  vertical-align: top;
+}
+
+.csvTable th:last-child,
+.csvTable td:last-child {
+  border-right: 0;
+}
+
+.csvTable tr:last-child td {
+  border-bottom: 0;
+}
+
+.csvTable th {
+  color: color-mix(in srgb, var(--color-bg-dark) 62%, transparent);
+  font-weight: 800;
+  white-space: nowrap;
+  background: color-mix(in srgb, var(--color-bg-dark) 5%, var(--color-white));
+}
+
+.csvTable td {
+  max-width: 220px;
+  word-break: break-word;
+}
+
+@media (width <= 640px) {
+  .button:global(.ant-btn) {
+    width: 100%;
+  }
+
+  .fileControl {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

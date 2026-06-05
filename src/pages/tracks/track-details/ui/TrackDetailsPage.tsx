@@ -1,12 +1,12 @@
 import { mockCourses, type Course } from '@/entities/course'
 import {
-  mockProgramPrerequisites,
+  mockTrackPrerequisites,
   type Prerequisite,
   type PrerequisiteCreate,
-  type ProgramPrerequisite,
+  type TrackPrerequisite,
 } from '@/entities/prerequisite'
-import { mockPrograms } from '@/entities/program'
 import { type ProgressSelectChangePayload, type UserProgress } from '@/entities/progress'
+import { mockTrackCourses, mockTracks } from '@/entities/track'
 import { useUserState, useUserStore } from '@/entities/user'
 import { CoursePicker } from '@/features/course-picker'
 import { ROUTES } from '@/shared/config'
@@ -18,78 +18,101 @@ import { useCallback, useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
 import {
-  getProgramCourses,
-  getProgramPrerequisites,
-  getProgramProgress,
-} from '../lib/getProgramMockData'
-import { ProgramWorkspace } from './ProgramWorkspace/ProgramWorkspace'
-import styles from './ProgramsDetailsPage.module.css'
+  getTrackCourses,
+  getTrackPrerequisites,
+  getTrackPrerequisitesForCourses,
+  getTrackProgress,
+} from '../lib/getTrackMockData'
+import styles from './TrackDetailsPage.module.css'
+import { TrackWorkspace } from './TrackWorkspace'
 
-export const ProgramDetailsPage = () => {
-  const { programId } = useParams()
+export const TrackDetailsPage = () => {
+  const { trackId } = useParams()
   const { user } = useUserStore(useShallow(useUserState))
-  const isProgramLoading = useMockLoading([programId, user?.id])
-  const numericProgramId = Number(programId)
+  const numericTrackId = Number(trackId)
+  const isTrackLoading = useMockLoading([trackId, user?.id])
 
   // MOCKS
-  const [courses, setCourses] = useState<Course[]>(() => getProgramCourses(numericProgramId))
-  const [prerequisites, setPrerequisites] = useState<ProgramPrerequisite[]>(() =>
-    getProgramPrerequisites(numericProgramId),
+  const [courses, setCourses] = useState<Course[]>(() => getTrackCourses(numericTrackId))
+  const [prerequisites, setPrerequisites] = useState<TrackPrerequisite[]>(() =>
+    getTrackPrerequisites(numericTrackId),
   )
-
   const [progress, setProgress] = useState<UserProgress[]>(() =>
-    getProgramProgress(numericProgramId, user?.id),
+    getTrackProgress(numericTrackId, user?.id),
   )
   const [removingCourseIds, setRemovingCourseIds] = useState<Course['id'][]>([])
-  const [removingPrerequisiteIds, setRemovingPrerequisiteIds] = useState<
-    ProgramPrerequisite['id'][]
-  >([])
+  const [removingPrerequisiteIds, setRemovingPrerequisiteIds] = useState<TrackPrerequisite['id'][]>(
+    [],
+  )
 
   useEffect(() => {
-    setCourses(getProgramCourses(numericProgramId))
-    setPrerequisites(getProgramPrerequisites(numericProgramId))
-    setProgress(getProgramProgress(numericProgramId, user?.id))
-  }, [numericProgramId, user?.id])
+    setCourses(getTrackCourses(numericTrackId))
+    setPrerequisites(getTrackPrerequisites(numericTrackId))
+    setProgress(getTrackProgress(numericTrackId, user?.id))
+  }, [numericTrackId, user?.id])
 
-  const handleCourseRemove = useCallback(async (courseId: number) => {
-    setRemovingCourseIds((current) =>
-      current.includes(courseId) ? current : [...current, courseId],
-    )
-
-    try {
-      // TODO: заменить задержку на удаление курса из программы через API.
-      await wait(600)
-
-      setCourses((currentCourses) => currentCourses.filter((course) => course.id !== courseId))
-      setPrerequisites((current) =>
-        current.filter(
-          (prerequisite) =>
-            prerequisite.course_id !== courseId && prerequisite.prerequisite_course_id !== courseId,
-        ),
+  const handleCourseRemove = useCallback(
+    async (courseId: Course['id']) => {
+      setRemovingCourseIds((current) =>
+        current.includes(courseId) ? current : [...current, courseId],
       )
-      notifySuccess('Курс удален', 'Курс успешно удален с холста.')
-    } catch {
-      notifyError('Не удалось удалить курс', 'Попробуйте удалить курс еще раз.')
-    } finally {
-      setRemovingCourseIds((current) => current.filter((id) => id !== courseId))
-    }
-  }, [])
 
-  const handleCourseUpdate = useCallback(
-    (updatedCourse: Course) => {
-      setCourses((currentCourses) =>
-        currentCourses.map((course) =>
-          course.id === updatedCourse.id
-            ? {
-                ...course,
-                ...updatedCourse,
-              }
-            : course,
-        ),
-      )
+      try {
+        // TODO: заменить задержку на удаление курса из трека через API.
+        await wait(600)
+
+        setCourses((currentCourses) => {
+          const nextCourses = currentCourses.filter((course) => course.id !== courseId)
+
+          const trackCourseIndex = mockTrackCourses.findIndex(
+            (trackCourse) =>
+              trackCourse.career_track_id === numericTrackId && trackCourse.course_id === courseId,
+          )
+
+          const currentTrack = mockTracks.find(({ id }) => id === numericTrackId)
+
+          if (trackCourseIndex !== -1) {
+            mockTrackCourses.splice(trackCourseIndex, 1)
+          }
+
+          if (currentTrack) {
+            currentTrack.courses_count = nextCourses.length
+            currentTrack.updated_at = new Date().toISOString()
+          }
+
+          return nextCourses
+        })
+
+        setPrerequisites((current) =>
+          current.filter(
+            (prerequisite) =>
+              prerequisite.course_id !== courseId &&
+              prerequisite.prerequisite_course_id !== courseId,
+          ),
+        )
+
+        notifySuccess('Курс удален', 'Курс успешно удален из трека.')
+      } catch {
+        notifyError('Не удалось удалить курс', 'Попробуйте удалить курс еще раз.')
+      } finally {
+        setRemovingCourseIds((current) => current.filter((id) => id !== courseId))
+      }
     },
-    [numericProgramId],
+    [numericTrackId],
   )
+
+  const handleCourseUpdate = useCallback((updatedCourse: Course) => {
+    setCourses((currentCourses) =>
+      currentCourses.map((course) =>
+        course.id === updatedCourse.id
+          ? {
+              ...course,
+              ...updatedCourse,
+            }
+          : course,
+      ),
+    )
+  }, [])
 
   const handleExistingCourseAdd = useCallback(
     (course: Course) => {
@@ -100,21 +123,37 @@ export const ProgramDetailsPage = () => {
           return currentCourses
         }
 
-        return [...currentCourses, course]
+        const nextCourses = [...currentCourses, course]
+        const now = new Date().toISOString()
+        const currentTrack = mockTracks.find(({ id }) => id === numericTrackId)
+
+        mockTrackCourses.push({
+          id: Date.now(),
+          career_track_id: numericTrackId,
+          course_id: course.id,
+          order_index: nextCourses.length,
+          created_at: now,
+          updated_at: now,
+        })
+
+        if (currentTrack) {
+          currentTrack.courses_count = nextCourses.length
+          currentTrack.updated_at = now
+        }
+
+        setPrerequisites(getTrackPrerequisitesForCourses(numericTrackId, nextCourses))
+
+        return nextCourses
       })
     },
-    [numericProgramId],
+    [numericTrackId],
   )
-
-  const handleNewCourseAdd = useCallback((course: Course) => {
-    setCourses((currentCourses) => [...currentCourses, course])
-  }, [])
 
   const handleEdgeConnect = useCallback(
     async (courseId: number, prerequisiteCreate: PrerequisiteCreate) => {
-      const tempPrerequisite: ProgramPrerequisite = {
+      const tempPrerequisite: TrackPrerequisite = {
         id: -Date.now(),
-        program_id: numericProgramId,
+        career_track_id: numericTrackId,
         course_id: courseId,
         prerequisite_course_id: prerequisiteCreate.prerequisite_course_id,
         created_at: new Date().toISOString(),
@@ -137,14 +176,14 @@ export const ProgramDetailsPage = () => {
 
       try {
         // TODO: заменить задержку на создание prerequisite через API.
-        await new Promise((resolve) => setTimeout(resolve, 600))
+        await wait(600)
 
-        const createdPrerequisite: ProgramPrerequisite = {
+        const createdPrerequisite: TrackPrerequisite = {
           ...tempPrerequisite,
           id: Date.now(),
         }
 
-        mockProgramPrerequisites.push(createdPrerequisite)
+        mockTrackPrerequisites.push(createdPrerequisite)
 
         setPrerequisites((current) =>
           current.map((prerequisite) =>
@@ -159,12 +198,12 @@ export const ProgramDetailsPage = () => {
         notifyError('Не удалось добавить связь', 'Изменение откатилось. Попробуйте еще раз.')
       }
     },
-    [numericProgramId],
+    [numericTrackId],
   )
 
   const handleEdgeDelete = useCallback(
     async (prerequisite: Prerequisite) => {
-      const previousPrerequisite = prerequisite as ProgramPrerequisite
+      const previousPrerequisite = prerequisite as TrackPrerequisite
 
       setRemovingPrerequisiteIds((current) =>
         current.includes(prerequisite.id) ? current : [...current, prerequisite.id],
@@ -175,12 +214,12 @@ export const ProgramDetailsPage = () => {
         // TODO: заменить задержку на удаление prerequisite через API.
         await wait(600)
 
-        const prerequisiteIndex = mockProgramPrerequisites.findIndex(
-          (item) => item.id === prerequisite.id && item.program_id === numericProgramId,
+        const prerequisiteIndex = mockTrackPrerequisites.findIndex(
+          (item) => item.id === prerequisite.id && item.career_track_id === numericTrackId,
         )
 
         if (prerequisiteIndex !== -1) {
-          mockProgramPrerequisites.splice(prerequisiteIndex, 1)
+          mockTrackPrerequisites.splice(prerequisiteIndex, 1)
         }
 
         notifySuccess('Связь удалена', 'Зависимость между курсами успешно удалена.')
@@ -191,7 +230,7 @@ export const ProgramDetailsPage = () => {
         setRemovingPrerequisiteIds((current) => current.filter((id) => id !== prerequisite.id))
       }
     },
-    [numericProgramId],
+    [numericTrackId],
   )
 
   const handleProgressChange = useCallback((payload: ProgressSelectChangePayload) => {
@@ -208,15 +247,15 @@ export const ProgramDetailsPage = () => {
     })
   }, [])
 
-  const program = mockPrograms.find(({ id }) => id === numericProgramId)
+  const track = mockTracks.find(({ id }) => id === numericTrackId)
 
-  if (!program || Number.isNaN(numericProgramId)) return <NavLink to={ROUTES.NOT_FOUND} />
+  if (!track || Number.isNaN(numericTrackId)) return <NavLink to={ROUTES.NOT_FOUND} />
 
-  const canEditProgram = program.user_id === user?.id || user?.role === 'admin'
+  const canEditTrack = track.user_id === user?.id || user?.role === 'admin'
 
   return (
     <div>
-      <ProgramWorkspace program={program} />
+      <TrackWorkspace track={track} courses={courses} />
 
       <div className={styles.canvas}>
         <LearningFlowCanvas
@@ -228,19 +267,19 @@ export const ProgramDetailsPage = () => {
           onProgressChange={handleProgressChange}
           onEdgeConnect={handleEdgeConnect}
           onEdgeDelete={handleEdgeDelete}
-          canEditFlow={canEditProgram}
-          isLoading={isProgramLoading}
+          canEditFlow={canEditTrack}
+          isLoading={isTrackLoading}
           isEdgeDeleting={removingPrerequisiteIds.length > 0}
           removingCourseIds={removingCourseIds}
         />
 
-        {canEditProgram && (
+        {canEditTrack && (
           <CoursePicker
             courses={mockCourses}
             selectedCourses={courses}
             onExistingCourseAdd={handleExistingCourseAdd}
-            onNewCourseAdd={handleNewCourseAdd}
-            isLoading={isProgramLoading}
+            allowCourseCreate={false}
+            isLoading={isTrackLoading}
           />
         )}
       </div>

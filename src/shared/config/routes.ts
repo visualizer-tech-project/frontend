@@ -1,4 +1,5 @@
 const PROGRAMS_ROUTE = '/programs'
+const TRACKS_ROUTE = '/tracks'
 
 export const ROUTES = {
   HOME: '/',
@@ -13,6 +14,7 @@ export const ROUTES = {
   SETTINGS: '/settings',
   PROGRAMS: PROGRAMS_ROUTE,
   PROGRAM_DETAILS: `${PROGRAMS_ROUTE}/:programId`,
-  TRACKS: '/tracks',
+  TRACKS: TRACKS_ROUTE,
+  TRACK_DETAILS: `${TRACKS_ROUTE}/:trackId`,
   DEV: '/dev',
 } as const

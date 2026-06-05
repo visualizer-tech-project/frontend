@@ -12,6 +12,7 @@ interface FormModalProps {
   onCancel: () => void
   onSubmit: FormEventHandler<HTMLFormElement>
   cancelLabel?: string
+  description?: string
   isSubmitting?: boolean
   submitIcon?: ReactNode
   width?: number
@@ -26,6 +27,7 @@ export const FormModal = ({
   onCancel,
   onSubmit,
   cancelLabel = 'Отмена',
+  description,
   isSubmitting = false,
   submitIcon,
   width,
@@ -47,6 +49,7 @@ export const FormModal = ({
         <div className={styles.formHeader}>
           <span>{eyebrow}</span>
           <h2>{title}</h2>
+          {description ? <p>{description}</p> : null}
         </div>
 
         {children}
@@ -66,9 +69,9 @@ export const FormModal = ({
           <Button
             className={styles.primaryButton}
             color="default"
+            disabled={isSubmitting}
             htmlType="submit"
             icon={submitIcon}
-            disabled={isSubmitting}
             loading={isSubmitting}
             variant="filled"
           >

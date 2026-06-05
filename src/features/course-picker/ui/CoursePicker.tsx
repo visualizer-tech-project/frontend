@@ -18,9 +18,10 @@ interface CoursePickerFormValues {
 interface CoursePickerProps {
   courses: Course[]
   onExistingCourseAdd: (course: Course) => void
-  onNewCourseAdd: (course: Course) => void
-  programCourses: Course[]
+  selectedCourses: Course[]
+  allowCourseCreate?: boolean
   isLoading?: boolean
+  onNewCourseAdd?: (course: Course) => void
 }
 
 type CoursePickerPendingAction = 'adding-existing' | 'creating-new'
@@ -29,7 +30,8 @@ export const CoursePicker = ({
   courses,
   onExistingCourseAdd,
   onNewCourseAdd,
-  programCourses,
+  selectedCourses,
+  allowCourseCreate = true,
   isLoading = false,
 }: CoursePickerProps) => {
   const [searchValue, setSearchValue] = useState('')
@@ -51,9 +53,9 @@ export const CoursePicker = ({
     handlePointerUp,
   } = useFloatingPanelDrag({ x: 32, y: 32 }, EDGE_PADDING)
 
-  const programCourseIds = useMemo(
-    () => new Set(programCourses.map((course) => course.id)),
-    [programCourses],
+  const selectedCourseIds = useMemo(
+    () => new Set(selectedCourses.map((course) => course.id)),
+    [selectedCourses],
   )
 
   const selectedCourse = useMemo(
@@ -141,7 +143,7 @@ export const CoursePicker = ({
         <div className={styles.panelHeader}>
           <div className={styles.info}>
             <span className={styles.eyebrow}>Курсы</span>
-            <strong>{programCourses.length} на холсте</strong>
+            <strong>{selectedCourses.length} на холсте</strong>
           </div>
 
           <Button
@@ -194,27 +196,31 @@ export const CoursePicker = ({
                   </div>
                   <Button
                     className={styles.courseActionButton}
-                    disabled={programCourseIds.has(selectedCourse.id) || isPending || isLoading}
+                    disabled={selectedCourseIds.has(selectedCourse.id) || isPending || isLoading}
                     loading={isAddingExisting}
                     onClick={handleAddExistingCourse}
                   >
-                    {programCourseIds.has(selectedCourse.id) ? 'Уже добавлен' : 'Добавить'}
+                    {selectedCourseIds.has(selectedCourse.id) ? 'Уже добавлен' : 'Добавить'}
                   </Button>
                 </div>
               ) : !courses.length ? (
                 <p className={styles.empty}>Доступных курсов пока нет.</p>
-              ) : (
+              ) : allowCourseCreate ? (
                 <p className={styles.empty}>Выбери курс из списка или добавь новый ниже.</p>
+              ) : (
+                <p className={styles.empty}>Выбери существующий курс из списка.</p>
               )}
             </div>
 
-            <CreateCourseForm
-              disabled={isLoading || isAddingExisting}
-              onCourseCreated={onNewCourseAdd}
-              onPendingChange={(isSubmitting) =>
-                setPendingAction(isSubmitting ? 'creating-new' : null)
-              }
-            />
+            {allowCourseCreate && onNewCourseAdd ? (
+              <CreateCourseForm
+                disabled={isLoading || isAddingExisting}
+                onCourseCreated={onNewCourseAdd}
+                onPendingChange={(isSubmitting) =>
+                  setPendingAction(isSubmitting ? 'creating-new' : null)
+                }
+              />
+            ) : null}
           </div>
         )}
       </div>
