@@ -5,8 +5,8 @@ import {
   type CourseUpdate,
   type CreateCourseValues,
 } from '@/entities/course'
-import { notifyError, notifySuccess } from '@/shared/lib/notify'
-import { wait } from '@/shared/lib/wait'
+import { updateCourseApiV1CoursesCourseIdPut } from '@/shared/api/generated'
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { SelectField } from '@/shared/ui/SelectField'
 import { TextAreaField } from '@/shared/ui/TextAreaField'
@@ -48,26 +48,40 @@ export const CourseEditForm: FC<ICourseEditForm> = ({
     setIsSubmitting(true)
 
     try {
-      const courseUpdateResponse = {
+      if (!course.id) {
+        throw new Error('Не удалось определить курс для обновления.')
+      }
+
+      const courseUpdate = {
         ...values,
+        description: values.description || undefined,
         program_id: course.program_id,
         user_id: course.user_id,
       } satisfies CourseUpdate
 
-      await wait(350)
-      console.log(courseUpdateResponse)
+      const { data, error } = await updateCourseApiV1CoursesCourseIdPut({
+        body: courseUpdate,
+        path: {
+          course_id: course.id,
+        },
+      })
 
-      const newCourse: Course = {
-        ...course,
-        ...courseUpdateResponse,
-        updated_at: new Date().toISOString(),
+      if (error) {
+        throw new Error(getErrorMessage(error, 'Попробуйте сохранить изменения еще раз.'))
       }
 
-      onCourseUpdate(newCourse)
-      notifySuccess('Курс обновлен', 'Изменения курса успешно сохранены.')
+      if (!data) {
+        throw new Error('Не удалось обновить данные курса. Обновите страницу.')
+      }
+
+      onCourseUpdate(data)
+      notifySuccess('Курс обновлен', 'Изменения сохранены.')
       onClose()
-    } catch {
-      notifyError('Не удалось обновить курс', 'Попробуйте сохранить изменения еще раз.')
+    } catch (error) {
+      notifyError(
+        'Не удалось обновить курс',
+        getErrorMessage(error, 'Попробуйте сохранить изменения еще раз.'),
+      )
     } finally {
       setIsSubmitting(false)
     }

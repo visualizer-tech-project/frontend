@@ -9,7 +9,7 @@ interface CreateCourseNodeProps {
   userId: UserPublic['id'] | null
   index: number
   progress: UserProgress | null
-  onCourseRemove: (courseId: Course['id']) => void
+  onCourseRemove: (courseId: number) => void
   onCourseUpdate: (course: Course) => void
   onProgressChange: (payload: ProgressSelectChangePayload) => void
   canEditFlow: boolean

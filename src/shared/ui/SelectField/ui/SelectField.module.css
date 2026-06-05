@@ -1,8 +1,27 @@
-.select {
+.select:global(.ant-select) {
   width: 100%;
+  height: var(--select-height, 40px) !important;
+  min-height: var(--select-height, 40px) !important;
   background: #262526;
   border: none;
   color: #fff;
+}
+
+.select :global(.ant-select-selector) {
+  height: 100% !important;
+  min-height: inherit;
+  align-items: center;
+}
+
+.select :global(.ant-select-selection-wrap) {
+  align-self: stretch;
+  min-height: inherit;
+}
+
+.select :global(.ant-select-selection-item),
+.select :global(.ant-select-selection-placeholder) {
+  display: flex;
+  align-items: center;
 }
 
 .title {

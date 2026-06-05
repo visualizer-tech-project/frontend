@@ -37,11 +37,11 @@ export const ProgramCard = ({
 
       <div className={styles.footer}>
         <p className={styles.date}>
-          Создано: <span>{formatDate(program.created_at)}</span>
+          Создано: <span>{program.created_at ? formatDate(program.created_at) : 'Дата неизвестна'}</span>
         </p>
 
         <p className={styles.date}>
-          Обновлено: <span>{formatDate(program.updated_at)}</span>
+          Обновлено: <span>{program.updated_at ? formatDate(program.updated_at) : 'Дата неизвестна'}</span>
         </p>
 
         <div className={styles.actions}>

@@ -51,6 +51,15 @@
   margin-top: 6px;
 }
 
+.statusMessage {
+  margin: 0;
+
+  color: rgb(245 247 251 / 86%);
+  font-size: 17px;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .bottom {
   display: flex;
   flex-direction: column;

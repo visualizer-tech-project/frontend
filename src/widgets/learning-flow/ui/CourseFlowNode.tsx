@@ -35,7 +35,7 @@ export const CourseFlowNode = ({ data }: NodeProps<Node<CourseFlowNodeData>>) =>
     e.preventDefault()
     e.stopPropagation()
 
-    if (!isCourseRemoving) {
+    if (!isCourseRemoving && course.id) {
       onCourseRemove(course.id)
     }
   }
@@ -111,7 +111,7 @@ export const CourseFlowNode = ({ data }: NodeProps<Node<CourseFlowNodeData>>) =>
             progress?.status === 'in_progress' && styles.inProgressLabel,
           )}
         >
-          {courseTypeLabels[course.type]}
+          {courseTypeLabels[course.type ?? 'required']}
         </strong>
       </div>
 

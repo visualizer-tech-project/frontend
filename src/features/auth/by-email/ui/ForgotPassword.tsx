@@ -1,6 +1,6 @@
+import { forgotPasswordApiV1AuthForgotPasswordPost } from '@/shared/api/generated'
 import { ROUTES } from '@/shared/config'
-import { notifyError, notifySuccess } from '@/shared/lib/notify'
-import { wait } from '@/shared/lib/wait'
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { InputField } from '@/shared/ui/InputField'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -25,11 +25,20 @@ export const ForgotPassword = () => {
     setIsSubmitting(true)
 
     try {
-      await wait(450)
-      console.log(values)
+      const { error } = await forgotPasswordApiV1AuthForgotPasswordPost({
+        body: values,
+      })
+
+      if (error) {
+        throw new Error(getErrorMessage(error, 'Попробуйте повторить запрос позже.'))
+      }
+
       notifySuccess('Ссылка отправлена', 'Проверьте почту для восстановления пароля.')
-    } catch {
-      notifyError('Не удалось отправить ссылку', 'Попробуйте повторить запрос позже.')
+    } catch (error) {
+      notifyError(
+        'Не удалось отправить ссылку',
+        getErrorMessage(error, 'Попробуйте повторить запрос позже.'),
+      )
     } finally {
       setIsSubmitting(false)
     }

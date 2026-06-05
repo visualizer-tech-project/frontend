@@ -1,8 +1,8 @@
 import { roleLabels, Roles, useUserActions, useUserState, useUserStore } from '@/entities/user'
+import { logoutApiV1AuthLogoutPost } from '@/shared/api/generated'
 import { ROUTES } from '@/shared/config'
 import { formatDate } from '@/shared/lib/formatDate'
-import { notifyError, notifySuccess } from '@/shared/lib/notify'
-import { wait } from '@/shared/lib/wait'
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { PageHero } from '@/widgets/page-hero'
 import { useState } from 'react'
@@ -19,21 +19,28 @@ export const ProfilePage = () => {
   if (!user) return <NavLink to={ROUTES.LOGIN} />
 
   const heroStats = [
-    { label: 'Роль', value: roleLabels[user.role] },
+    { label: 'Роль', value: user.role ? roleLabels[user.role] : 'Не назначена' },
     { label: 'Статус', value: 'Активен' },
-    { label: 'С нами', value: formatDate(user.created_at) },
+    { label: 'С нами', value: user.created_at ? formatDate(user.created_at) : 'Дата неизвестна' },
   ]
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
 
     try {
-      await wait(350)
+      const { error } = await logoutApiV1AuthLogoutPost()
+
+      if (error) {
+        throw new Error(getErrorMessage(error, 'Попробуйте повторить действие.'))
+      }
+
       logout()
-      notifySuccess('Вы вышли из аккаунта', 'Сессия завершена.')
+      notifySuccess('Вы вышли из аккаунта', 'До встречи.')
       navigate(ROUTES.HOME)
-    } catch {
-      notifyError('Не удалось выйти', 'Попробуйте повторить действие.')
+    } catch (error) {
+      logout()
+      notifyError('Не удалось завершить сессию', getErrorMessage(error, 'Вы вышли из аккаунта.'))
+      navigate(ROUTES.HOME)
     } finally {
       setIsLoggingOut(false)
     }
@@ -74,7 +81,7 @@ export const ProfilePage = () => {
             </div>
             <div className={styles.infoCard}>
               <span>Дата регистрации</span>
-              <strong>{formatDate(user.created_at)}</strong>
+              <strong>{user.created_at ? formatDate(user.created_at) : 'Дата неизвестна'}</strong>
             </div>
           </div>
         </section>

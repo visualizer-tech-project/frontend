@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { DeleteCareerTracksByTrackIdCoursesByCourseIdData, DeleteCareerTracksByTrackIdCoursesByCourseIdErrors, DeleteCareerTracksByTrackIdCoursesByCourseIdResponses, DeleteCareerTracksByTrackIdData, DeleteCareerTracksByTrackIdErrors, DeleteCareerTracksByTrackIdResponses, DeleteCoursesByCourseIdData, DeleteCoursesByCourseIdErrors, DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdData, DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdErrors, DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdResponses, DeleteCoursesByCourseIdResponses, DeleteProgramsByProgramIdData, DeleteProgramsByProgramIdErrors, DeleteProgramsByProgramIdResponses, DeleteRolesByRoleIdData, DeleteRolesByRoleIdErrors, DeleteRolesByRoleIdResponses, DeleteUsersByUserIdCoursesByCourseIdProgressData, DeleteUsersByUserIdCoursesByCourseIdProgressErrors, DeleteUsersByUserIdCoursesByCourseIdProgressResponses, GetAuthMeData, GetAuthMeErrors, GetAuthMeResponses, GetCareerTracksByTrackIdCoursesData, GetCareerTracksByTrackIdCoursesErrors, GetCareerTracksByTrackIdCoursesResponses, GetCareerTracksByTrackIdData, GetCareerTracksByTrackIdErrors, GetCareerTracksByTrackIdResponses, GetCareerTracksData, GetCareerTracksErrors, GetCareerTracksResponses, GetCoursesByCourseIdData, GetCoursesByCourseIdErrors, GetCoursesByCourseIdPrerequisitesData, GetCoursesByCourseIdPrerequisitesErrors, GetCoursesByCourseIdPrerequisitesResponses, GetCoursesByCourseIdResponses, GetCoursesData, GetCoursesErrors, GetCoursesResponses, GetPermissionsData, GetPermissionsErrors, GetPermissionsResponses, GetProgramsByProgramIdData, GetProgramsByProgramIdErrors, GetProgramsByProgramIdResponses, GetProgramsData, GetProgramsErrors, GetProgramsResponses, GetRolesByRoleIdData, GetRolesByRoleIdErrors, GetRolesByRoleIdResponses, GetRolesData, GetRolesErrors, GetRolesResponses, GetUsersByUserIdData, GetUsersByUserIdErrors, GetUsersByUserIdProgressData, GetUsersByUserIdProgressErrors, GetUsersByUserIdProgressResponses, GetUsersByUserIdResponses, GetUsersData, GetUsersErrors, GetUsersMeData, GetUsersMeErrors, GetUsersMeResponses, GetUsersResponses, PostAuthChangePasswordData, PostAuthChangePasswordErrors, PostAuthChangePasswordResponses, PostAuthForgotPasswordData, PostAuthForgotPasswordErrors, PostAuthForgotPasswordResponses, PostAuthLoginData, PostAuthLoginErrors, PostAuthLoginResponses, PostAuthLogoutData, PostAuthLogoutErrors, PostAuthLogoutResponses, PostAuthRefreshData, PostAuthRefreshErrors, PostAuthRefreshResponses, PostAuthRegisterData, PostAuthRegisterErrors, PostAuthRegisterResponses, PostAuthResetPasswordData, PostAuthResetPasswordErrors, PostAuthResetPasswordResponses, PostAuthVerifyData, PostAuthVerifyErrors, PostAuthVerifyResponses, PostCareerTracksByTrackIdCoursesData, PostCareerTracksByTrackIdCoursesErrors, PostCareerTracksByTrackIdCoursesResponses, PostCareerTracksData, PostCareerTracksErrors, PostCareerTracksResponses, PostCoursesByCourseIdPrerequisitesData, PostCoursesByCourseIdPrerequisitesErrors, PostCoursesByCourseIdPrerequisitesResponses, PostCoursesData, PostCoursesErrors, PostCoursesResponses, PostProgramsByProgramIdCopyData, PostProgramsByProgramIdCopyErrors, PostProgramsByProgramIdCopyResponses, PostProgramsData, PostProgramsErrors, PostProgramsResponses, PostRolesData, PostRolesErrors, PostRolesResponses, PostUsersByUserIdCoursesByCourseIdProgressData, PostUsersByUserIdCoursesByCourseIdProgressErrors, PostUsersByUserIdCoursesByCourseIdProgressResponses, PostUsersByUserIdEscalateData, PostUsersByUserIdEscalateErrors, PostUsersByUserIdEscalateResponses, PutCareerTracksByTrackIdData, PutCareerTracksByTrackIdErrors, PutCareerTracksByTrackIdResponses, PutCoursesByCourseIdData, PutCoursesByCourseIdErrors, PutCoursesByCourseIdResponses, PutProgramsByProgramIdData, PutProgramsByProgramIdErrors, PutProgramsByProgramIdResponses, PutRolesByRoleIdData, PutRolesByRoleIdErrors, PutRolesByRoleIdResponses, PutUsersByUserIdCoursesByCourseIdProgressData, PutUsersByUserIdCoursesByCourseIdProgressErrors, PutUsersByUserIdCoursesByCourseIdProgressResponses, PutUsersMeData, PutUsersMeErrors, PutUsersMeResponses } from './types.gen';
+import type { AddCourseToTrackApiV1CareerTracksTrackIdCoursesPostData, AddCourseToTrackApiV1CareerTracksTrackIdCoursesPostErrors, AddCourseToTrackApiV1CareerTracksTrackIdCoursesPostResponses, AddPrerequisiteApiV1CoursesCourseIdPrerequisitesPostData, AddPrerequisiteApiV1CoursesCourseIdPrerequisitesPostErrors, AddPrerequisiteApiV1CoursesCourseIdPrerequisitesPostResponses, ChangePasswordApiV1AuthChangePasswordPostData, ChangePasswordApiV1AuthChangePasswordPostErrors, ChangePasswordApiV1AuthChangePasswordPostResponses, CopyProgramApiV1ProgramsProgramIdCopyPostData, CopyProgramApiV1ProgramsProgramIdCopyPostErrors, CopyProgramApiV1ProgramsProgramIdCopyPostResponses, CreateCourseApiV1CoursesPostData, CreateCourseApiV1CoursesPostErrors, CreateCourseApiV1CoursesPostResponses, CreateProgramApiV1ProgramsPostData, CreateProgramApiV1ProgramsPostErrors, CreateProgramApiV1ProgramsPostResponses, CreateProgressApiV1UsersUserIdCoursesCourseIdProgressPostData, CreateProgressApiV1UsersUserIdCoursesCourseIdProgressPostErrors, CreateProgressApiV1UsersUserIdCoursesCourseIdProgressPostResponses, CreateRoleApiV1RolesPostData, CreateRoleApiV1RolesPostErrors, CreateRoleApiV1RolesPostResponses, CreateTrackApiV1CareerTracksPostData, CreateTrackApiV1CareerTracksPostErrors, CreateTrackApiV1CareerTracksPostResponses, DeleteCourseApiV1CoursesCourseIdDeleteData, DeleteCourseApiV1CoursesCourseIdDeleteErrors, DeleteCourseApiV1CoursesCourseIdDeleteResponses, DeleteProgramApiV1ProgramsProgramIdDeleteData, DeleteProgramApiV1ProgramsProgramIdDeleteErrors, DeleteProgramApiV1ProgramsProgramIdDeleteResponses, DeleteProgressApiV1UsersUserIdCoursesCourseIdProgressDeleteData, DeleteProgressApiV1UsersUserIdCoursesCourseIdProgressDeleteErrors, DeleteProgressApiV1UsersUserIdCoursesCourseIdProgressDeleteResponses, DeleteRoleApiV1RolesRoleIdDeleteData, DeleteRoleApiV1RolesRoleIdDeleteErrors, DeleteRoleApiV1RolesRoleIdDeleteResponses, DeleteTrackApiV1CareerTracksTrackIdDeleteData, DeleteTrackApiV1CareerTracksTrackIdDeleteErrors, DeleteTrackApiV1CareerTracksTrackIdDeleteResponses, EscalateUserRoleApiV1UsersUserIdEscalatePostData, EscalateUserRoleApiV1UsersUserIdEscalatePostErrors, EscalateUserRoleApiV1UsersUserIdEscalatePostResponses, ForgotPasswordApiV1AuthForgotPasswordPostData, ForgotPasswordApiV1AuthForgotPasswordPostErrors, ForgotPasswordApiV1AuthForgotPasswordPostResponses, GetCourseByIdApiV1CoursesCourseIdGetData, GetCourseByIdApiV1CoursesCourseIdGetErrors, GetCourseByIdApiV1CoursesCourseIdGetResponses, GetCoursesApiV1CoursesGetData, GetCoursesApiV1CoursesGetErrors, GetCoursesApiV1CoursesGetResponses, GetMeApiV1AuthMeGetData, GetMeApiV1AuthMeGetErrors, GetMeApiV1AuthMeGetResponses, GetPermissionsApiV1PermissionsGetData, GetPermissionsApiV1PermissionsGetErrors, GetPermissionsApiV1PermissionsGetResponses, GetPrerequisitesApiV1CoursesCourseIdPrerequisitesGetData, GetPrerequisitesApiV1CoursesCourseIdPrerequisitesGetErrors, GetPrerequisitesApiV1CoursesCourseIdPrerequisitesGetResponses, GetProfileApiV1UsersMeGetData, GetProfileApiV1UsersMeGetErrors, GetProfileApiV1UsersMeGetResponses, GetProgramByIdApiV1ProgramsProgramIdGetData, GetProgramByIdApiV1ProgramsProgramIdGetErrors, GetProgramByIdApiV1ProgramsProgramIdGetResponses, GetProgramsApiV1ProgramsGetData, GetProgramsApiV1ProgramsGetErrors, GetProgramsApiV1ProgramsGetResponses, GetRoleApiV1RolesRoleIdGetData, GetRoleApiV1RolesRoleIdGetErrors, GetRoleApiV1RolesRoleIdGetResponses, GetRolesApiV1RolesGetData, GetRolesApiV1RolesGetErrors, GetRolesApiV1RolesGetResponses, GetTrackByIdApiV1CareerTracksTrackIdGetData, GetTrackByIdApiV1CareerTracksTrackIdGetErrors, GetTrackByIdApiV1CareerTracksTrackIdGetResponses, GetTrackCoursesApiV1CareerTracksTrackIdCoursesGetData, GetTrackCoursesApiV1CareerTracksTrackIdCoursesGetErrors, GetTrackCoursesApiV1CareerTracksTrackIdCoursesGetResponses, GetTracksApiV1CareerTracksGetData, GetTracksApiV1CareerTracksGetErrors, GetTracksApiV1CareerTracksGetResponses, GetUserApiV1UsersUserIdGetData, GetUserApiV1UsersUserIdGetErrors, GetUserApiV1UsersUserIdGetResponses, GetUserProgressApiV1UsersUserIdProgressGetData, GetUserProgressApiV1UsersUserIdProgressGetErrors, GetUserProgressApiV1UsersUserIdProgressGetResponses, GetUsersApiV1UsersGetData, GetUsersApiV1UsersGetErrors, GetUsersApiV1UsersGetResponses, HealthCheckHealthGetData, HealthCheckHealthGetResponses, LoginApiV1AuthLoginPostData, LoginApiV1AuthLoginPostErrors, LoginApiV1AuthLoginPostResponses, LogoutApiV1AuthLogoutPostData, LogoutApiV1AuthLogoutPostErrors, LogoutApiV1AuthLogoutPostResponses, RefreshTokenApiV1AuthRefreshPostData, RefreshTokenApiV1AuthRefreshPostErrors, RefreshTokenApiV1AuthRefreshPostResponses, RegisterApiV1AuthRegisterPostData, RegisterApiV1AuthRegisterPostErrors, RegisterApiV1AuthRegisterPostResponses, RemoveCourseFromTrackApiV1CareerTracksTrackIdCoursesCourseIdDeleteData, RemoveCourseFromTrackApiV1CareerTracksTrackIdCoursesCourseIdDeleteErrors, RemoveCourseFromTrackApiV1CareerTracksTrackIdCoursesCourseIdDeleteResponses, RemovePrerequisiteApiV1CoursesCourseIdPrerequisitesPrerequisiteCourseIdDeleteData, RemovePrerequisiteApiV1CoursesCourseIdPrerequisitesPrerequisiteCourseIdDeleteErrors, RemovePrerequisiteApiV1CoursesCourseIdPrerequisitesPrerequisiteCourseIdDeleteResponses, ResetPasswordApiV1AuthResetPasswordPostData, ResetPasswordApiV1AuthResetPasswordPostErrors, ResetPasswordApiV1AuthResetPasswordPostResponses, UpdateCourseApiV1CoursesCourseIdPutData, UpdateCourseApiV1CoursesCourseIdPutErrors, UpdateCourseApiV1CoursesCourseIdPutResponses, UpdateOwnProfileApiV1UsersMePutData, UpdateOwnProfileApiV1UsersMePutErrors, UpdateOwnProfileApiV1UsersMePutResponses, UpdateProgramApiV1ProgramsProgramIdPutData, UpdateProgramApiV1ProgramsProgramIdPutErrors, UpdateProgramApiV1ProgramsProgramIdPutResponses, UpdateProgressApiV1UsersUserIdCoursesCourseIdProgressPutData, UpdateProgressApiV1UsersUserIdCoursesCourseIdProgressPutErrors, UpdateProgressApiV1UsersUserIdCoursesCourseIdProgressPutResponses, UpdateRoleApiV1RolesRoleIdPutData, UpdateRoleApiV1RolesRoleIdPutErrors, UpdateRoleApiV1RolesRoleIdPutResponses, UpdateTrackApiV1CareerTracksTrackIdPutData, UpdateTrackApiV1CareerTracksTrackIdPutErrors, UpdateTrackApiV1CareerTracksTrackIdPutResponses, VerifyAccountApiV1AuthVerifyPostData, VerifyAccountApiV1AuthVerifyPostErrors, VerifyAccountApiV1AuthVerifyPostResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -19,10 +19,15 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 };
 
 /**
- * Регистрация нового пользователя
+ * Health Check
  */
-export const postAuthRegister = <ThrowOnError extends boolean = false>(options: Options<PostAuthRegisterData, ThrowOnError>) => (options.client ?? client).post<PostAuthRegisterResponses, PostAuthRegisterErrors, ThrowOnError>({
-    url: '/auth/register',
+export const healthCheckHealthGet = <ThrowOnError extends boolean = false>(options?: Options<HealthCheckHealthGetData, ThrowOnError>) => (options?.client ?? client).get<HealthCheckHealthGetResponses, unknown, ThrowOnError>({ url: '/health', ...options });
+
+/**
+ * Register
+ */
+export const registerApiV1AuthRegisterPost = <ThrowOnError extends boolean = false>(options: Options<RegisterApiV1AuthRegisterPostData, ThrowOnError>) => (options.client ?? client).post<RegisterApiV1AuthRegisterPostResponses, RegisterApiV1AuthRegisterPostErrors, ThrowOnError>({
+    url: '/api/v1/auth/register',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -31,10 +36,10 @@ export const postAuthRegister = <ThrowOnError extends boolean = false>(options: 
 });
 
 /**
- * Подтверждение аккаунта
+ * Verify Account
  */
-export const postAuthVerify = <ThrowOnError extends boolean = false>(options: Options<PostAuthVerifyData, ThrowOnError>) => (options.client ?? client).post<PostAuthVerifyResponses, PostAuthVerifyErrors, ThrowOnError>({
-    url: '/auth/verify',
+export const verifyAccountApiV1AuthVerifyPost = <ThrowOnError extends boolean = false>(options: Options<VerifyAccountApiV1AuthVerifyPostData, ThrowOnError>) => (options.client ?? client).post<VerifyAccountApiV1AuthVerifyPostResponses, VerifyAccountApiV1AuthVerifyPostErrors, ThrowOnError>({
+    url: '/api/v1/auth/verify',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -43,10 +48,10 @@ export const postAuthVerify = <ThrowOnError extends boolean = false>(options: Op
 });
 
 /**
- * Вход в систему
+ * Login
  */
-export const postAuthLogin = <ThrowOnError extends boolean = false>(options: Options<PostAuthLoginData, ThrowOnError>) => (options.client ?? client).post<PostAuthLoginResponses, PostAuthLoginErrors, ThrowOnError>({
-    url: '/auth/login',
+export const loginApiV1AuthLoginPost = <ThrowOnError extends boolean = false>(options: Options<LoginApiV1AuthLoginPostData, ThrowOnError>) => (options.client ?? client).post<LoginApiV1AuthLoginPostResponses, LoginApiV1AuthLoginPostErrors, ThrowOnError>({
+    url: '/api/v1/auth/login',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -55,29 +60,29 @@ export const postAuthLogin = <ThrowOnError extends boolean = false>(options: Opt
 });
 
 /**
- * Обновление токена
+ * Refresh Token
  */
-export const postAuthRefresh = <ThrowOnError extends boolean = false>(options: Options<PostAuthRefreshData, ThrowOnError>) => (options.client ?? client).post<PostAuthRefreshResponses, PostAuthRefreshErrors, ThrowOnError>({ url: '/auth/refresh', ...options });
+export const refreshTokenApiV1AuthRefreshPost = <ThrowOnError extends boolean = false>(options?: Options<RefreshTokenApiV1AuthRefreshPostData, ThrowOnError>) => (options?.client ?? client).post<RefreshTokenApiV1AuthRefreshPostResponses, RefreshTokenApiV1AuthRefreshPostErrors, ThrowOnError>({ url: '/api/v1/auth/refresh', ...options });
 
 /**
- * Выход из системы
+ * Logout
  */
-export const postAuthLogout = <ThrowOnError extends boolean = false>(options?: Options<PostAuthLogoutData, ThrowOnError>) => (options?.client ?? client).post<PostAuthLogoutResponses, PostAuthLogoutErrors, ThrowOnError>({ url: '/auth/logout', ...options });
+export const logoutApiV1AuthLogoutPost = <ThrowOnError extends boolean = false>(options?: Options<LogoutApiV1AuthLogoutPostData, ThrowOnError>) => (options?.client ?? client).post<LogoutApiV1AuthLogoutPostResponses, LogoutApiV1AuthLogoutPostErrors, ThrowOnError>({ url: '/api/v1/auth/logout', ...options });
 
 /**
- * Получить информацию о текущем пользователе
+ * Get Me
  */
-export const getAuthMe = <ThrowOnError extends boolean = false>(options?: Options<GetAuthMeData, ThrowOnError>) => (options?.client ?? client).get<GetAuthMeResponses, GetAuthMeErrors, ThrowOnError>({
+export const getMeApiV1AuthMeGet = <ThrowOnError extends boolean = false>(options?: Options<GetMeApiV1AuthMeGetData, ThrowOnError>) => (options?.client ?? client).get<GetMeApiV1AuthMeGetResponses, GetMeApiV1AuthMeGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/auth/me',
+    url: '/api/v1/auth/me',
     ...options
 });
 
 /**
- * Запрос на восстановление пароля
+ * Forgot Password
  */
-export const postAuthForgotPassword = <ThrowOnError extends boolean = false>(options: Options<PostAuthForgotPasswordData, ThrowOnError>) => (options.client ?? client).post<PostAuthForgotPasswordResponses, PostAuthForgotPasswordErrors, ThrowOnError>({
-    url: '/auth/forgot-password',
+export const forgotPasswordApiV1AuthForgotPasswordPost = <ThrowOnError extends boolean = false>(options: Options<ForgotPasswordApiV1AuthForgotPasswordPostData, ThrowOnError>) => (options.client ?? client).post<ForgotPasswordApiV1AuthForgotPasswordPostResponses, ForgotPasswordApiV1AuthForgotPasswordPostErrors, ThrowOnError>({
+    url: '/api/v1/auth/forgot-password',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -86,10 +91,10 @@ export const postAuthForgotPassword = <ThrowOnError extends boolean = false>(opt
 });
 
 /**
- * Сброс пароля
+ * Reset Password
  */
-export const postAuthResetPassword = <ThrowOnError extends boolean = false>(options: Options<PostAuthResetPasswordData, ThrowOnError>) => (options.client ?? client).post<PostAuthResetPasswordResponses, PostAuthResetPasswordErrors, ThrowOnError>({
-    url: '/auth/reset-password',
+export const resetPasswordApiV1AuthResetPasswordPost = <ThrowOnError extends boolean = false>(options: Options<ResetPasswordApiV1AuthResetPasswordPostData, ThrowOnError>) => (options.client ?? client).post<ResetPasswordApiV1AuthResetPasswordPostResponses, ResetPasswordApiV1AuthResetPasswordPostErrors, ThrowOnError>({
+    url: '/api/v1/auth/reset-password',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -98,11 +103,11 @@ export const postAuthResetPassword = <ThrowOnError extends boolean = false>(opti
 });
 
 /**
- * Изменение пароля
+ * Change Password
  */
-export const postAuthChangePassword = <ThrowOnError extends boolean = false>(options: Options<PostAuthChangePasswordData, ThrowOnError>) => (options.client ?? client).post<PostAuthChangePasswordResponses, PostAuthChangePasswordErrors, ThrowOnError>({
+export const changePasswordApiV1AuthChangePasswordPost = <ThrowOnError extends boolean = false>(options: Options<ChangePasswordApiV1AuthChangePasswordPostData, ThrowOnError>) => (options.client ?? client).post<ChangePasswordApiV1AuthChangePasswordPostResponses, ChangePasswordApiV1AuthChangePasswordPostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/auth/change-password',
+    url: '/api/v1/auth/change-password',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -111,20 +116,20 @@ export const postAuthChangePassword = <ThrowOnError extends boolean = false>(opt
 });
 
 /**
- * Получить свой профиль
+ * Get Profile
  */
-export const getUsersMe = <ThrowOnError extends boolean = false>(options?: Options<GetUsersMeData, ThrowOnError>) => (options?.client ?? client).get<GetUsersMeResponses, GetUsersMeErrors, ThrowOnError>({
+export const getProfileApiV1UsersMeGet = <ThrowOnError extends boolean = false>(options?: Options<GetProfileApiV1UsersMeGetData, ThrowOnError>) => (options?.client ?? client).get<GetProfileApiV1UsersMeGetResponses, GetProfileApiV1UsersMeGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/users/me',
+    url: '/api/v1/users/me',
     ...options
 });
 
 /**
- * Обновить свой профиль
+ * Update Own Profile
  */
-export const putUsersMe = <ThrowOnError extends boolean = false>(options: Options<PutUsersMeData, ThrowOnError>) => (options.client ?? client).put<PutUsersMeResponses, PutUsersMeErrors, ThrowOnError>({
+export const updateOwnProfileApiV1UsersMePut = <ThrowOnError extends boolean = false>(options: Options<UpdateOwnProfileApiV1UsersMePutData, ThrowOnError>) => (options.client ?? client).put<UpdateOwnProfileApiV1UsersMePutResponses, UpdateOwnProfileApiV1UsersMePutErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/users/me',
+    url: '/api/v1/users/me',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -133,31 +138,29 @@ export const putUsersMe = <ThrowOnError extends boolean = false>(options: Option
 });
 
 /**
- * Получить список пользователей
+ * Get Users
  */
-export const getUsers = <ThrowOnError extends boolean = false>(options?: Options<GetUsersData, ThrowOnError>) => (options?.client ?? client).get<GetUsersResponses, GetUsersErrors, ThrowOnError>({
+export const getUsersApiV1UsersGet = <ThrowOnError extends boolean = false>(options?: Options<GetUsersApiV1UsersGetData, ThrowOnError>) => (options?.client ?? client).get<GetUsersApiV1UsersGetResponses, GetUsersApiV1UsersGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/users',
+    url: '/api/v1/users/',
     ...options
 });
 
 /**
- * Получить пользователя по ID
+ * Get User
  */
-export const getUsersByUserId = <ThrowOnError extends boolean = false>(options: Options<GetUsersByUserIdData, ThrowOnError>) => (options.client ?? client).get<GetUsersByUserIdResponses, GetUsersByUserIdErrors, ThrowOnError>({
+export const getUserApiV1UsersUserIdGet = <ThrowOnError extends boolean = false>(options: Options<GetUserApiV1UsersUserIdGetData, ThrowOnError>) => (options.client ?? client).get<GetUserApiV1UsersUserIdGetResponses, GetUserApiV1UsersUserIdGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/users/{user_id}',
+    url: '/api/v1/users/{user_id}',
     ...options
 });
 
 /**
- * Назначить роль пользователю
- *
- * Повышает роль пользователя (требует прав roles:update)
+ * Escalate User Role
  */
-export const postUsersByUserIdEscalate = <ThrowOnError extends boolean = false>(options: Options<PostUsersByUserIdEscalateData, ThrowOnError>) => (options.client ?? client).post<PostUsersByUserIdEscalateResponses, PostUsersByUserIdEscalateErrors, ThrowOnError>({
+export const escalateUserRoleApiV1UsersUserIdEscalatePost = <ThrowOnError extends boolean = false>(options: Options<EscalateUserRoleApiV1UsersUserIdEscalatePostData, ThrowOnError>) => (options.client ?? client).post<EscalateUserRoleApiV1UsersUserIdEscalatePostResponses, EscalateUserRoleApiV1UsersUserIdEscalatePostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/users/{user_id}/escalate',
+    url: '/api/v1/users/{user_id}/escalate',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -166,20 +169,20 @@ export const postUsersByUserIdEscalate = <ThrowOnError extends boolean = false>(
 });
 
 /**
- * Получить список образовательных программ
+ * Get Programs
  */
-export const getPrograms = <ThrowOnError extends boolean = false>(options?: Options<GetProgramsData, ThrowOnError>) => (options?.client ?? client).get<GetProgramsResponses, GetProgramsErrors, ThrowOnError>({
+export const getProgramsApiV1ProgramsGet = <ThrowOnError extends boolean = false>(options?: Options<GetProgramsApiV1ProgramsGetData, ThrowOnError>) => (options?.client ?? client).get<GetProgramsApiV1ProgramsGetResponses, GetProgramsApiV1ProgramsGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/programs',
+    url: '/api/v1/programs/',
     ...options
 });
 
 /**
- * Создать новую программу
+ * Create Program
  */
-export const postPrograms = <ThrowOnError extends boolean = false>(options: Options<PostProgramsData, ThrowOnError>) => (options.client ?? client).post<PostProgramsResponses, PostProgramsErrors, ThrowOnError>({
+export const createProgramApiV1ProgramsPost = <ThrowOnError extends boolean = false>(options: Options<CreateProgramApiV1ProgramsPostData, ThrowOnError>) => (options.client ?? client).post<CreateProgramApiV1ProgramsPostResponses, CreateProgramApiV1ProgramsPostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/programs',
+    url: '/api/v1/programs/',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -188,29 +191,29 @@ export const postPrograms = <ThrowOnError extends boolean = false>(options: Opti
 });
 
 /**
- * Удалить программу
+ * Delete Program
  */
-export const deleteProgramsByProgramId = <ThrowOnError extends boolean = false>(options: Options<DeleteProgramsByProgramIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteProgramsByProgramIdResponses, DeleteProgramsByProgramIdErrors, ThrowOnError>({
+export const deleteProgramApiV1ProgramsProgramIdDelete = <ThrowOnError extends boolean = false>(options: Options<DeleteProgramApiV1ProgramsProgramIdDeleteData, ThrowOnError>) => (options.client ?? client).delete<DeleteProgramApiV1ProgramsProgramIdDeleteResponses, DeleteProgramApiV1ProgramsProgramIdDeleteErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/programs/{program_id}',
+    url: '/api/v1/programs/{program_id}',
     ...options
 });
 
 /**
- * Получить программу по ID
+ * Get Program By Id
  */
-export const getProgramsByProgramId = <ThrowOnError extends boolean = false>(options: Options<GetProgramsByProgramIdData, ThrowOnError>) => (options.client ?? client).get<GetProgramsByProgramIdResponses, GetProgramsByProgramIdErrors, ThrowOnError>({
+export const getProgramByIdApiV1ProgramsProgramIdGet = <ThrowOnError extends boolean = false>(options: Options<GetProgramByIdApiV1ProgramsProgramIdGetData, ThrowOnError>) => (options.client ?? client).get<GetProgramByIdApiV1ProgramsProgramIdGetResponses, GetProgramByIdApiV1ProgramsProgramIdGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/programs/{program_id}',
+    url: '/api/v1/programs/{program_id}',
     ...options
 });
 
 /**
- * Обновить программу
+ * Update Program
  */
-export const putProgramsByProgramId = <ThrowOnError extends boolean = false>(options: Options<PutProgramsByProgramIdData, ThrowOnError>) => (options.client ?? client).put<PutProgramsByProgramIdResponses, PutProgramsByProgramIdErrors, ThrowOnError>({
+export const updateProgramApiV1ProgramsProgramIdPut = <ThrowOnError extends boolean = false>(options: Options<UpdateProgramApiV1ProgramsProgramIdPutData, ThrowOnError>) => (options.client ?? client).put<UpdateProgramApiV1ProgramsProgramIdPutResponses, UpdateProgramApiV1ProgramsProgramIdPutErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/programs/{program_id}',
+    url: '/api/v1/programs/{program_id}',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -219,11 +222,11 @@ export const putProgramsByProgramId = <ThrowOnError extends boolean = false>(opt
 });
 
 /**
- * Копировать программу
+ * Copy Program
  */
-export const postProgramsByProgramIdCopy = <ThrowOnError extends boolean = false>(options: Options<PostProgramsByProgramIdCopyData, ThrowOnError>) => (options.client ?? client).post<PostProgramsByProgramIdCopyResponses, PostProgramsByProgramIdCopyErrors, ThrowOnError>({
+export const copyProgramApiV1ProgramsProgramIdCopyPost = <ThrowOnError extends boolean = false>(options: Options<CopyProgramApiV1ProgramsProgramIdCopyPostData, ThrowOnError>) => (options.client ?? client).post<CopyProgramApiV1ProgramsProgramIdCopyPostResponses, CopyProgramApiV1ProgramsProgramIdCopyPostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/programs/{program_id}/copy',
+    url: '/api/v1/programs/{program_id}/copy',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -232,20 +235,20 @@ export const postProgramsByProgramIdCopy = <ThrowOnError extends boolean = false
 });
 
 /**
- * Получить список курсов
+ * Get Courses
  */
-export const getCourses = <ThrowOnError extends boolean = false>(options?: Options<GetCoursesData, ThrowOnError>) => (options?.client ?? client).get<GetCoursesResponses, GetCoursesErrors, ThrowOnError>({
+export const getCoursesApiV1CoursesGet = <ThrowOnError extends boolean = false>(options?: Options<GetCoursesApiV1CoursesGetData, ThrowOnError>) => (options?.client ?? client).get<GetCoursesApiV1CoursesGetResponses, GetCoursesApiV1CoursesGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/courses',
+    url: '/api/v1/courses/',
     ...options
 });
 
 /**
- * Создать новый курс
+ * Create Course
  */
-export const postCourses = <ThrowOnError extends boolean = false>(options: Options<PostCoursesData, ThrowOnError>) => (options.client ?? client).post<PostCoursesResponses, PostCoursesErrors, ThrowOnError>({
+export const createCourseApiV1CoursesPost = <ThrowOnError extends boolean = false>(options: Options<CreateCourseApiV1CoursesPostData, ThrowOnError>) => (options.client ?? client).post<CreateCourseApiV1CoursesPostResponses, CreateCourseApiV1CoursesPostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/courses',
+    url: '/api/v1/courses/',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -254,29 +257,29 @@ export const postCourses = <ThrowOnError extends boolean = false>(options: Optio
 });
 
 /**
- * Удалить курс
+ * Delete Course
  */
-export const deleteCoursesByCourseId = <ThrowOnError extends boolean = false>(options: Options<DeleteCoursesByCourseIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteCoursesByCourseIdResponses, DeleteCoursesByCourseIdErrors, ThrowOnError>({
+export const deleteCourseApiV1CoursesCourseIdDelete = <ThrowOnError extends boolean = false>(options: Options<DeleteCourseApiV1CoursesCourseIdDeleteData, ThrowOnError>) => (options.client ?? client).delete<DeleteCourseApiV1CoursesCourseIdDeleteResponses, DeleteCourseApiV1CoursesCourseIdDeleteErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/courses/{course_id}',
+    url: '/api/v1/courses/{course_id}',
     ...options
 });
 
 /**
- * Получить курс по ID
+ * Get Course By Id
  */
-export const getCoursesByCourseId = <ThrowOnError extends boolean = false>(options: Options<GetCoursesByCourseIdData, ThrowOnError>) => (options.client ?? client).get<GetCoursesByCourseIdResponses, GetCoursesByCourseIdErrors, ThrowOnError>({
+export const getCourseByIdApiV1CoursesCourseIdGet = <ThrowOnError extends boolean = false>(options: Options<GetCourseByIdApiV1CoursesCourseIdGetData, ThrowOnError>) => (options.client ?? client).get<GetCourseByIdApiV1CoursesCourseIdGetResponses, GetCourseByIdApiV1CoursesCourseIdGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/courses/{course_id}',
+    url: '/api/v1/courses/{course_id}',
     ...options
 });
 
 /**
- * Обновить курс
+ * Update Course
  */
-export const putCoursesByCourseId = <ThrowOnError extends boolean = false>(options: Options<PutCoursesByCourseIdData, ThrowOnError>) => (options.client ?? client).put<PutCoursesByCourseIdResponses, PutCoursesByCourseIdErrors, ThrowOnError>({
+export const updateCourseApiV1CoursesCourseIdPut = <ThrowOnError extends boolean = false>(options: Options<UpdateCourseApiV1CoursesCourseIdPutData, ThrowOnError>) => (options.client ?? client).put<UpdateCourseApiV1CoursesCourseIdPutResponses, UpdateCourseApiV1CoursesCourseIdPutErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/courses/{course_id}',
+    url: '/api/v1/courses/{course_id}',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -285,20 +288,20 @@ export const putCoursesByCourseId = <ThrowOnError extends boolean = false>(optio
 });
 
 /**
- * Получить пререквизиты курса
+ * Get Prerequisites
  */
-export const getCoursesByCourseIdPrerequisites = <ThrowOnError extends boolean = false>(options: Options<GetCoursesByCourseIdPrerequisitesData, ThrowOnError>) => (options.client ?? client).get<GetCoursesByCourseIdPrerequisitesResponses, GetCoursesByCourseIdPrerequisitesErrors, ThrowOnError>({
+export const getPrerequisitesApiV1CoursesCourseIdPrerequisitesGet = <ThrowOnError extends boolean = false>(options: Options<GetPrerequisitesApiV1CoursesCourseIdPrerequisitesGetData, ThrowOnError>) => (options.client ?? client).get<GetPrerequisitesApiV1CoursesCourseIdPrerequisitesGetResponses, GetPrerequisitesApiV1CoursesCourseIdPrerequisitesGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/courses/{course_id}/prerequisites',
+    url: '/api/v1/courses/{course_id}/prerequisites',
     ...options
 });
 
 /**
- * Добавить пререквизит для курса
+ * Add Prerequisite
  */
-export const postCoursesByCourseIdPrerequisites = <ThrowOnError extends boolean = false>(options: Options<PostCoursesByCourseIdPrerequisitesData, ThrowOnError>) => (options.client ?? client).post<PostCoursesByCourseIdPrerequisitesResponses, PostCoursesByCourseIdPrerequisitesErrors, ThrowOnError>({
+export const addPrerequisiteApiV1CoursesCourseIdPrerequisitesPost = <ThrowOnError extends boolean = false>(options: Options<AddPrerequisiteApiV1CoursesCourseIdPrerequisitesPostData, ThrowOnError>) => (options.client ?? client).post<AddPrerequisiteApiV1CoursesCourseIdPrerequisitesPostResponses, AddPrerequisiteApiV1CoursesCourseIdPrerequisitesPostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/courses/{course_id}/prerequisites',
+    url: '/api/v1/courses/{course_id}/prerequisites',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -307,29 +310,29 @@ export const postCoursesByCourseIdPrerequisites = <ThrowOnError extends boolean 
 });
 
 /**
- * Удалить пререквизит у курса
+ * Remove Prerequisite
  */
-export const deleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseId = <ThrowOnError extends boolean = false>(options: Options<DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdResponses, DeleteCoursesByCourseIdPrerequisitesByPrerequisiteCourseIdErrors, ThrowOnError>({
+export const removePrerequisiteApiV1CoursesCourseIdPrerequisitesPrerequisiteCourseIdDelete = <ThrowOnError extends boolean = false>(options: Options<RemovePrerequisiteApiV1CoursesCourseIdPrerequisitesPrerequisiteCourseIdDeleteData, ThrowOnError>) => (options.client ?? client).delete<RemovePrerequisiteApiV1CoursesCourseIdPrerequisitesPrerequisiteCourseIdDeleteResponses, RemovePrerequisiteApiV1CoursesCourseIdPrerequisitesPrerequisiteCourseIdDeleteErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/courses/{course_id}/prerequisites/{prerequisite_course_id}',
+    url: '/api/v1/courses/{course_id}/prerequisites/{prerequisite_course_id}',
     ...options
 });
 
 /**
- * Получить список карьерных треков
+ * Get Tracks
  */
-export const getCareerTracks = <ThrowOnError extends boolean = false>(options?: Options<GetCareerTracksData, ThrowOnError>) => (options?.client ?? client).get<GetCareerTracksResponses, GetCareerTracksErrors, ThrowOnError>({
+export const getTracksApiV1CareerTracksGet = <ThrowOnError extends boolean = false>(options?: Options<GetTracksApiV1CareerTracksGetData, ThrowOnError>) => (options?.client ?? client).get<GetTracksApiV1CareerTracksGetResponses, GetTracksApiV1CareerTracksGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/career-tracks',
+    url: '/api/v1/career-tracks/',
     ...options
 });
 
 /**
- * Создать новый карьерный трек
+ * Create Track
  */
-export const postCareerTracks = <ThrowOnError extends boolean = false>(options: Options<PostCareerTracksData, ThrowOnError>) => (options.client ?? client).post<PostCareerTracksResponses, PostCareerTracksErrors, ThrowOnError>({
+export const createTrackApiV1CareerTracksPost = <ThrowOnError extends boolean = false>(options: Options<CreateTrackApiV1CareerTracksPostData, ThrowOnError>) => (options.client ?? client).post<CreateTrackApiV1CareerTracksPostResponses, CreateTrackApiV1CareerTracksPostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/career-tracks',
+    url: '/api/v1/career-tracks/',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -338,29 +341,29 @@ export const postCareerTracks = <ThrowOnError extends boolean = false>(options: 
 });
 
 /**
- * Удалить карьерный трек
+ * Delete Track
  */
-export const deleteCareerTracksByTrackId = <ThrowOnError extends boolean = false>(options: Options<DeleteCareerTracksByTrackIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteCareerTracksByTrackIdResponses, DeleteCareerTracksByTrackIdErrors, ThrowOnError>({
+export const deleteTrackApiV1CareerTracksTrackIdDelete = <ThrowOnError extends boolean = false>(options: Options<DeleteTrackApiV1CareerTracksTrackIdDeleteData, ThrowOnError>) => (options.client ?? client).delete<DeleteTrackApiV1CareerTracksTrackIdDeleteResponses, DeleteTrackApiV1CareerTracksTrackIdDeleteErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/career-tracks/{track_id}',
+    url: '/api/v1/career-tracks/{track_id}',
     ...options
 });
 
 /**
- * Получить карьерный трек по ID
+ * Get Track By Id
  */
-export const getCareerTracksByTrackId = <ThrowOnError extends boolean = false>(options: Options<GetCareerTracksByTrackIdData, ThrowOnError>) => (options.client ?? client).get<GetCareerTracksByTrackIdResponses, GetCareerTracksByTrackIdErrors, ThrowOnError>({
+export const getTrackByIdApiV1CareerTracksTrackIdGet = <ThrowOnError extends boolean = false>(options: Options<GetTrackByIdApiV1CareerTracksTrackIdGetData, ThrowOnError>) => (options.client ?? client).get<GetTrackByIdApiV1CareerTracksTrackIdGetResponses, GetTrackByIdApiV1CareerTracksTrackIdGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/career-tracks/{track_id}',
+    url: '/api/v1/career-tracks/{track_id}',
     ...options
 });
 
 /**
- * Обновить карьерный трек
+ * Update Track
  */
-export const putCareerTracksByTrackId = <ThrowOnError extends boolean = false>(options: Options<PutCareerTracksByTrackIdData, ThrowOnError>) => (options.client ?? client).put<PutCareerTracksByTrackIdResponses, PutCareerTracksByTrackIdErrors, ThrowOnError>({
+export const updateTrackApiV1CareerTracksTrackIdPut = <ThrowOnError extends boolean = false>(options: Options<UpdateTrackApiV1CareerTracksTrackIdPutData, ThrowOnError>) => (options.client ?? client).put<UpdateTrackApiV1CareerTracksTrackIdPutResponses, UpdateTrackApiV1CareerTracksTrackIdPutErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/career-tracks/{track_id}',
+    url: '/api/v1/career-tracks/{track_id}',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -369,20 +372,20 @@ export const putCareerTracksByTrackId = <ThrowOnError extends boolean = false>(o
 });
 
 /**
- * Получить курсы в карьерном треке
+ * Get Track Courses
  */
-export const getCareerTracksByTrackIdCourses = <ThrowOnError extends boolean = false>(options: Options<GetCareerTracksByTrackIdCoursesData, ThrowOnError>) => (options.client ?? client).get<GetCareerTracksByTrackIdCoursesResponses, GetCareerTracksByTrackIdCoursesErrors, ThrowOnError>({
+export const getTrackCoursesApiV1CareerTracksTrackIdCoursesGet = <ThrowOnError extends boolean = false>(options: Options<GetTrackCoursesApiV1CareerTracksTrackIdCoursesGetData, ThrowOnError>) => (options.client ?? client).get<GetTrackCoursesApiV1CareerTracksTrackIdCoursesGetResponses, GetTrackCoursesApiV1CareerTracksTrackIdCoursesGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/career-tracks/{track_id}/courses',
+    url: '/api/v1/career-tracks/{track_id}/courses',
     ...options
 });
 
 /**
- * Добавить курс в карьерный трек
+ * Add Course To Track
  */
-export const postCareerTracksByTrackIdCourses = <ThrowOnError extends boolean = false>(options: Options<PostCareerTracksByTrackIdCoursesData, ThrowOnError>) => (options.client ?? client).post<PostCareerTracksByTrackIdCoursesResponses, PostCareerTracksByTrackIdCoursesErrors, ThrowOnError>({
+export const addCourseToTrackApiV1CareerTracksTrackIdCoursesPost = <ThrowOnError extends boolean = false>(options: Options<AddCourseToTrackApiV1CareerTracksTrackIdCoursesPostData, ThrowOnError>) => (options.client ?? client).post<AddCourseToTrackApiV1CareerTracksTrackIdCoursesPostResponses, AddCourseToTrackApiV1CareerTracksTrackIdCoursesPostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/career-tracks/{track_id}/courses',
+    url: '/api/v1/career-tracks/{track_id}/courses',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -391,38 +394,38 @@ export const postCareerTracksByTrackIdCourses = <ThrowOnError extends boolean = 
 });
 
 /**
- * Удалить курс из карьерного трека
+ * Remove Course From Track
  */
-export const deleteCareerTracksByTrackIdCoursesByCourseId = <ThrowOnError extends boolean = false>(options: Options<DeleteCareerTracksByTrackIdCoursesByCourseIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteCareerTracksByTrackIdCoursesByCourseIdResponses, DeleteCareerTracksByTrackIdCoursesByCourseIdErrors, ThrowOnError>({
+export const removeCourseFromTrackApiV1CareerTracksTrackIdCoursesCourseIdDelete = <ThrowOnError extends boolean = false>(options: Options<RemoveCourseFromTrackApiV1CareerTracksTrackIdCoursesCourseIdDeleteData, ThrowOnError>) => (options.client ?? client).delete<RemoveCourseFromTrackApiV1CareerTracksTrackIdCoursesCourseIdDeleteResponses, RemoveCourseFromTrackApiV1CareerTracksTrackIdCoursesCourseIdDeleteErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/career-tracks/{track_id}/courses/{course_id}',
+    url: '/api/v1/career-tracks/{track_id}/courses/{course_id}',
     ...options
 });
 
 /**
- * Получить прогресс пользователя по курсам
+ * Get User Progress
  */
-export const getUsersByUserIdProgress = <ThrowOnError extends boolean = false>(options: Options<GetUsersByUserIdProgressData, ThrowOnError>) => (options.client ?? client).get<GetUsersByUserIdProgressResponses, GetUsersByUserIdProgressErrors, ThrowOnError>({
+export const getUserProgressApiV1UsersUserIdProgressGet = <ThrowOnError extends boolean = false>(options: Options<GetUserProgressApiV1UsersUserIdProgressGetData, ThrowOnError>) => (options.client ?? client).get<GetUserProgressApiV1UsersUserIdProgressGetResponses, GetUserProgressApiV1UsersUserIdProgressGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/users/{user_id}/progress',
+    url: '/api/v1/users/{user_id}/progress',
     ...options
 });
 
 /**
- * Удалить запись о прогрессе пользователя по курсу
+ * Delete Progress
  */
-export const deleteUsersByUserIdCoursesByCourseIdProgress = <ThrowOnError extends boolean = false>(options: Options<DeleteUsersByUserIdCoursesByCourseIdProgressData, ThrowOnError>) => (options.client ?? client).delete<DeleteUsersByUserIdCoursesByCourseIdProgressResponses, DeleteUsersByUserIdCoursesByCourseIdProgressErrors, ThrowOnError>({
+export const deleteProgressApiV1UsersUserIdCoursesCourseIdProgressDelete = <ThrowOnError extends boolean = false>(options: Options<DeleteProgressApiV1UsersUserIdCoursesCourseIdProgressDeleteData, ThrowOnError>) => (options.client ?? client).delete<DeleteProgressApiV1UsersUserIdCoursesCourseIdProgressDeleteResponses, DeleteProgressApiV1UsersUserIdCoursesCourseIdProgressDeleteErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/users/{user_id}/courses/{course_id}/progress',
+    url: '/api/v1/users/{user_id}/courses/{course_id}/progress',
     ...options
 });
 
 /**
- * Отметить прогресс по курсу для пользователя
+ * Create Progress
  */
-export const postUsersByUserIdCoursesByCourseIdProgress = <ThrowOnError extends boolean = false>(options: Options<PostUsersByUserIdCoursesByCourseIdProgressData, ThrowOnError>) => (options.client ?? client).post<PostUsersByUserIdCoursesByCourseIdProgressResponses, PostUsersByUserIdCoursesByCourseIdProgressErrors, ThrowOnError>({
+export const createProgressApiV1UsersUserIdCoursesCourseIdProgressPost = <ThrowOnError extends boolean = false>(options: Options<CreateProgressApiV1UsersUserIdCoursesCourseIdProgressPostData, ThrowOnError>) => (options.client ?? client).post<CreateProgressApiV1UsersUserIdCoursesCourseIdProgressPostResponses, CreateProgressApiV1UsersUserIdCoursesCourseIdProgressPostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/users/{user_id}/courses/{course_id}/progress',
+    url: '/api/v1/users/{user_id}/courses/{course_id}/progress',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -431,11 +434,11 @@ export const postUsersByUserIdCoursesByCourseIdProgress = <ThrowOnError extends 
 });
 
 /**
- * Обновить прогресс по курсу для пользователя
+ * Update Progress
  */
-export const putUsersByUserIdCoursesByCourseIdProgress = <ThrowOnError extends boolean = false>(options: Options<PutUsersByUserIdCoursesByCourseIdProgressData, ThrowOnError>) => (options.client ?? client).put<PutUsersByUserIdCoursesByCourseIdProgressResponses, PutUsersByUserIdCoursesByCourseIdProgressErrors, ThrowOnError>({
+export const updateProgressApiV1UsersUserIdCoursesCourseIdProgressPut = <ThrowOnError extends boolean = false>(options: Options<UpdateProgressApiV1UsersUserIdCoursesCourseIdProgressPutData, ThrowOnError>) => (options.client ?? client).put<UpdateProgressApiV1UsersUserIdCoursesCourseIdProgressPutResponses, UpdateProgressApiV1UsersUserIdCoursesCourseIdProgressPutErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/users/{user_id}/courses/{course_id}/progress',
+    url: '/api/v1/users/{user_id}/courses/{course_id}/progress',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -444,20 +447,20 @@ export const putUsersByUserIdCoursesByCourseIdProgress = <ThrowOnError extends b
 });
 
 /**
- * Получить список ролей
+ * Get Roles
  */
-export const getRoles = <ThrowOnError extends boolean = false>(options?: Options<GetRolesData, ThrowOnError>) => (options?.client ?? client).get<GetRolesResponses, GetRolesErrors, ThrowOnError>({
+export const getRolesApiV1RolesGet = <ThrowOnError extends boolean = false>(options?: Options<GetRolesApiV1RolesGetData, ThrowOnError>) => (options?.client ?? client).get<GetRolesApiV1RolesGetResponses, GetRolesApiV1RolesGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/roles',
+    url: '/api/v1/roles/',
     ...options
 });
 
 /**
- * Создать новую роль
+ * Create Role
  */
-export const postRoles = <ThrowOnError extends boolean = false>(options: Options<PostRolesData, ThrowOnError>) => (options.client ?? client).post<PostRolesResponses, PostRolesErrors, ThrowOnError>({
+export const createRoleApiV1RolesPost = <ThrowOnError extends boolean = false>(options: Options<CreateRoleApiV1RolesPostData, ThrowOnError>) => (options.client ?? client).post<CreateRoleApiV1RolesPostResponses, CreateRoleApiV1RolesPostErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/roles',
+    url: '/api/v1/roles/',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -466,29 +469,29 @@ export const postRoles = <ThrowOnError extends boolean = false>(options: Options
 });
 
 /**
- * Удалить роль
+ * Delete Role
  */
-export const deleteRolesByRoleId = <ThrowOnError extends boolean = false>(options: Options<DeleteRolesByRoleIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteRolesByRoleIdResponses, DeleteRolesByRoleIdErrors, ThrowOnError>({
+export const deleteRoleApiV1RolesRoleIdDelete = <ThrowOnError extends boolean = false>(options: Options<DeleteRoleApiV1RolesRoleIdDeleteData, ThrowOnError>) => (options.client ?? client).delete<DeleteRoleApiV1RolesRoleIdDeleteResponses, DeleteRoleApiV1RolesRoleIdDeleteErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/roles/{role_id}',
+    url: '/api/v1/roles/{role_id}',
     ...options
 });
 
 /**
- * Получить роль по ID
+ * Get Role
  */
-export const getRolesByRoleId = <ThrowOnError extends boolean = false>(options: Options<GetRolesByRoleIdData, ThrowOnError>) => (options.client ?? client).get<GetRolesByRoleIdResponses, GetRolesByRoleIdErrors, ThrowOnError>({
+export const getRoleApiV1RolesRoleIdGet = <ThrowOnError extends boolean = false>(options: Options<GetRoleApiV1RolesRoleIdGetData, ThrowOnError>) => (options.client ?? client).get<GetRoleApiV1RolesRoleIdGetResponses, GetRoleApiV1RolesRoleIdGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/roles/{role_id}',
+    url: '/api/v1/roles/{role_id}',
     ...options
 });
 
 /**
- * Обновить роль
+ * Update Role
  */
-export const putRolesByRoleId = <ThrowOnError extends boolean = false>(options: Options<PutRolesByRoleIdData, ThrowOnError>) => (options.client ?? client).put<PutRolesByRoleIdResponses, PutRolesByRoleIdErrors, ThrowOnError>({
+export const updateRoleApiV1RolesRoleIdPut = <ThrowOnError extends boolean = false>(options: Options<UpdateRoleApiV1RolesRoleIdPutData, ThrowOnError>) => (options.client ?? client).put<UpdateRoleApiV1RolesRoleIdPutResponses, UpdateRoleApiV1RolesRoleIdPutErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/roles/{role_id}',
+    url: '/api/v1/roles/{role_id}',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -497,10 +500,10 @@ export const putRolesByRoleId = <ThrowOnError extends boolean = false>(options: 
 });
 
 /**
- * Получить список разрешений
+ * Get Permissions
  */
-export const getPermissions = <ThrowOnError extends boolean = false>(options?: Options<GetPermissionsData, ThrowOnError>) => (options?.client ?? client).get<GetPermissionsResponses, GetPermissionsErrors, ThrowOnError>({
+export const getPermissionsApiV1PermissionsGet = <ThrowOnError extends boolean = false>(options?: Options<GetPermissionsApiV1PermissionsGetData, ThrowOnError>) => (options?.client ?? client).get<GetPermissionsApiV1PermissionsGetResponses, GetPermissionsApiV1PermissionsGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/permissions',
+    url: '/api/v1/permissions/',
     ...options
 });

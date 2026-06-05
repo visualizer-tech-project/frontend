@@ -1,4 +1,4 @@
-import type { Prerequisite } from '@/shared/api/generated'
+import type { Prerequisite } from '@/entities/prerequisite'
 import type { Edge } from '@xyflow/react'
 import { defaultEdgeOptions } from '../model/customFlowStyles'
 import { COURSE_NODE_PREFIX } from '../model/types'

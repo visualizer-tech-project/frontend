@@ -11,4 +11,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        changeOrigin: true,
+        target: 'https://edumap.duckdns.org',
+      },
+    },
+  },
 })

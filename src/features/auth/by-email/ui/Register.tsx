@@ -1,21 +1,25 @@
+import { registerApiV1AuthRegisterPost } from '@/shared/api/generated'
+import { ROUTES } from '@/shared/config'
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { InputField } from '@/shared/ui/InputField'
-import { notifyError, notifySuccess } from '@/shared/lib/notify'
-import { wait } from '@/shared/lib/wait'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { registerSchema, type RegisterValues } from '../model/validation'
 import styles from './Auth.module.css'
 import { AuthWrapper } from './AuthWrapper'
 
 export const Register = () => {
+  const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { control, handleSubmit } = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: '',
+      firstName: '',
+      lastName: '',
       password: '',
       confirmPassword: '',
     },
@@ -26,11 +30,26 @@ export const Register = () => {
     setIsSubmitting(true)
 
     try {
-      await wait(450)
-      console.log(values)
-      notifySuccess('Регистрация выполнена', 'Аккаунт успешно создан.')
-    } catch {
-      notifyError('Не удалось зарегистрироваться', 'Проверьте данные и попробуйте снова.')
+      const { error } = await registerApiV1AuthRegisterPost({
+        body: {
+          email: values.email,
+          first_name: values.firstName,
+          last_name: values.lastName,
+          password: values.password,
+        },
+      })
+
+      if (error) {
+        throw new Error(getErrorMessage(error, 'Проверьте данные и попробуйте снова.'))
+      }
+
+      notifySuccess('Аккаунт создан', 'Теперь можно войти.')
+      navigate(ROUTES.LOGIN)
+    } catch (error) {
+      notifyError(
+        'Не удалось зарегистрироваться',
+        getErrorMessage(error, 'Проверьте данные и попробуйте снова.'),
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -46,6 +65,22 @@ export const Register = () => {
           type="email"
           placeholder="test@gmail.com"
           title="Ваша почта:"
+        />
+
+        <InputField
+          control={control}
+          className={styles.input}
+          name="firstName"
+          placeholder="Иван"
+          title="Имя:"
+        />
+
+        <InputField
+          control={control}
+          className={styles.input}
+          name="lastName"
+          placeholder="Петров"
+          title="Фамилия:"
         />
 
         <InputField

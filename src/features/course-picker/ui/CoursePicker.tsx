@@ -1,7 +1,6 @@
 import { courseTypeLabels, type Course } from '@/entities/course'
-import { notifyError, notifySuccess } from '@/shared/lib/notify'
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { useFloatingPanelDrag } from '@/shared/lib/useFloatingPanelDrag'
-import { wait } from '@/shared/lib/wait'
 import { Button } from '@/shared/ui/Button'
 import { SelectField } from '@/shared/ui/SelectField'
 import { useMemo, useState } from 'react'
@@ -17,10 +16,12 @@ interface CoursePickerFormValues {
 
 interface CoursePickerProps {
   courses: Course[]
-  onExistingCourseAdd: (course: Course) => void
+  onExistingCourseAdd: (course: Course) => Promise<void> | void
   selectedCourses: Course[]
   allowCourseCreate?: boolean
   isLoading?: boolean
+  programId?: Course['program_id']
+  userId?: Course['user_id']
   onNewCourseAdd?: (course: Course) => void
 }
 
@@ -33,6 +34,8 @@ export const CoursePicker = ({
   selectedCourses,
   allowCourseCreate = true,
   isLoading = false,
+  programId,
+  userId,
 }: CoursePickerProps) => {
   const [searchValue, setSearchValue] = useState('')
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -54,7 +57,7 @@ export const CoursePicker = ({
   } = useFloatingPanelDrag({ x: 32, y: 32 }, EDGE_PADDING)
 
   const selectedCourseIds = useMemo(
-    () => new Set(selectedCourses.map((course) => course.id)),
+    () => new Set(selectedCourses.map((course) => course.id).filter((id): id is number => Boolean(id))),
     [selectedCourses],
   )
 
@@ -65,14 +68,21 @@ export const CoursePicker = ({
 
   const courseOptions = useMemo(
     () =>
-      courses.map((course) => ({
-        label: `${course.title} · ${courseTypeLabels[course.type]}`,
-        value: course.id,
-        searchLabel: [course.title, course.description, courseTypeLabels[course.type], course.id]
-          .filter(Boolean)
-          .join(' ')
-          .toLowerCase(),
-      })),
+      courses
+        .filter((course): course is Course & { id: number } => Boolean(course.id))
+        .map((course) => ({
+          label: `${course.title} · ${courseTypeLabels[course.type ?? 'required']}`,
+          value: course.id,
+          searchLabel: [
+            course.title,
+            course.description,
+            courseTypeLabels[course.type ?? 'required'],
+            course.id,
+          ]
+            .filter(Boolean)
+            .join(' ')
+            .toLowerCase(),
+        })),
     [courses],
   )
 
@@ -105,13 +115,15 @@ export const CoursePicker = ({
     setPendingAction('adding-existing')
 
     try {
-      await wait(350)
-      onExistingCourseAdd(selectedCourse)
+      await onExistingCourseAdd(selectedCourse)
       reset()
       setSearchValue('')
-      notifySuccess('Курс добавлен', 'Курс успешно добавлен на холст.')
-    } catch {
-      notifyError('Не удалось добавить курс', 'Попробуйте выбрать курс еще раз.')
+      notifySuccess('Курс добавлен на холст', 'Можно сразу связать его с другими курсами.')
+    } catch (error) {
+      notifyError(
+        'Не удалось добавить курс',
+        getErrorMessage(error, 'Попробуйте выбрать курс еще раз.'),
+      )
     } finally {
       setPendingAction(null)
     }
@@ -186,7 +198,7 @@ export const CoursePicker = ({
             <div className={styles.selectedList} aria-label="Выбранный курс">
               {isLoading ? (
                 <p className={styles.empty}>Курсы загружаются...</p>
-              ) : selectedCourse ? (
+              ) : selectedCourse?.id ? (
                 <div className={styles.selectedCourse}>
                   <div>
                     <strong>{selectedCourse.title}</strong>
@@ -212,9 +224,11 @@ export const CoursePicker = ({
               )}
             </div>
 
-            {allowCourseCreate && onNewCourseAdd ? (
+            {allowCourseCreate && onNewCourseAdd && programId !== undefined ? (
               <CreateCourseForm
                 disabled={isLoading || isAddingExisting}
+                programId={programId}
+                userId={userId}
                 onCourseCreated={onNewCourseAdd}
                 onPendingChange={(isSubmitting) =>
                   setPendingAction(isSubmitting ? 'creating-new' : null)

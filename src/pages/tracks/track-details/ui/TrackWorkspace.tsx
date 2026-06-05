@@ -10,15 +10,15 @@ interface TrackWorkspaceProps {
 }
 
 export const TrackWorkspace = ({ track, courses }: TrackWorkspaceProps) => {
-  const createdAt = formatDate(track.created_at) ?? '—'
-  const updatedAt = formatDate(track.updated_at) ?? '—'
+  const createdAt = track.created_at ? formatDate(track.created_at) : '—'
+  const updatedAt = track.updated_at ? formatDate(track.updated_at) : '—'
   const authorName = `${track.user.first_name} ${track.user.last_name}`.trim() || track.user.email
 
   return (
     <section className={styles.page}>
       <PageHero
         eyebrow={`Трек (ID: ${track.id})`}
-        title={track.title}
+        title={track.title ?? 'Карьерный трек'}
         description={track.description ?? 'У этого трека пока нет описания.'}
         statsLabel="Информация о треке"
         stats={[

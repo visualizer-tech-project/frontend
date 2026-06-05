@@ -1,1 +1,1 @@
-export type { Program } from '@/shared/api/generated'
+export type { ProgramPublic as Program } from '@/shared/api/generated'

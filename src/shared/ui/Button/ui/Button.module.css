@@ -19,6 +19,14 @@
   opacity: 1;
 }
 
+.button:global(.ant-btn-circle) {
+  min-width: var(--ant-button-only-icon-size, 32px);
+  width: var(--ant-button-only-icon-size, 32px);
+  height: var(--ant-button-only-icon-size, 32px);
+  padding: 0 !important;
+  border-radius: 50% !important;
+}
+
 .button:global(.ant-btn-lg) {
   padding: 10px 20px !important;
   font-size: 16px;

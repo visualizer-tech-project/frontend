@@ -1,12 +1,14 @@
 import { ProgramCard, type Program } from '@/entities/program'
 import { Roles, useUserState, useUserStore } from '@/entities/user'
 import { ProgramCopyButton } from '@/features/program-copy'
+import { DeleteProgramButton } from '@/features/program-delete'
 import {
   ProgramsFilters,
   useProgramsActions,
   useProgramsState,
   useProgramsStore,
 } from '@/features/programs'
+import { Button } from '@/shared/ui/Button'
 import { CatalogList } from '@/widgets/catalog'
 import clsx from 'clsx'
 import { useMemo } from 'react'
@@ -19,9 +21,14 @@ interface ProgramsGridProps {
   actionLabel?: string
   backLabel?: string
   backTo?: string
+  hasMore?: boolean
   onBack?: () => void
+  onLoadMore?: () => void
   surface?: 'default' | 'transparent'
   isLoading?: boolean
+  isMoreLoading?: boolean
+  loadedCount?: number
+  totalCount?: number | null
 }
 
 export const ProgramsGrid = ({
@@ -29,9 +36,14 @@ export const ProgramsGrid = ({
   actionLabel = 'Подробнее',
   backLabel = 'Назад',
   backTo,
+  hasMore = false,
   onBack,
+  onLoadMore,
   surface = 'default',
   isLoading = false,
+  isMoreLoading = false,
+  loadedCount = programs.length,
+  totalCount = null,
 }: ProgramsGridProps) => {
   const navigate = useNavigate()
   const { user } = useUserStore(useShallow(useUserState))
@@ -77,6 +89,8 @@ export const ProgramsGrid = ({
         searchValue={searchValue}
         filteredCount={filteredPrograms.length}
         totalCount={programs.length}
+        loadedCount={loadedCount}
+        serverTotalCount={totalCount}
         hasActiveFilters={Boolean(searchValue.trim())}
         onSearchValueChange={setSearchValue}
         onBackClick={hasBackAction ? handleBackClick : undefined}
@@ -87,15 +101,29 @@ export const ProgramsGrid = ({
 
       <CatalogList
         items={filteredPrograms}
-        getKey={(program) => program.id}
+        getKey={(program) => program.id ?? window.crypto.randomUUID()}
         renderItem={(program) => (
           <ProgramCard actionLabel={actionLabel} program={program}>
+            <DeleteProgramButton program={program} />
             {canCopyPrograms ? <ProgramCopyButton program={program} /> : null}
           </ProgramCard>
         )}
         emptyDescription="Измените поисковый запрос, чтобы увидеть подходящие программы."
         isLoading={isLoading}
       />
+
+      {hasMore && onLoadMore ? (
+        <div className={styles.loadMoreRow}>
+          <Button
+            className={styles.loadMoreButton}
+            disabled={isLoading || isMoreLoading}
+            htmlType="button"
+            onClick={onLoadMore}
+          >
+            {isMoreLoading ? 'Загружаем...' : 'Загрузить еще'}
+          </Button>
+        </div>
+      ) : null}
     </div>
   )
 }
