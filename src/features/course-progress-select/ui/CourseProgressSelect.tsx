@@ -2,9 +2,9 @@ import type { Course } from '@/entities/course'
 import type { ProgressSelectChangePayload, ProgressStatus, UserProgress } from '@/entities/progress'
 import type { UserPublic } from '@/entities/user'
 import {
-  deleteUsersByUserIdCoursesByCourseIdProgress,
-  postUsersByUserIdCoursesByCourseIdProgress,
-  putUsersByUserIdCoursesByCourseIdProgress,
+  createProgressApiV1UsersUserIdCoursesCourseIdProgressPost,
+  deleteProgressApiV1UsersUserIdCoursesCourseIdProgressDelete,
+  updateProgressApiV1UsersUserIdCoursesCourseIdProgressPut,
 } from '@/shared/api/generated'
 import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { SelectField } from '@/shared/ui/SelectField'
@@ -26,6 +26,22 @@ interface CourseProgressFormValues {
   status: ProgressStatus
 }
 
+const toBackendDateTime = (date = new Date()) => {
+  const timezoneOffsetMs = date.getTimezoneOffset() * 60_000
+
+  return stripBackendUnsupportedTimezone(new Date(date.getTime() - timezoneOffsetMs).toISOString())
+}
+
+const stripBackendUnsupportedTimezone = (value: string) =>
+  value.replace(/(?:Z|[+-]\d{2}:\d{2})$/, '')
+
+const normalizeBackendDateTime = (value: string | null | undefined, fallback: string) =>
+  value ? stripBackendUnsupportedTimezone(value) : fallback
+
+
+const isSessionExpiredMessage = (message: string) =>
+  message === 'Invalid or expired token' || message.toLowerCase().includes('сессия истекла')
+
 export const CourseProgressSelect = ({
   progress,
   userId,
@@ -44,15 +60,19 @@ export const CourseProgressSelect = ({
     setIsSubmitting(true)
 
     try {
+      if (!userId || !courseId) {
+        throw new Error('Не удалось определить пользователя или курс.')
+      }
+
       if (status === 'not_started') {
         if (!progress) {
           return
         }
 
-        const { error } = await deleteUsersByUserIdCoursesByCourseIdProgress({
+        const { error } = await deleteProgressApiV1UsersUserIdCoursesCourseIdProgressDelete({
           path: {
-            user_id: progress.user_id,
-            course_id: progress.course_id,
+            course_id: courseId,
+            user_id: userId,
           },
         })
 
@@ -61,76 +81,69 @@ export const CourseProgressSelect = ({
         }
 
         onSelectChange({ userId, courseId, newStatus: 'not_started', type: 'deleted' })
-        notifySuccess('Прогресс обновлен', 'Статус курса сброшен.')
+        notifySuccess('Статус сброшен', 'Курс снова отмечен как не начатый.')
         return
       }
 
-      const now = new Date().toISOString()
+      const now = toBackendDateTime()
       let newProgress: UserProgress
 
       if (!progress) {
-        const { error } = await postUsersByUserIdCoursesByCourseIdProgress({
+        const body = {
+          status,
+          grade: null,
+          started_at: status === 'in_progress' || status === 'completed' ? now : null,
+          completed_at: status === 'completed' ? now : null,
+          course_id: courseId,
+          user_id: userId,
+        }
+
+        const { data, error } =
+          await createProgressApiV1UsersUserIdCoursesCourseIdProgressPost({
+            path: {
+              course_id: courseId,
+              user_id: userId,
+            },
+            body,
+          })
+
+        if (error || !data?.id) {
+          throw new Error(getErrorMessage(error, 'Не удалось создать прогресс'))
+        }
+
+        newProgress = data as UserProgress
+      } else {
+        const { data, error } = await updateProgressApiV1UsersUserIdCoursesCourseIdProgressPut({
           path: {
             course_id: courseId,
             user_id: userId,
           },
           body: {
             status,
-            grade: null,
-            started_at: status === 'in_progress' || status === 'completed' ? now : null,
-            completed_at: status === 'completed' ? now : null,
-          },
-        })
-
-        if (error) {
-          throw new Error(getErrorMessage(error, 'Не удалось создать прогресс'))
-        }
-
-        newProgress = {
-          id: Date.now(),
-          user_id: userId,
-          course_id: courseId,
-          status,
-          grade: null,
-
-          started_at: status === 'in_progress' || status === 'completed' ? now : null,
-
-          completed_at: status === 'completed' ? now : null,
-
-          created_at: now,
-          updated_at: now,
-        }
-      } else {
-        const { error } = await putUsersByUserIdCoursesByCourseIdProgress({
-          path: {
-            course_id: progress.course_id,
-            user_id: progress.user_id,
-          },
-          body: {
-            status,
-            started_at: progress.started_at ?? now,
+            started_at: normalizeBackendDateTime(progress.started_at, now),
             completed_at: status === 'completed' ? now : null,
             grade: null,
           },
         })
 
-        if (error) {
+        if (error || !data?.id) {
           throw new Error(getErrorMessage(error, 'Не удалось обновить прогресс'))
         }
 
-        newProgress = {
-          ...progress,
-          status,
-          started_at: progress.started_at ?? now,
-          completed_at: status === 'completed' ? now : null,
-          grade: null,
-        }
+        newProgress = data as UserProgress
       }
 
       onSelectChange({ newProgress, type: 'updated' })
-      notifySuccess('Прогресс обновлен', 'Новый статус курса сохранен.')
+      notifySuccess('Прогресс обновлен', 'Статус курса сохранен.')
     } catch (error) {
-      notifyError('Не удалось обновить прогресс', getErrorMessage(error, 'Попробуйте позже.'))
+      const message = getErrorMessage(error, 'Попробуйте позже.')
+
+      if (isSessionExpiredMessage(message)) {
+        notifyError('Сессия истекла', 'Войдите снова, затем повторите действие.')
+        return
+      }
+
+      notifyError('Не удалось обновить прогресс', message)
     } finally {
       setIsSubmitting(false)
     }

@@ -1,8 +1,2 @@
-export { mockProgramPrerequisites } from './model/mockProgramPrerequisites'
-export { mockTrackPrerequisites } from './model/mockTrackPrerequisites'
-export type {
-  Prerequisite,
-  PrerequisiteCreate,
-  ProgramPrerequisite,
-  TrackPrerequisite,
-} from './model/types'
+export { getPrerequisiteKey } from './model/types'
+export type { Prerequisite, PrerequisiteCreate } from './model/types'

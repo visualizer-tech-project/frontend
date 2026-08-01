@@ -1,5 +1,5 @@
 import 'normalize.css'
-import { AppRouter, ThemeProvider } from './providers'
+import { AppRouter, AuthBootstrap, NotificationProvider, ThemeProvider } from './providers'
 import './styles/index.css'
 import './styles/variables.css'
 import ResponsiveNotice from './ui/responsive-notice/ResponsiveNotice'
@@ -7,8 +7,12 @@ import ResponsiveNotice from './ui/responsive-notice/ResponsiveNotice'
 function App() {
   return (
     <ThemeProvider>
-      <ResponsiveNotice />
-      <AppRouter />
+      <NotificationProvider>
+        <AuthBootstrap>
+          <ResponsiveNotice />
+          <AppRouter />
+        </AuthBootstrap>
+      </NotificationProvider>
     </ThemeProvider>
   )
 }

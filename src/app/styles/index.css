@@ -16,7 +16,9 @@ body {
   line-height: 1.2;
   color: var(--color-text);
 
-  background-color: var(--color-white);
+  background:
+    radial-gradient(circle at top, rgb(74 163 255 / 22%), transparent 40%),
+    linear-gradient(180deg, #0d1216 0%, #171b22 100%);
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -110,4 +112,56 @@ a {
 
 .ant-notification-notice-progress::-moz-progress-bar {
   background: linear-gradient(90deg, var(--color-accent-blue), var(--color-purple));
+}
+
+.edumap-delete-popconfirm.ant-popover {
+  color: var(--color-text-on-dark) !important;
+}
+
+.edumap-delete-popconfirm .ant-popover-container,
+.edumap-delete-popconfirm__container {
+  border: 1px solid rgb(255 77 79 / 34%) !important;
+  border-radius: 16px !important;
+  background:
+    linear-gradient(180deg, rgb(24 30 39 / 98%), rgb(13 18 22 / 98%)), var(--color-bg-dark-elevated) !important;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 42%) !important;
+}
+
+.edumap-delete-popconfirm .ant-popover-content {
+  color: var(--color-text-on-dark) !important;
+}
+
+.edumap-delete-popconfirm .ant-popover-arrow::before {
+  background: var(--color-bg-dark) !important;
+}
+
+.edumap-delete-popconfirm .ant-popconfirm-title {
+  color: var(--color-text-on-dark) !important;
+  font-weight: 800 !important;
+}
+
+.edumap-delete-popconfirm .ant-popconfirm-description {
+  color: var(--color-text-on-dark-secondary) !important;
+}
+
+.edumap-delete-popconfirm .ant-popconfirm-message-icon {
+  color: var(--color-warning) !important;
+}
+
+.edumap-delete-popconfirm .ant-popconfirm-buttons .ant-btn-default {
+  border-color: rgb(255 255 255 / 12%) !important;
+  color: var(--color-text-on-dark) !important;
+  background: rgb(255 255 255 / 6%) !important;
+}
+
+.edumap-delete-popconfirm .ant-popconfirm-buttons .ant-btn-default:hover {
+  border-color: rgb(255 255 255 / 22%) !important;
+  color: var(--color-text-on-dark) !important;
+  background: rgb(255 255 255 / 10%) !important;
+}
+
+.edumap-delete-popconfirm .ant-popconfirm-buttons .ant-btn-dangerous {
+  border-color: var(--color-error) !important;
+  color: var(--color-white) !important;
+  background: var(--color-error) !important;
 }

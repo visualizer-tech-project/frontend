@@ -1,4 +1,5 @@
 import { ProgramCard, type Program } from '@/entities/program'
+import { DeleteProgramButton } from '@/features/program-delete'
 import clsx from 'clsx'
 import type { FC } from 'react'
 import styles from './ProgramsList.module.css'
@@ -26,11 +27,9 @@ export const ProgramsList: FC<IProgramsList> = ({
       ) : programs.length ? (
         <div className={styles.grid}>
           {programs.map((program) => (
-            <ProgramCard
-              key={program.id}
-              actionLabel={actionLabel || 'Подробнее'}
-              program={program}
-            />
+            <ProgramCard key={program.id} actionLabel={actionLabel || 'Подробнее'} program={program}>
+              <DeleteProgramButton program={program} />
+            </ProgramCard>
           ))}
         </div>
       ) : (

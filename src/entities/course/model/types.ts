@@ -1,1 +1,1 @@
-export type { Course, CourseCreate, CourseType, CourseUpdate } from '@/shared/api/generated'
+export type { CourseCreate, CoursePublic as Course, CourseType, CourseUpdate } from '@/shared/api/generated'

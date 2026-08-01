@@ -81,7 +81,9 @@ export const ProgressCourses = ({
           <article className={styles.courseCard} key={course.id}>
             <div className={styles.courseMain}>
               <div className={styles.courseTitleRow}>
-                <span className={styles.courseType}>{courseTypeLabels[course.type]}</span>
+                <span className={styles.courseType}>
+                  {courseTypeLabels[course.type ?? 'required']}
+                </span>
                 <span className={`${styles.statusPill} ${statusClassNames[status]}`}>
                   {progressStatusLabels[status]}
                 </span>

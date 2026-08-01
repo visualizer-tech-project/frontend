@@ -1,5 +1,4 @@
 import type { Program } from '@/entities/program'
-import { wait } from '@/shared/lib/wait'
 import { createProgramImportFormData } from './createProgramImportFormData'
 import type { ImportProgramValues } from '../model/validation'
 
@@ -16,8 +15,6 @@ const submitProgramImport = async (formData: FormData): Promise<ImportProgramFro
   if (!formData.get('file')) {
     throw new Error('Файл для импорта не выбран.')
   }
-
-  await wait(350)
 
   throw new Error('Импорт Excel/CSV пока недоступен: backend endpoint еще не подключен.')
 }

@@ -3,14 +3,12 @@ import { z } from 'zod'
 export const registerSchema = z
   .object({
     email: z.email('Укажите корректную почту'),
+    firstName: z.string().min(1, 'Укажите имя').max(100, 'Имя слишком длинное'),
+    lastName: z.string().min(1, 'Укажите фамилию').max(100, 'Фамилия слишком длинная'),
     password: z
       .string()
-      .min(8, 'Пароль должен содержать минимум 8 символов')
-      .max(32, 'Пароль должен содержать максимум 32 символа')
-      .regex(/[A-Z]/, 'Пароль должен содержать хотя бы одну заглавную букву')
-      .regex(/[a-z]/, 'Пароль должен содержать хотя бы одну строчную букву')
-      .regex(/[0-9]/, 'Пароль должен содержать хотя бы одну цифру')
-      .regex(/[^A-Za-z0-9]/, 'Пароль должен содержать хотя бы один спецсимвол (!@#$%^&*)'),
+      .min(6, 'Пароль должен содержать минимум 6 символов')
+      .max(128, 'Пароль должен содержать максимум 128 символов'),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -32,3 +30,25 @@ export const forgotPasswordSchema = z.object({
 })
 
 export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>
+
+export const verifyAccountSchema = z.object({
+  code: z.uuid('Укажите UUID-код из письма'),
+})
+
+export type VerifyAccountValues = z.infer<typeof verifyAccountSchema>
+
+export const resetPasswordSchema = z
+  .object({
+    code: z.uuid('Укажите UUID-код из письма'),
+    newPassword: z
+      .string()
+      .min(6, 'Пароль должен содержать минимум 6 символов')
+      .max(128, 'Пароль должен содержать максимум 128 символов'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Пароли должны совпадать',
+    path: ['confirmPassword'],
+  })
+
+export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>

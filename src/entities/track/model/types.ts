@@ -1,8 +1,8 @@
 export type {
   AddCourseToTrack,
-  CareerTrack,
-  CareerTrackCourse,
+  CareerTrackCoursePublic as CareerTrackCourse,
   CareerTrackCreate,
+  CareerTrackPublic as CareerTrack,
   CareerTrackUpdate,
   TrackCourseItem,
 } from '@/shared/api/generated'

@@ -1,4 +1,5 @@
 import { Roles, useUserState, useUserStore } from '@/entities/user'
+import { useProgramsActions, useProgramsStore } from '@/features/programs'
 import { ROUTES } from '@/shared/config'
 import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
@@ -33,6 +34,7 @@ type FileStatus = 'success' | 'error' | null
 export const ImportProgramButton = ({ className, children }: ImportProgramButtonProps) => {
   const navigate = useNavigate()
   const { user } = useUserStore(useShallow(useUserState))
+  const { resetCatalog } = useProgramsStore(useShallow(useProgramsActions))
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [file, setFile] = useState<File | null>(null)
@@ -83,7 +85,7 @@ export const ImportProgramButton = ({ className, children }: ImportProgramButton
       if (validationError) {
         notifyError('Файл не подходит', validationError)
       } else {
-        notifySuccess('Файл прошел валидацию', 'Можно отправить программу на импорт.')
+        notifySuccess('Файл готов к импорту', 'Можно создавать программу.')
       }
     }
 
@@ -95,7 +97,7 @@ export const ImportProgramButton = ({ className, children }: ImportProgramButton
 
     setFile(selectedFile)
     setFileStatus(null)
-    void validateSelectedFile(selectedFile, Boolean(selectedFile))
+    validateSelectedFile(selectedFile, Boolean(selectedFile))
   }
 
   const onSubmit = async (values: ImportProgramValues) => {
@@ -110,7 +112,8 @@ export const ImportProgramButton = ({ className, children }: ImportProgramButton
     try {
       const { program } = await importProgramFromFile({ values, file })
 
-      notifySuccess('Программа импортирована', 'Файл отправлен, программа успешно создана.')
+      notifySuccess('Программа импортирована', 'Открываю страницу программы.')
+      resetCatalog()
       resetState()
       setIsOpen(false)
       navigate(`${ROUTES.PROGRAMS}/${program.id}`)

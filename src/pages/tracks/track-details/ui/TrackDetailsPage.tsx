@@ -1,88 +1,223 @@
-import { mockCourses, type Course } from '@/entities/course'
+import { type Course } from '@/entities/course'
 import {
-  mockTrackPrerequisites,
+  getPrerequisiteKey,
   type Prerequisite,
   type PrerequisiteCreate,
-  type TrackPrerequisite,
 } from '@/entities/prerequisite'
 import { type ProgressSelectChangePayload, type UserProgress } from '@/entities/progress'
-import { mockTrackCourses, mockTracks } from '@/entities/track'
+import type { CareerTrack } from '@/entities/track'
 import { useUserState, useUserStore } from '@/entities/user'
 import { CoursePicker } from '@/features/course-picker'
+import {
+  addCourseToTrackApiV1CareerTracksTrackIdCoursesPost,
+  addPrerequisiteApiV1CoursesCourseIdPrerequisitesPost,
+  getCoursesApiV1CoursesGet,
+  getPrerequisitesApiV1CoursesCourseIdPrerequisitesGet,
+  getTrackByIdApiV1CareerTracksTrackIdGet,
+  getTrackCoursesApiV1CareerTracksTrackIdCoursesGet,
+  getUserProgressApiV1UsersUserIdProgressGet,
+  removeCourseFromTrackApiV1CareerTracksTrackIdCoursesCourseIdDelete,
+  removePrerequisiteApiV1CoursesCourseIdPrerequisitesPrerequisiteCourseIdDelete,
+} from '@/shared/api/generated'
 import { ROUTES } from '@/shared/config'
-import { notifyError, notifySuccess } from '@/shared/lib/notify'
-import { useMockLoading } from '@/shared/lib/useMockLoading'
-import { wait } from '@/shared/lib/wait'
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { LearningFlowCanvas } from '@/widgets/learning-flow'
 import { useCallback, useEffect, useState } from 'react'
-import { NavLink, useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
-import {
-  getTrackCourses,
-  getTrackPrerequisites,
-  getTrackPrerequisitesForCourses,
-  getTrackProgress,
-} from '../lib/getTrackMockData'
 import styles from './TrackDetailsPage.module.css'
 import { TrackWorkspace } from './TrackWorkspace'
+
+const DETAILS_PAGE_LIMIT = 20
+
+type ApiResponse<TData, TError = unknown> = {
+  data?: TData
+  error?: TError
+}
+
+const getRequiredData = <TData, TError>(
+  response: ApiResponse<TData, TError>,
+  fallbackMessage: string,
+) => {
+  if (response.error || !response.data) {
+    throw new Error(getErrorMessage(response.error, fallbackMessage))
+  }
+
+  return response.data
+}
+
+type ReadyCourse = Course & { id: number; type: NonNullable<Course['type']> }
+
+const isCourseReady = (course: Course): course is ReadyCourse =>
+  Boolean(course.id && course.created_at && course.updated_at && course.type)
+
+const fetchCoursePrerequisitesForCourses = async (
+  courses: ReadyCourse[],
+): Promise<Prerequisite[]> => {
+  const courseIds = new Set(courses.map((course) => course.id))
+
+  const prerequisites = await Promise.all(
+    courses.map(async (course) => {
+      const data = getRequiredData(
+        await getPrerequisitesApiV1CoursesCourseIdPrerequisitesGet({
+          path: {
+            course_id: course.id,
+          },
+        }),
+        'Не удалось загрузить связи курсов.',
+      )
+
+      return data
+        .filter((prerequisiteCourse) => prerequisiteCourse.id && courseIds.has(prerequisiteCourse.id))
+        .map<Prerequisite>((prerequisiteCourse) => ({
+          course_id: course.id,
+          prerequisite_course_id: prerequisiteCourse.id as number,
+        }))
+    }),
+  )
+
+  return prerequisites.flat()
+}
 
 export const TrackDetailsPage = () => {
   const { trackId } = useParams()
   const { user } = useUserStore(useShallow(useUserState))
   const numericTrackId = Number(trackId)
-  const isTrackLoading = useMockLoading([trackId, user?.id])
-
-  // MOCKS
-  const [courses, setCourses] = useState<Course[]>(() => getTrackCourses(numericTrackId))
-  const [prerequisites, setPrerequisites] = useState<TrackPrerequisite[]>(() =>
-    getTrackPrerequisites(numericTrackId),
-  )
-  const [progress, setProgress] = useState<UserProgress[]>(() =>
-    getTrackProgress(numericTrackId, user?.id),
-  )
+  const [track, setTrack] = useState<CareerTrack | null>(null)
+  const [courses, setCourses] = useState<Course[]>([])
+  const [availableCourses, setAvailableCourses] = useState<Course[]>([])
+  const [prerequisites, setPrerequisites] = useState<Prerequisite[]>([])
+  const [progress, setProgress] = useState<UserProgress[]>([])
+  const [isTrackLoading, setIsTrackLoading] = useState(true)
   const [removingCourseIds, setRemovingCourseIds] = useState<Course['id'][]>([])
-  const [removingPrerequisiteIds, setRemovingPrerequisiteIds] = useState<TrackPrerequisite['id'][]>(
-    [],
-  )
+  const [removingPrerequisiteKeys, setRemovingPrerequisiteKeys] = useState<string[]>([])
 
   useEffect(() => {
-    setCourses(getTrackCourses(numericTrackId))
-    setPrerequisites(getTrackPrerequisites(numericTrackId))
-    setProgress(getTrackProgress(numericTrackId, user?.id))
+    let isActive = true
+
+    const loadTrack = async () => {
+      if (Number.isNaN(numericTrackId)) {
+        setIsTrackLoading(false)
+        return
+      }
+
+      setIsTrackLoading(true)
+
+      try {
+        const [trackResponse, trackCoursesResponse, allCoursesResponse] = await Promise.all([
+          getTrackByIdApiV1CareerTracksTrackIdGet({
+            path: {
+              track_id: numericTrackId,
+            },
+          }),
+          getTrackCoursesApiV1CareerTracksTrackIdCoursesGet({
+            path: {
+              track_id: numericTrackId,
+            },
+            query: {
+              limit: DETAILS_PAGE_LIMIT,
+            },
+          }),
+          getCoursesApiV1CoursesGet({
+            query: {
+              limit: DETAILS_PAGE_LIMIT,
+            },
+          }),
+        ])
+
+        const loadedTrack = getRequiredData(trackResponse, 'Не удалось загрузить трек.')
+        const trackCourses = getRequiredData(
+          trackCoursesResponse,
+          'Не удалось загрузить курсы трека.',
+        )
+        const loadedCourses = [...trackCourses]
+          .sort((a, b) => a.order_index - b.order_index)
+          .map((item) => item.course)
+          .filter(isCourseReady)
+        const allCourses = getRequiredData(
+          allCoursesResponse,
+          'Не удалось загрузить список курсов.',
+        ).items.filter(isCourseReady)
+        const courseIds = new Set(loadedCourses.map((course) => course.id))
+        const loadedPrerequisites = await fetchCoursePrerequisitesForCourses(loadedCourses)
+        const loadedProgress = user?.id
+          ? getRequiredData(
+              await getUserProgressApiV1UsersUserIdProgressGet({
+                path: {
+                  user_id: user.id,
+                },
+                query: {
+                  limit: DETAILS_PAGE_LIMIT,
+                },
+              }),
+              'Не удалось загрузить прогресс.',
+            )
+              .items.map((item) => item.progress as UserProgress)
+              .filter((item) => courseIds.has(item.course_id))
+          : []
+
+        if (!isActive) {
+          return
+        }
+
+        setTrack(loadedTrack as CareerTrack)
+        setCourses(loadedCourses)
+        setAvailableCourses(allCourses)
+        setPrerequisites(loadedPrerequisites)
+        setProgress(loadedProgress)
+      } catch (error) {
+        if (isActive) {
+          notifyError(
+            'Не удалось загрузить трек',
+            getErrorMessage(error, 'Попробуйте обновить страницу.'),
+          )
+        }
+      } finally {
+        if (isActive) {
+          setIsTrackLoading(false)
+        }
+      }
+    }
+
+    loadTrack()
+
+    return () => {
+      isActive = false
+    }
   }, [numericTrackId, user?.id])
 
   const handleCourseRemove = useCallback(
     async (courseId: Course['id']) => {
+      if (!courseId) {
+        notifyError('Не удалось удалить курс', 'Не удалось определить курс.')
+        return
+      }
+
       setRemovingCourseIds((current) =>
         current.includes(courseId) ? current : [...current, courseId],
       )
 
       try {
-        // TODO: заменить задержку на удаление курса из трека через API.
-        await wait(600)
-
-        setCourses((currentCourses) => {
-          const nextCourses = currentCourses.filter((course) => course.id !== courseId)
-
-          const trackCourseIndex = mockTrackCourses.findIndex(
-            (trackCourse) =>
-              trackCourse.career_track_id === numericTrackId && trackCourse.course_id === courseId,
-          )
-
-          const currentTrack = mockTracks.find(({ id }) => id === numericTrackId)
-
-          if (trackCourseIndex !== -1) {
-            mockTrackCourses.splice(trackCourseIndex, 1)
-          }
-
-          if (currentTrack) {
-            currentTrack.courses_count = nextCourses.length
-            currentTrack.updated_at = new Date().toISOString()
-          }
-
-          return nextCourses
+        const { error } = await removeCourseFromTrackApiV1CareerTracksTrackIdCoursesCourseIdDelete({
+          path: {
+            course_id: courseId,
+            track_id: numericTrackId,
+          },
         })
 
+        if (error) {
+          throw new Error(getErrorMessage(error, 'Попробуйте удалить курс еще раз.'))
+        }
+
+        setCourses((currentCourses) => currentCourses.filter((course) => course.id !== courseId))
+        setTrack((currentTrack) =>
+          currentTrack
+            ? {
+                ...currentTrack,
+                courses_count: Math.max(currentTrack.courses_count - 1, 0),
+              }
+            : currentTrack,
+        )
         setPrerequisites((current) =>
           current.filter(
             (prerequisite) =>
@@ -91,9 +226,12 @@ export const TrackDetailsPage = () => {
           ),
         )
 
-        notifySuccess('Курс удален', 'Курс успешно удален из трека.')
-      } catch {
-        notifyError('Не удалось удалить курс', 'Попробуйте удалить курс еще раз.')
+        notifySuccess('Курс удален из трека', 'Он больше не входит в эту траекторию.')
+      } catch (error) {
+        notifyError(
+          'Не удалось удалить курс',
+          getErrorMessage(error, 'Попробуйте удалить курс еще раз.'),
+        )
       } finally {
         setRemovingCourseIds((current) => current.filter((id) => id !== courseId))
       }
@@ -115,50 +253,55 @@ export const TrackDetailsPage = () => {
   }, [])
 
   const handleExistingCourseAdd = useCallback(
-    (course: Course) => {
-      setCourses((currentCourses) => {
-        const alreadyExists = currentCourses.some((currentCourse) => currentCourse.id === course.id)
+    async (course: Course) => {
+      if (!isCourseReady(course)) {
+        throw new Error('Не удалось определить курс.')
+      }
 
-        if (alreadyExists) {
-          return currentCourses
-        }
+      const alreadyExists = courses.some((currentCourse) => currentCourse.id === course.id)
 
-        const nextCourses = [...currentCourses, course]
-        const now = new Date().toISOString()
-        const currentTrack = mockTracks.find(({ id }) => id === numericTrackId)
+      if (alreadyExists) {
+        return
+      }
 
-        mockTrackCourses.push({
-          id: Date.now(),
-          career_track_id: numericTrackId,
+      const { error } = await addCourseToTrackApiV1CareerTracksTrackIdCoursesPost({
+        path: {
+          track_id: numericTrackId,
+        },
+        body: {
           course_id: course.id,
-          order_index: nextCourses.length,
-          created_at: now,
-          updated_at: now,
-        })
-
-        if (currentTrack) {
-          currentTrack.courses_count = nextCourses.length
-          currentTrack.updated_at = now
-        }
-
-        setPrerequisites(getTrackPrerequisitesForCourses(numericTrackId, nextCourses))
-
-        return nextCourses
+          order_index: courses.length,
+        },
       })
+
+      if (error) {
+        throw new Error(getErrorMessage(error, 'Не удалось добавить курс в трек.'))
+      }
+
+      const nextCourses = [...courses.filter(isCourseReady), course]
+      const nextPrerequisites = await fetchCoursePrerequisitesForCourses(nextCourses)
+
+      setCourses(nextCourses)
+      setPrerequisites(nextPrerequisites)
+      setTrack((currentTrack) =>
+        currentTrack
+          ? {
+              ...currentTrack,
+              courses_count: nextCourses.length,
+            }
+          : currentTrack,
+      )
     },
-    [numericTrackId],
+    [courses, numericTrackId],
   )
 
   const handleEdgeConnect = useCallback(
     async (courseId: number, prerequisiteCreate: PrerequisiteCreate) => {
-      const tempPrerequisite: TrackPrerequisite = {
-        id: -Date.now(),
-        career_track_id: numericTrackId,
+      const tempPrerequisite: Prerequisite = {
         course_id: courseId,
         prerequisite_course_id: prerequisiteCreate.prerequisite_course_id,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
       }
+      const tempPrerequisiteKey = getPrerequisiteKey(tempPrerequisite)
 
       setPrerequisites((current) => {
         const alreadyExists = current.some(
@@ -175,62 +318,75 @@ export const TrackDetailsPage = () => {
       })
 
       try {
-        // TODO: заменить задержку на создание prerequisite через API.
-        await wait(600)
+        const { error } = await addPrerequisiteApiV1CoursesCourseIdPrerequisitesPost({
+          path: {
+            course_id: courseId,
+          },
+          body: prerequisiteCreate,
+        })
 
-        const createdPrerequisite: TrackPrerequisite = {
-          ...tempPrerequisite,
-          id: Date.now(),
+        if (error) {
+          throw new Error(getErrorMessage(error, 'Не удалось добавить связь.'))
         }
-
-        mockTrackPrerequisites.push(createdPrerequisite)
 
         setPrerequisites((current) =>
           current.map((prerequisite) =>
-            prerequisite.id === tempPrerequisite.id ? createdPrerequisite : prerequisite,
+            getPrerequisiteKey(prerequisite) === tempPrerequisiteKey
+              ? tempPrerequisite
+              : prerequisite,
           ),
         )
-        notifySuccess('Связь добавлена', 'Зависимость между курсами успешно сохранена.')
-      } catch {
+        notifySuccess('Связь добавлена', 'Зависимость сохранена.')
+      } catch (error) {
         setPrerequisites((current) =>
-          current.filter((prerequisite) => prerequisite.id !== tempPrerequisite.id),
+          current.filter((prerequisite) => getPrerequisiteKey(prerequisite) !== tempPrerequisiteKey),
         )
-        notifyError('Не удалось добавить связь', 'Изменение откатилось. Попробуйте еще раз.')
+        notifyError(
+          'Не удалось добавить связь',
+          getErrorMessage(error, 'Попробуйте повторить позже.'),
+        )
       }
     },
-    [numericTrackId],
+    [],
   )
 
   const handleEdgeDelete = useCallback(
     async (prerequisite: Prerequisite) => {
-      const previousPrerequisite = prerequisite as TrackPrerequisite
+      const previousPrerequisite = prerequisite
+      const prerequisiteKey = getPrerequisiteKey(prerequisite)
 
-      setRemovingPrerequisiteIds((current) =>
-        current.includes(prerequisite.id) ? current : [...current, prerequisite.id],
+      setRemovingPrerequisiteKeys((current) =>
+        current.includes(prerequisiteKey) ? current : [...current, prerequisiteKey],
       )
-      setPrerequisites((current) => current.filter((item) => item.id !== prerequisite.id))
+      setPrerequisites((current) =>
+        current.filter((item) => getPrerequisiteKey(item) !== prerequisiteKey),
+      )
 
       try {
-        // TODO: заменить задержку на удаление prerequisite через API.
-        await wait(600)
+        const { error } =
+          await removePrerequisiteApiV1CoursesCourseIdPrerequisitesPrerequisiteCourseIdDelete({
+            path: {
+              course_id: prerequisite.course_id,
+              prerequisite_course_id: prerequisite.prerequisite_course_id,
+            },
+          })
 
-        const prerequisiteIndex = mockTrackPrerequisites.findIndex(
-          (item) => item.id === prerequisite.id && item.career_track_id === numericTrackId,
-        )
-
-        if (prerequisiteIndex !== -1) {
-          mockTrackPrerequisites.splice(prerequisiteIndex, 1)
+        if (error) {
+          throw new Error(getErrorMessage(error, 'Не удалось удалить связь.'))
         }
 
-        notifySuccess('Связь удалена', 'Зависимость между курсами успешно удалена.')
-      } catch {
+        notifySuccess('Связь удалена', 'Зависимость удалена.')
+      } catch (error) {
         setPrerequisites((current) => [...current, previousPrerequisite])
-        notifyError('Не удалось удалить связь', 'Изменение откатилось. Попробуйте еще раз.')
+        notifyError(
+          'Не удалось удалить связь',
+          getErrorMessage(error, 'Попробуйте повторить позже.'),
+        )
       } finally {
-        setRemovingPrerequisiteIds((current) => current.filter((id) => id !== prerequisite.id))
+        setRemovingPrerequisiteKeys((current) => current.filter((key) => key !== prerequisiteKey))
       }
     },
-    [numericTrackId],
+    [],
   )
 
   const handleProgressChange = useCallback((payload: ProgressSelectChangePayload) => {
@@ -247,15 +403,15 @@ export const TrackDetailsPage = () => {
     })
   }, [])
 
-  const track = mockTracks.find(({ id }) => id === numericTrackId)
+  if (!isTrackLoading && (!track || Number.isNaN(numericTrackId))) {
+    return <Navigate to={ROUTES.NOT_FOUND} replace />
+  }
 
-  if (!track || Number.isNaN(numericTrackId)) return <NavLink to={ROUTES.NOT_FOUND} />
-
-  const canEditTrack = track.user_id === user?.id || user?.role === 'admin'
+  const canEditTrack = Boolean(track && (track.user_id === user?.id || user?.role === 'admin'))
 
   return (
     <div>
-      <TrackWorkspace track={track} courses={courses} />
+      {track ? <TrackWorkspace track={track} courses={courses} /> : null}
 
       <div className={styles.canvas}>
         <LearningFlowCanvas
@@ -269,13 +425,13 @@ export const TrackDetailsPage = () => {
           onEdgeDelete={handleEdgeDelete}
           canEditFlow={canEditTrack}
           isLoading={isTrackLoading}
-          isEdgeDeleting={removingPrerequisiteIds.length > 0}
+          isEdgeDeleting={removingPrerequisiteKeys.length > 0}
           removingCourseIds={removingCourseIds}
         />
 
         {canEditTrack && (
           <CoursePicker
-            courses={mockCourses}
+            courses={availableCourses}
             selectedCourses={courses}
             onExistingCourseAdd={handleExistingCourseAdd}
             allowCourseCreate={false}

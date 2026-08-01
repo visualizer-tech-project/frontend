@@ -20,52 +20,54 @@ export const AppHeader = () => {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <NavLink className={styles.brand} to={ROUTES.HOME}>
+        <NavLink className={styles.brand} to={isAuthorized ? ROUTES.HOME : ROUTES.LOGIN}>
           <span className={styles.brandMark}>EM</span>
           <span className={styles.brandText}>Edu Map</span>
         </NavLink>
 
         <nav className={styles.nav}>
-          <Button
-            aria-current={location.pathname === ROUTES.HOME ? 'page' : undefined}
-            color="default"
-            htmlType="button"
-            variant="text"
-            onClick={() => navigateTo(ROUTES.HOME)}
-          >
-            Главная
-          </Button>
-
-          <Button
-            aria-current={location.pathname.startsWith(ROUTES.PROGRAMS) ? 'page' : undefined}
-            color="default"
-            htmlType="button"
-            variant="text"
-            onClick={() => navigateTo(ROUTES.PROGRAMS)}
-          >
-            Программы
-          </Button>
-
-          <Button
-            aria-current={location.pathname.startsWith(ROUTES.TRACKS) ? 'page' : undefined}
-            color="default"
-            htmlType="button"
-            variant="text"
-            onClick={() => navigateTo(ROUTES.TRACKS)}
-          >
-            Карьерные треки
-          </Button>
-
           {isAuthorized ? (
-            <Button
-              aria-current={location.pathname === ROUTES.PROGRESS ? 'page' : undefined}
-              color="default"
-              htmlType="button"
-              variant="text"
-              onClick={() => navigateTo(ROUTES.PROGRESS)}
-            >
-              Прогресс
-            </Button>
+            <>
+              <Button
+                aria-current={location.pathname === ROUTES.HOME ? 'page' : undefined}
+                color="default"
+                htmlType="button"
+                variant="text"
+                onClick={() => navigateTo(ROUTES.HOME)}
+              >
+                Главная
+              </Button>
+
+              <Button
+                aria-current={location.pathname.startsWith(ROUTES.PROGRAMS) ? 'page' : undefined}
+                color="default"
+                htmlType="button"
+                variant="text"
+                onClick={() => navigateTo(ROUTES.PROGRAMS)}
+              >
+                Программы
+              </Button>
+
+              <Button
+                aria-current={location.pathname.startsWith(ROUTES.TRACKS) ? 'page' : undefined}
+                color="default"
+                htmlType="button"
+                variant="text"
+                onClick={() => navigateTo(ROUTES.TRACKS)}
+              >
+                Карьерные треки
+              </Button>
+
+              <Button
+                aria-current={location.pathname === ROUTES.PROGRESS ? 'page' : undefined}
+                color="default"
+                htmlType="button"
+                variant="text"
+                onClick={() => navigateTo(ROUTES.PROGRESS)}
+              >
+                Прогресс
+              </Button>
+            </>
           ) : null}
 
           {isAdmin ? (

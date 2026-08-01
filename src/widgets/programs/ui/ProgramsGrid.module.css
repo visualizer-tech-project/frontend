@@ -12,3 +12,12 @@
 .rootTransparent {
   background: transparent;
 }
+
+.loadMoreRow {
+  display: flex;
+  justify-content: center;
+}
+
+.loadMoreButton {
+  min-width: 180px;
+}

@@ -8,8 +8,8 @@ interface ProgramWorkspaceProps {
 }
 
 export const ProgramWorkspace = ({ program }: ProgramWorkspaceProps) => {
-  const createdAt = formatDate(program.created_at) ?? '—'
-  const updatedAt = formatDate(program.updated_at) ?? '—'
+  const createdAt = program.created_at ? formatDate(program.created_at) : '—'
+  const updatedAt = program.updated_at ? formatDate(program.updated_at) : '—'
 
   return (
     <section className={styles.page}>

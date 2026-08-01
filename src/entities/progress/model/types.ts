@@ -1,8 +1,13 @@
-import type { Course, ProgressStatus, UserProgress, UserPublic } from '@/shared/api/generated'
+import type { Course } from '@/entities/course'
+import type { UserPublic } from '@/entities/user'
+import type { ProgressStatus, UserProgressPublic as UserProgress } from '@/shared/api/generated'
 
-export type { ProgressCreate, ProgressUpdate, UserProgress } from '@/shared/api/generated'
-
-export type { ProgressStatus }
+export type {
+  ProgressCreate,
+  ProgressStatus,
+  ProgressUpdate,
+  UserProgressPublic as UserProgress,
+} from '@/shared/api/generated'
 
 export const progressStatusLabels: Record<ProgressStatus, string> = {
   not_started: 'Не начат',

@@ -1,0 +1,14 @@
+.deleteButton {
+  position: absolute !important;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+}
+
+.deleteButton:global(.ant-btn-circle) {
+  min-width: 38px;
+  width: 38px;
+  height: 38px;
+  padding: 0 !important;
+  border-radius: 50% !important;
+}

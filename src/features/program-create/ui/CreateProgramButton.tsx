@@ -1,6 +1,8 @@
+import { useUserState, useUserStore } from '@/entities/user'
+import { useProgramsActions, useProgramsStore } from '@/features/programs'
+import { createProgramApiV1ProgramsPost } from '@/shared/api/generated'
 import { ROUTES } from '@/shared/config'
-import { notifyError, notifySuccess } from '@/shared/lib/notify'
-import { wait } from '@/shared/lib/wait'
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { FormModal } from '@/shared/ui/FormModal'
 import { InputField } from '@/shared/ui/InputField'
@@ -10,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { useShallow } from 'zustand/shallow'
 import { createProgramSchema, type CreateProgramValues } from '../model/validation'
 import styles from './CreateProgramButton.module.css'
 
@@ -20,6 +23,8 @@ interface CreateProgramButtonProps {
 
 export const CreateProgramButton = ({ className, children }: CreateProgramButtonProps) => {
   const navigate = useNavigate()
+  const { user } = useUserStore(useShallow(useUserState))
+  const { resetCatalog } = useProgramsStore(useShallow(useProgramsActions))
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { control, handleSubmit, reset } = useForm<CreateProgramValues>({
@@ -48,13 +53,32 @@ export const CreateProgramButton = ({ className, children }: CreateProgramButton
     setIsSubmitting(true)
 
     try {
-      // TODO: сохранить программу через API/mutation после подключения backend.
-      await wait(450)
-      console.log(values)
-      notifySuccess('Программа создана', 'Новая программа успешно сохранена.')
-      navigate(`${ROUTES.PROGRAMS}/${1}`)
-    } catch {
-      notifyError('Не удалось создать программу', 'Проверьте данные и повторите попытку.')
+      if (!user?.id) {
+        throw new Error('Пользователь не авторизован.')
+      }
+
+      const { data: program, error } = await createProgramApiV1ProgramsPost({
+        body: {
+          ...values,
+          description: values.description || undefined,
+          user_id: user.id,
+        },
+      })
+
+      if (error || !program?.id) {
+        throw new Error(getErrorMessage(error, 'Проверьте данные и повторите попытку.'))
+      }
+
+      notifySuccess('Программа создана', 'Открываю страницу программы.')
+      resetCatalog()
+      setIsOpen(false)
+      reset()
+      navigate(`${ROUTES.PROGRAMS}/${program.id}`)
+    } catch (error) {
+      notifyError(
+        'Не удалось создать программу',
+        getErrorMessage(error, 'Проверьте данные и повторите попытку.'),
+      )
     } finally {
       setIsSubmitting(false)
     }

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { createJSONStorage, devtools, persist } from 'zustand/middleware'
+import { setApiSessionHandlers } from '@/shared/api/session'
 import type { TokenResponse, UserPublic } from './types'
 
 export interface IUserState {
@@ -21,57 +22,75 @@ export interface IUserActions {
 }
 
 type UserStore = IUserState & IUserActions
+type PersistedUserStore = Partial<Pick<IUserState, 'accessToken' | 'tokenType'>>
 
-// const initialState: IUserState = {
-//   user: null,
-//   accessToken: null,
-//   tokenType: null,
-// }
 const initialState: IUserState = {
-  user: {
-    id: 1,
-    email: 'teacher@example.com',
-    first_name: 'Vlavla',
-    last_name: 'Kommers',
-    role: 'teacher',
-    status: 'confirmed',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  accessToken: 'mock-access-token',
-  tokenType: 'bearer',
+  user: null,
+  accessToken: null,
+  tokenType: null,
 }
 
 export const useUserStore = create<UserStore>()(
   devtools(
-    (set) => ({
-      ...initialState,
+    persist(
+      (set) => ({
+        ...initialState,
 
-      setAuth: ({ user, accessToken, tokenType }) => {
-        set({ user, accessToken, tokenType }, false, 'user/setAuth')
-      },
+        setAuth: ({ user, accessToken, tokenType }) => {
+          set({ user, accessToken, tokenType }, false, 'user/setAuth')
+        },
 
-      setUser: (user) => {
-        set({ user }, false, 'user/setUser')
-      },
+        setUser: (user) => {
+          set({ user }, false, 'user/setUser')
+        },
 
-      setAccessToken: (accessToken) => {
-        set({ accessToken }, false, 'user/setAccessToken')
-      },
+        setAccessToken: (accessToken) => {
+          set({ accessToken }, false, 'user/setAccessToken')
+        },
 
-      setTokenType: (tokenType) => {
-        set({ tokenType }, false, 'user/setTokenType')
-      },
+        setTokenType: (tokenType) => {
+          set({ tokenType }, false, 'user/setTokenType')
+        },
 
-      logout: () => {
-        set({ user: null, accessToken: null, tokenType: null }, false, 'user/logout')
+        logout: () => {
+          set({ user: null, accessToken: null, tokenType: null }, false, 'user/logout')
+        },
+      }),
+      {
+        name: 'edu-map-user',
+        merge: (persistedState, currentState) => {
+          const persisted = persistedState as PersistedUserStore
+
+          return {
+            ...currentState,
+            accessToken: persisted.accessToken ?? null,
+            tokenType: persisted.tokenType ?? null,
+            user: null,
+          }
+        },
+        partialize: (state) => ({
+          accessToken: state.accessToken,
+          tokenType: state.tokenType,
+        }),
+        storage: createJSONStorage(() => localStorage),
       },
-    }),
+    ),
     {
       name: 'user-store',
     },
   ),
 )
+
+setApiSessionHandlers({
+  clearSession: () => useUserStore.getState().logout(),
+  getAccessToken: () => useUserStore.getState().accessToken,
+  setAccessToken: (accessToken, tokenType) => {
+    const store = useUserStore.getState()
+
+    store.setAccessToken(accessToken)
+    store.setTokenType(tokenType)
+  },
+})
 
 export const useUserState = (state: UserStore) => ({
   user: state.user,

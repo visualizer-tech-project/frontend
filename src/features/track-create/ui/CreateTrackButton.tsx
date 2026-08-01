@@ -1,7 +1,8 @@
 import { Roles, useUserState, useUserStore } from '@/entities/user'
+import { useTracksActions, useTracksStore } from '@/features/tracks'
+import { createTrackApiV1CareerTracksPost } from '@/shared/api/generated'
 import { ROUTES } from '@/shared/config'
-import { notifyError, notifySuccess } from '@/shared/lib/notify'
-import { wait } from '@/shared/lib/wait'
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { FormModal } from '@/shared/ui/FormModal'
 import { InputField } from '@/shared/ui/InputField'
@@ -12,8 +13,6 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useShallow } from 'zustand/shallow'
-import { addTrackToMocks } from '../lib/addTrackToMocks'
-import { createTrack } from '../lib/createTrack'
 import { createTrackSchema, type CreateTrackValues } from '../model/validation'
 import styles from './CreateTrackButton.module.css'
 
@@ -25,6 +24,7 @@ interface CreateTrackButtonProps {
 export const CreateTrackButton = ({ children, className }: CreateTrackButtonProps) => {
   const navigate = useNavigate()
   const { user } = useUserStore(useShallow(useUserState))
+  const { resetCatalog } = useTracksStore(useShallow(useTracksActions))
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const canCreateTrack = user?.role === Roles.TEACHER || user?.role === Roles.ADMIN
@@ -58,17 +58,32 @@ export const CreateTrackButton = ({ children, className }: CreateTrackButtonProp
     setIsSubmitting(true)
 
     try {
-      // TODO: заменить мок-создание на API mutation после подключения backend.
-      await wait(450)
+      if (!user?.id) {
+        throw new Error('Пользователь не авторизован.')
+      }
 
-      const createdTrack = createTrack({ values, user })
+      const { data: track, error } = await createTrackApiV1CareerTracksPost({
+        body: {
+          ...values,
+          description: values.description || undefined,
+          user_id: user.id,
+        },
+      })
 
-      addTrackToMocks(createdTrack)
-      notifySuccess('Трек создан', 'Новый карьерный трек успешно сохранен.')
+      if (error || !track?.id) {
+        throw new Error(getErrorMessage(error, 'Проверьте данные и повторите попытку.'))
+      }
+
+      notifySuccess('Трек создан', 'Открываю страницу трека.')
+      resetCatalog()
       setIsOpen(false)
-      navigate(`${ROUTES.TRACKS}/${createdTrack.track.id}`)
-    } catch {
-      notifyError('Не удалось создать трек', 'Проверьте данные и повторите попытку.')
+      reset()
+      navigate(`${ROUTES.TRACKS}/${track.id}`)
+    } catch (error) {
+      notifyError(
+        'Не удалось создать трек',
+        getErrorMessage(error, 'Проверьте данные и повторите попытку.'),
+      )
     } finally {
       setIsSubmitting(false)
     }

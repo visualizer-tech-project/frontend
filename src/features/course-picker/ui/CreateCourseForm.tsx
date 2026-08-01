@@ -1,11 +1,6 @@
 import type { CreateCourseValues } from '@/entities/course'
-import {
-  courseTypeOptions,
-  createCourseSchema,
-  type Course,
-  type CourseCreate,
-} from '@/entities/course'
-import { postCourses } from '@/shared/api/generated'
+import { courseTypeOptions, createCourseSchema, type Course } from '@/entities/course'
+import { createCourseApiV1CoursesPost } from '@/shared/api/generated'
 import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { InputField } from '@/shared/ui/InputField'
@@ -18,14 +13,16 @@ import styles from './CoursePicker.module.css'
 
 interface CreateCourseFormProps {
   onCourseCreated: (course: Course) => void
+  programId: Course['program_id']
+  userId?: Course['user_id']
   disabled?: boolean
   onPendingChange?: (isPending: boolean) => void
 }
 
-const TEMP_PROGRAM_ID = 0
-
 export const CreateCourseForm = ({
   onCourseCreated,
+  programId,
+  userId,
   disabled = false,
   onPendingChange,
 }: CreateCourseFormProps) => {
@@ -42,38 +39,31 @@ export const CreateCourseForm = ({
   })
 
   const handleAddNewCourse = async (values: CreateCourseValues) => {
-    const course: CourseCreate = {
-      ...values,
-      description: values.description || undefined,
-      program_id: TEMP_PROGRAM_ID,
-    }
-
     setErrorMessage(null)
     setIsSubmitting(true)
     onPendingChange?.(true)
 
     try {
-      const { data, error } = await postCourses({
-        body: course,
+      if (!userId) {
+        throw new Error('Пользователь не авторизован.')
+      }
+
+      const { data: createdCourse, error } = await createCourseApiV1CoursesPost({
+        body: {
+          ...values,
+          description: values.description || null,
+          program_id: programId,
+          user_id: userId,
+        },
       })
 
-      if (error) {
-        const message = getErrorMessage(error, 'Не удалось создать курс')
-        setErrorMessage(message)
-        notifyError('Курс не создан', message)
-        return
+      if (error || !createdCourse?.id) {
+        throw new Error(getErrorMessage(error, 'Не удалось создать курс'))
       }
 
-      if (!data) {
-        const message = 'Сервер не вернул созданный курс'
-        setErrorMessage(message)
-        notifyError('Курс не создан', message)
-        return
-      }
-
-      onCourseCreated(data)
+      onCourseCreated(createdCourse as Course)
       reset()
-      notifySuccess('Курс создан', 'Новый курс добавлен на холст.')
+      notifySuccess('Курс добавлен на холст', 'Можно сразу связать его с другими курсами.')
     } catch (error) {
       const message = getErrorMessage(error, 'Не удалось создать курс')
       setErrorMessage(message)
@@ -88,7 +78,7 @@ export const CreateCourseForm = ({
     <form className={styles.form} onSubmit={handleSubmit(handleAddNewCourse)}>
       <div className={styles.formHeader}>
         <h2 id="course-picker-title">Новый курс</h2>
-        <span>Сразу создадится новый курс</span>
+        <span>Сразу создастся новый курс</span>
       </div>
 
       <InputField

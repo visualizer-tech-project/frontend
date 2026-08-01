@@ -59,6 +59,8 @@ const fitViewOptions = {
   maxZoom: 0.8,
 }
 
+type FlowCourse = Course & { id: number; type: NonNullable<Course['type']> }
+
 export const LearningFlowCanvas = ({
   courses,
   prerequisites,
@@ -82,15 +84,22 @@ export const LearningFlowCanvas = ({
   const removingCourseIdSet = useMemo(() => new Set(removingCourseIds), [removingCourseIds])
   const isInteractionLocked = isLoading || isEdgeDeleting
   const canEditEdges = canEditFlow && !isInteractionLocked
+  const flowCourses = useMemo(
+    () =>
+      courses.filter(
+        (course): course is FlowCourse => Boolean(course.id && course.type),
+      ),
+    [courses],
+  )
 
   const dimmedCourseIdSet = useMemo(
     () =>
       new Set(
-        courses
+        flowCourses
           .filter((course) => shouldDimCourseByTypeFilter(course.type, courseTypeFilter))
           .map((course) => course.id),
       ),
-    [courses, courseTypeFilter],
+    [flowCourses, courseTypeFilter],
   )
 
   const progressByCourseId = useMemo(() => {
@@ -111,7 +120,7 @@ export const LearningFlowCanvas = ({
 
   const initialNodes = useMemo(
     () =>
-      courses.map((course, index) =>
+      flowCourses.map((course, index) =>
         createCourseNode({
           course,
           userId: activeUserId,
@@ -127,7 +136,7 @@ export const LearningFlowCanvas = ({
         }),
       ),
     [
-      courses,
+      flowCourses,
       activeUserId,
       progressByCourseId,
       onCourseRemove,
@@ -164,7 +173,7 @@ export const LearningFlowCanvas = ({
     setNodes((currentNodes) => {
       const currentNodeById = new Map(currentNodes.map((node) => [node.id, node]))
 
-      return courses.map((course, index) => {
+      return flowCourses.map((course, index) => {
         const nextNode = createCourseNode({
           course,
           userId: activeUserId,
@@ -192,7 +201,7 @@ export const LearningFlowCanvas = ({
       })
     })
   }, [
-    courses,
+    flowCourses,
     activeUserId,
     progressByCourseId,
     onCourseRemove,
