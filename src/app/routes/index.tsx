@@ -8,6 +8,7 @@ import {
   VerifyAccountPage,
 } from '@/pages/auth'
 import { DevPage } from '@/pages/dev'
+import { CourseSuggestionPage } from '@/pages/course-suggestion'
 import { Forbidden, NotFound } from '@/pages/error'
 import { HomePage } from '@/pages/home'
 import { ProfilePage } from '@/pages/profile'
@@ -68,6 +69,10 @@ export const routes = [
       {
         path: ROUTES.PROGRESS,
         element: requireRole(<ProgressPage />),
+      },
+      {
+        path: ROUTES.COURSE_SUGGESTION,
+        element: requireRole(<CourseSuggestionPage />),
       },
       {
         path: ROUTES.REGISTER,

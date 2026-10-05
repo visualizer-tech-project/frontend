@@ -13,6 +13,7 @@ export const ROUTES = {
   NOT_FOUND: '/not-found',
   PROFILE: '/profile',
   PROGRESS: '/progress',
+  COURSE_SUGGESTION: '/suggest-course',
   SETTINGS: '/settings',
   PROGRAMS: PROGRAMS_ROUTE,
   PROGRAM_DETAILS: `${PROGRAMS_ROUTE}/:programId`,
