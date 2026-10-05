@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '@/shared/config'
+import { isLocalDemoToken } from '@/shared/lib/localDemoAccount'
 import { getErrorMessage } from '@/shared/lib/notify'
 import type { RefreshResponse } from './generated'
 import { client } from './generated/client.gen'
@@ -196,6 +197,15 @@ const retryWithToken = async (request: Request, accessToken: string) => {
 }
 
 const apiFetch: typeof fetch = async (input, init) => {
+  if (isLocalDemoToken(getApiAccessToken())) {
+    return new Response(
+      JSON.stringify({
+        detail: 'Этот раздел недоступен в локальном режиме: для него нужен сервер.',
+      }),
+      { status: 503, headers: { 'Content-Type': 'application/json' } },
+    )
+  }
+
   const originalRequest = input instanceof Request ? input : new Request(input, init)
   const request = withAccessToken(originalRequest)
   const retryRequest = request.clone()

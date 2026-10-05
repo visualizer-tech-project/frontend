@@ -1,5 +1,6 @@
 import { useUserActions, useUserState, useUserStore } from '@/entities/user'
 import { getProfileApiV1UsersMeGet } from '@/shared/api/generated'
+import { createLocalDemoAuth, isLocalDemoToken } from '@/shared/lib/localDemoAccount'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useShallow } from 'zustand/shallow'
 import styles from './AuthBootstrap.module.css'
@@ -15,6 +16,16 @@ export const AuthBootstrap = ({ children }: AuthBootstrapProps) => {
 
   useEffect(() => {
     if (!accessToken) {
+      setIsBootstrapping(false)
+      return
+    }
+
+    if (isLocalDemoToken(accessToken)) {
+      if (import.meta.env.DEV) {
+        setUser(createLocalDemoAuth().user)
+      } else {
+        logout()
+      }
       setIsBootstrapping(false)
       return
     }
