@@ -67,6 +67,15 @@ export const AppHeader = () => {
               >
                 Прогресс
               </Button>
+              <Button
+                aria-current={location.pathname === ROUTES.COURSE_SUGGESTION ? 'page' : undefined}
+                color="default"
+                htmlType="button"
+                variant="text"
+                onClick={() => navigateTo(ROUTES.COURSE_SUGGESTION)}
+              >
+                Предложить курс
+              </Button>
             </>
           ) : null}
 

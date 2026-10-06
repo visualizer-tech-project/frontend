@@ -1,6 +1,11 @@
 import { useUserActions, useUserStore } from '@/entities/user'
 import { getProfileApiV1UsersMeGet, loginApiV1AuthLoginPost } from '@/shared/api/generated'
 import { ROUTES } from '@/shared/config'
+import {
+  createLocalDemoAuth,
+  LOCAL_DEMO_EMAIL,
+  LOCAL_DEMO_PASSWORD,
+} from '@/shared/lib/localDemoAccount'
 import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { InputField } from '@/shared/ui/InputField'
@@ -31,6 +36,17 @@ export const Login = () => {
     setIsSubmitting(true)
 
     try {
+      if (import.meta.env.DEV && values.email.trim().toLowerCase() === LOCAL_DEMO_EMAIL) {
+        if (values.password !== LOCAL_DEMO_PASSWORD) {
+          throw new Error('Неверный пароль тестового аккаунта.')
+        }
+
+        setAuth(createLocalDemoAuth())
+        notifySuccess('Вход выполнен', 'Локальный режим')
+        navigate(ROUTES.COURSE_SUGGESTION, { replace: true })
+        return
+      }
+
       const { data, error } = await loginApiV1AuthLoginPost({
         body: values,
       })
@@ -85,6 +101,13 @@ export const Login = () => {
 
   return (
     <AuthWrapper title="Вход">
+      {import.meta.env.DEV && (
+        <p style={{ color: 'var(--color-text-on-dark-secondary)', lineHeight: 1.6 }}>
+          Тестовый вход без сервера: <strong>{LOCAL_DEMO_EMAIL}</strong>
+          <br />
+          Пароль: <strong>{LOCAL_DEMO_PASSWORD}</strong>
+        </p>
+      )}
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <InputField
           control={control}

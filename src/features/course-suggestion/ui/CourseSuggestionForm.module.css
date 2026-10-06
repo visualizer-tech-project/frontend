@@ -1,0 +1,12 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hint {
+  margin: 0;
+  color: var(--color-text-on-dark-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}

@@ -2,6 +2,7 @@ import { roleLabels, Roles, useUserActions, useUserState, useUserStore } from '@
 import { logoutApiV1AuthLogoutPost } from '@/shared/api/generated'
 import { ROUTES } from '@/shared/config'
 import { formatDate } from '@/shared/lib/formatDate'
+import { isLocalDemoToken } from '@/shared/lib/localDemoAccount'
 import { getErrorMessage, notifyError, notifySuccess } from '@/shared/lib/notify'
 import { Button } from '@/shared/ui/Button'
 import { PageHero } from '@/widgets/page-hero'
@@ -12,7 +13,7 @@ import styles from './ProfilePage.module.css'
 
 export const ProfilePage = () => {
   const navigate = useNavigate()
-  const { user } = useUserStore(useShallow(useUserState))
+  const { user, accessToken } = useUserStore(useShallow(useUserState))
   const { logout } = useUserStore(useShallow(useUserActions))
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
@@ -25,6 +26,12 @@ export const ProfilePage = () => {
   ]
 
   const handleLogout = async () => {
+    if (isLocalDemoToken(accessToken)) {
+      logout()
+      navigate(ROUTES.LOGIN)
+      return
+    }
+
     setIsLoggingOut(true)
 
     try {
